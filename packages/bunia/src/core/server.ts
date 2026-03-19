@@ -10,6 +10,7 @@ import { HttpError, Redirect } from "./errors.ts";
 import { CookieJar } from "./cookies.ts";
 import { isDev, compress, isStaticPath } from "./html.ts";
 import { loadRouteData, renderSSRStream, renderErrorPage } from "./renderer.ts";
+import { getServerTime } from "../lib/utils.ts";
 
 // ─── User Hooks ──────────────────────────────────────────
 // Load src/hooks.server.ts if present. Uses process.cwd() so
@@ -40,7 +41,8 @@ async function resolve(event: RequestEvent): Promise<Response> {
 
     // Health check endpoint — for load balancers and orchestrators
     if (path === "/_health") {
-        return Response.json({ status: "ok", timestamp: new Date().toISOString() });
+        const { timestamp, timezone } = getServerTime();
+        return Response.json({ status: "ok", timestamp, timezone });
     }
 
     // Data endpoint — returns server loader data as JSON for client-side navigation
