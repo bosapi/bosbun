@@ -5,6 +5,6 @@ import type { LoadEvent } from "bunia";
 export async function load({ locals }: LoadEvent) {
     return {
         appName: "Bunia Demo",
-        requestTime: locals.requestTime ?? null,
+        requestTime: locals.requestTime as number | null ?? null,
     };
 }

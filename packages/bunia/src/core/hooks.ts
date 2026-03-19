@@ -5,17 +5,45 @@
 //   import { sequence } from "bunia";
 //   export const handle = sequence(authHandle, loggingHandle);
 
+// ─── Cookie Types ─────────────────────────────────────────
+
+export interface CookieOptions {
+    path?: string;
+    domain?: string;
+    /** Max-Age in seconds */
+    maxAge?: number;
+    expires?: Date;
+    httpOnly?: boolean;
+    secure?: boolean;
+    sameSite?: "Strict" | "Lax" | "None";
+}
+
+export interface Cookies {
+    /** Get a cookie value by name */
+    get(name: string): string | undefined;
+    /** Get all incoming cookies as a plain object */
+    getAll(): Record<string, string>;
+    /** Set a cookie (added to the response as Set-Cookie) */
+    set(name: string, value: string, options?: CookieOptions): void;
+    /** Delete a cookie by setting Max-Age=0 */
+    delete(name: string, options?: Pick<CookieOptions, "path" | "domain">): void;
+}
+
+// ─── Event Types ──────────────────────────────────────────
+
 export type RequestEvent = {
     request: Request;
     url: URL;
     locals: Record<string, any>;
     params: Record<string, string>;
+    cookies: Cookies;
 };
 
 export type LoadEvent = {
     url: URL;
     params: Record<string, string>;
     locals: Record<string, any>;
+    cookies: Cookies;
     fetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
     parent: () => Promise<Record<string, any>>;
 };
@@ -28,6 +56,8 @@ export type Handle = (input: {
 }) => MaybePromise<Response>;
 
 type MaybePromise<T> = T | Promise<T>;
+
+// ─── Middleware Composition ────────────────────────────────
 
 /**
  * Compose multiple `handle` functions into a single handler.

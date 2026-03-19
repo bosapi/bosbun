@@ -42,6 +42,6 @@ export async function load({ params, parent }: LoadEvent) {
     return {
         post,
         slug: params.slug,
-        appName: parentData.appName,
+        appName: parentData.appName as string,
     };
 }

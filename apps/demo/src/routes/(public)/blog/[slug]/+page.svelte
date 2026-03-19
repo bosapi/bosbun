@@ -1,8 +1,10 @@
 <script lang="ts">
-    let { data = {} }: { data?: Record<string, any> } = $props();
+    import type { PageData } from './$types';
 
-    const post = $derived((data as any)?.post);
-    const slug = $derived((data as any)?.slug ?? (data as any)?.params?.slug ?? "");
+    let { data }: { data: PageData } = $props();
+
+    const post = $derived(data.post);
+    const slug = $derived(data.slug ?? data.params.slug ?? "");
 </script>
 
 <svelte:head>
@@ -39,7 +41,7 @@
             <p><span class="text-muted-foreground">pattern: </span>/blog/[slug]</p>
             <p><span class="text-muted-foreground">params.slug: </span><span class="text-primary font-semibold">{slug}</span></p>
             <p><span class="text-muted-foreground">loaded by: </span>+page.server.ts</p>
-            <p><span class="text-muted-foreground">parent data: </span>{(data as any)?.appName}</p>
+            <p><span class="text-muted-foreground">parent data: </span>{data.appName}</p>
         </div>
     </article>
 {:else}

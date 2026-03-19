@@ -1,5 +1,7 @@
 <script lang="ts">
-    let { children, data = {} }: { children: any; data?: Record<string, any> } = $props();
+    import type { LayoutData } from '../$types';
+
+    let { children, data }: { children: any; data: LayoutData } = $props();
 </script>
 
 <div class="flex min-h-screen flex-col bg-background text-foreground">
@@ -19,9 +21,9 @@
 
     <footer class="border-t py-4 text-center text-sm text-muted-foreground">
         Powered by Bunia
-        {#if (data as any)?.requestTime}
+        {#if data.requestTime}
             <span class="ml-2 opacity-40 font-mono text-xs">
-                req at {new Date((data as any).requestTime).toISOString()}
+                req at {new Date(data.requestTime).toISOString()}
             </span>
         {/if}
     </footer>

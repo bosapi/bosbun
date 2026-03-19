@@ -6,7 +6,7 @@ import { join } from "path";
 
 import { findMatch } from "./matcher.ts";
 import { serverRoutes, apiRoutes, errorPage } from "bunia:routes";
-import type { Handle, RequestEvent } from "./hooks.ts";
+import type { Handle, RequestEvent, Cookies, CookieOptions } from "./hooks.ts";
 import { HttpError, Redirect } from "./errors.ts";
 import App from "./client/App.svelte";
 
@@ -40,6 +40,57 @@ if (existsSync(hooksPath)) {
     }
 }
 
+// ─── Cookie Helpers ──────────────────────────────────────
+
+function parseCookies(header: string): Record<string, string> {
+    const result: Record<string, string> = {};
+    for (const pair of header.split(";")) {
+        const idx = pair.indexOf("=");
+        if (idx === -1) continue;
+        const name = pair.slice(0, idx).trim();
+        const value = pair.slice(idx + 1).trim();
+        if (name) result[name] = decodeURIComponent(value);
+    }
+    return result;
+}
+
+class CookieJar implements Cookies {
+    private _incoming: Record<string, string>;
+    private _outgoing: string[] = [];
+
+    constructor(cookieHeader: string) {
+        this._incoming = parseCookies(cookieHeader);
+    }
+
+    get(name: string): string | undefined {
+        return this._incoming[name];
+    }
+
+    getAll(): Record<string, string> {
+        return { ...this._incoming };
+    }
+
+    set(name: string, value: string, options?: CookieOptions): void {
+        let header = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+        header += `; Path=${options?.path ?? "/"}`;
+        if (options?.domain) header += `; Domain=${options.domain}`;
+        if (options?.maxAge != null) header += `; Max-Age=${options.maxAge}`;
+        if (options?.expires) header += `; Expires=${options.expires.toUTCString()}`;
+        if (options?.httpOnly) header += "; HttpOnly";
+        if (options?.secure) header += "; Secure";
+        if (options?.sameSite) header += `; SameSite=${options.sameSite}`;
+        this._outgoing.push(header);
+    }
+
+    delete(name: string, options?: Pick<CookieOptions, "path" | "domain">): void {
+        this.set(name, "", { path: options?.path, domain: options?.domain, maxAge: 0 });
+    }
+
+    get outgoing(): readonly string[] {
+        return this._outgoing;
+    }
+}
+
 // ─── Session-Aware Fetch ─────────────────────────────────
 // Passed to load() functions so they can call internal APIs
 // with the current user's cookies automatically forwarded.
@@ -65,7 +116,12 @@ function makeFetch(req: Request, url: URL) {
 // Runs layout + page server loaders for a given URL.
 // Used by both SSR and the /__bunia/data JSON endpoint.
 
-async function loadRouteData(url: URL, locals: Record<string, any>, req: Request) {
+async function loadRouteData(
+    url: URL,
+    locals: Record<string, any>,
+    req: Request,
+    cookies: Cookies,
+) {
     const match = findMatch(serverRoutes, url.pathname);
     if (!match) return null;
 
@@ -83,7 +139,7 @@ async function loadRouteData(url: URL, locals: Record<string, any>, req: Request
                     for (let d = 0; d < ls.depth; d++) Object.assign(merged, layoutData[d] ?? {});
                     return merged;
                 };
-                layoutData[ls.depth] = (await mod.load({ params, url, locals, parent, fetch })) ?? {};
+                layoutData[ls.depth] = (await mod.load({ params, url, locals, cookies, parent, fetch })) ?? {};
             }
         } catch (err) {
             if (err instanceof HttpError || err instanceof Redirect) throw err;
@@ -104,7 +160,7 @@ async function loadRouteData(url: URL, locals: Record<string, any>, req: Request
                     for (const d of layoutData) if (d) Object.assign(merged, d);
                     return merged;
                 };
-                pageData = (await mod.load({ params, url, locals, parent, fetch })) ?? {};
+                pageData = (await mod.load({ params, url, locals, cookies, parent, fetch })) ?? {};
             }
         } catch (err) {
             if (err instanceof HttpError || err instanceof Redirect) throw err;
@@ -117,7 +173,7 @@ async function loadRouteData(url: URL, locals: Record<string, any>, req: Request
 
 // ─── SSR Renderer ────────────────────────────────────────
 
-async function renderSSR(url: URL, locals: Record<string, any>, req: Request) {
+async function renderSSR(url: URL, locals: Record<string, any>, req: Request, cookies: Cookies) {
     const match = findMatch(serverRoutes, url.pathname);
     if (!match) return null;
 
@@ -127,7 +183,7 @@ async function renderSSR(url: URL, locals: Record<string, any>, req: Request) {
     const pageModPromise = route.pageModule();
     const layoutModsPromise = Promise.all(route.layoutModules.map(l => l()));
 
-    const data = await loadRouteData(url, locals, req);
+    const data = await loadRouteData(url, locals, req, cookies);
     if (!data) return null;
 
     const [pageMod, layoutMods] = await Promise.all([pageModPromise, layoutModsPromise]);
@@ -238,9 +294,14 @@ function isStaticPath(path: string): boolean {
 // This is the inner handler that hooks wrap around.
 
 async function resolve(event: RequestEvent): Promise<Response> {
-    const { request, url, locals } = event;
+    const { request, url, locals, cookies } = event;
     const path = url.pathname;
     const method = request.method.toUpperCase();
+
+    // Health check endpoint — for load balancers and orchestrators
+    if (path === "/_health") {
+        return Response.json({ status: "ok", timestamp: new Date().toISOString() });
+    }
 
     // Data endpoint — returns server loader data as JSON for client-side navigation
     if (path === "/__bunia/data") {
@@ -249,7 +310,7 @@ async function resolve(event: RequestEvent): Promise<Response> {
         // Rewrite event.url so logging middleware sees the real page path, not /__bunia/data
         event.url = routeUrl;
         try {
-            const data = await loadRouteData(routeUrl, locals, request);
+            const data = await loadRouteData(routeUrl, locals, request, cookies);
             if (!data) return compress(JSON.stringify({ pageData: {}, layoutData: [] }), "application/json", request);
             return compress(JSON.stringify(data), "application/json", request);
         } catch (err) {
@@ -302,7 +363,7 @@ async function resolve(event: RequestEvent): Promise<Response> {
             }
 
             event.params = apiMatch.params;
-            return await handler({ request, params: apiMatch.params, url, locals });
+            return await handler({ request, params: apiMatch.params, url, locals, cookies });
         } catch (err) {
             console.error("API route error:", err);
             return Response.json({ error: "Internal Server Error" }, { status: 500 });
@@ -311,7 +372,7 @@ async function resolve(event: RequestEvent): Promise<Response> {
 
     // SSR pages (+page.svelte)
     try {
-        const ssr = await renderSSR(url, locals, request);
+        const ssr = await renderSSR(url, locals, request, cookies);
         if (!ssr) {
             return renderErrorPage(404, "Not Found", url, request);
         }
@@ -338,13 +399,16 @@ const SECURITY_HEADERS: Record<string, string> = {
 };
 
 async function handleRequest(request: Request, url: URL): Promise<Response> {
-    const event: RequestEvent = { request, url, locals: {}, params: {} };
+    const cookieJar = new CookieJar(request.headers.get("cookie") ?? "");
+    const event: RequestEvent = { request, url, locals: {}, params: {}, cookies: cookieJar };
     const response = userHandle
         ? await userHandle({ event, resolve })
         : await resolve(event);
 
     const headers = new Headers(response.headers);
     for (const [k, v] of Object.entries(SECURITY_HEADERS)) headers.set(k, v);
+    // Apply any Set-Cookie headers accumulated during the request
+    for (const cookie of cookieJar.outgoing) headers.append("Set-Cookie", cookie);
     return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }
 
