@@ -13,6 +13,18 @@ export const distManifest: { js: string[]; css: string[]; entry: string } = (() 
 
 export const isDev = process.env.NODE_ENV !== "production";
 
+// ─── Safe JSON Serialization ──────────────────────────────
+
+/** Escapes JSON for safe embedding inside <script> tags. Prevents XSS via </script> injection. */
+export function safeJsonStringify(data: unknown): string {
+    return JSON.stringify(data)
+        .replace(/</g, "\\u003c")
+        .replace(/>/g, "\\u003e")
+        .replace(/&/g, "\\u0026")
+        .replace(/\u2028/g, "\\u2028")
+        .replace(/\u2029/g, "\\u2029");
+}
+
 // ─── HTML Builder ─────────────────────────────────────────
 
 export function buildHtml(
@@ -31,7 +43,7 @@ export function buildHtml(
     const fallbackTitle = head.includes("<title>") ? "" : "<title>Bunia App</title>";
 
     const scripts = csr
-        ? `\n  <script>window.__BUNIA_PAGE_DATA__=${JSON.stringify(pageData)};window.__BUNIA_LAYOUT_DATA__=${JSON.stringify(layoutData)};</script>\n  <script type="module" src="/dist/client/${distManifest.entry}${cacheBust}"></script>`
+        ? `\n  <script>window.__BUNIA_PAGE_DATA__=${safeJsonStringify(pageData)};window.__BUNIA_LAYOUT_DATA__=${safeJsonStringify(layoutData)};</script>\n  <script type="module" src="/dist/client/${distManifest.entry}${cacheBust}"></script>`
         : isDev
             ? `\n  <script>!function r(){var e=new EventSource("/__bunia/sse");e.addEventListener("reload",()=>location.reload());e.onopen=()=>r._ok||(r._ok=1);e.onerror=()=>{e.close();setTimeout(r,2000)}}()</script>`
             : "";
@@ -90,10 +102,10 @@ export function buildHtmlTail(
     const cacheBust = isDev ? `?v=${Date.now()}` : "";
     let out = `<script>document.getElementById('__bs__').remove()</script>`;
     out += `\n<div id="app">${body}</div>`;
-    if (head) out += `\n<script>document.head.innerHTML+=${JSON.stringify(head)}</script>`;
+    if (head) out += `\n<script>document.head.innerHTML+=${safeJsonStringify(head)}</script>`;
     if (csr) {
-        out += `\n<script>window.__BUNIA_PAGE_DATA__=${JSON.stringify(pageData)};` +
-               `window.__BUNIA_LAYOUT_DATA__=${JSON.stringify(layoutData)};</script>`;
+        out += `\n<script>window.__BUNIA_PAGE_DATA__=${safeJsonStringify(pageData)};` +
+               `window.__BUNIA_LAYOUT_DATA__=${safeJsonStringify(layoutData)};</script>`;
         out += `\n<script type="module" src="/dist/client/${distManifest.entry}${cacheBust}"></script>`;
     } else if (isDev) {
         out += `\n<script>!function r(){var e=new EventSource("/__bunia/sse");e.addEventListener("reload",()=>location.reload());e.onopen=()=>r._ok||(r._ok=1);e.onerror=()=>{e.close();setTimeout(r,2000)}}()</script>`;

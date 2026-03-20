@@ -63,7 +63,7 @@
 > Industry-standard requirements. Must be done before shipping to real users.
 
 ### Security
-- [ ] XSS escaping in HTML templates — sanitize `JSON.stringify()` output in `<script>` tags
+- [x] XSS escaping in HTML templates — sanitize `JSON.stringify()` output in `<script>` tags
 - [ ] SSRF validation on `/__bunia/data` — validate `path` query param
 - [ ] CSRF protection — token generation and validation for state-changing requests
 - [ ] Strip stack traces from error responses in production

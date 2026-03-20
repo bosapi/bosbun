@@ -5,7 +5,7 @@ import { serverRoutes, errorPage } from "bunia:routes";
 import type { Cookies } from "./hooks.ts";
 import { HttpError, Redirect } from "./errors.ts";
 import App from "./client/App.svelte";
-import { buildHtml, buildHtmlShell, buildHtmlTail, compress } from "./html.ts";
+import { buildHtml, buildHtmlShell, buildHtmlTail, compress, safeJsonStringify } from "./html.ts";
 
 // ─── Session-Aware Fetch ─────────────────────────────────
 // Passed to load() functions so they can call internal APIs
@@ -169,7 +169,7 @@ export function renderSSRStream(
             } catch (err) {
                 if (err instanceof Redirect) {
                     controller.enqueue(enc.encode(
-                        `<script>location.replace(${JSON.stringify(err.location)})</script></body></html>`
+                        `<script>location.replace(${safeJsonStringify(err.location)})</script></body></html>`
                     ));
                     controller.close();
                     return;
