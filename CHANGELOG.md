@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 - XSS: escape `<`, `>`, `&`, U+2028, U+2029 in JSON embedded in SSR `<script>` tags (`safeJsonStringify`)
+- SSRF: validate `path` query param on `/__bunia/data` — reject non-root-relative paths, double-slash URLs, and traversal sequences
 
 ---
 

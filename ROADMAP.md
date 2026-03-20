@@ -64,7 +64,7 @@
 
 ### Security
 - [x] XSS escaping in HTML templates — sanitize `JSON.stringify()` output in `<script>` tags
-- [ ] SSRF validation on `/__bunia/data` — validate `path` query param
+- [x] SSRF validation on `/__bunia/data` — validate `path` query param
 - [ ] CSRF protection — token generation and validation for state-changing requests
 - [ ] Strip stack traces from error responses in production
 - [ ] Request body size limits

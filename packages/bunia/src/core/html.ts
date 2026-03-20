@@ -17,12 +17,14 @@ export const isDev = process.env.NODE_ENV !== "production";
 
 /** Escapes JSON for safe embedding inside <script> tags. Prevents XSS via </script> injection. */
 export function safeJsonStringify(data: unknown): string {
-    return JSON.stringify(data)
-        .replace(/</g, "\\u003c")
-        .replace(/>/g, "\\u003e")
-        .replace(/&/g, "\\u0026")
-        .replace(/\u2028/g, "\\u2028")
-        .replace(/\u2029/g, "\\u2029");
+    const map: Record<string, string> = {
+        "<": "\\u003c",
+        ">": "\\u003e",
+        "&": "\\u0026",
+        "\u2028": "\\u2028",
+        "\u2029": "\\u2029",
+    };
+    return JSON.stringify(data).replace(/[<>&\u2028\u2029]/g, c => map[c]);
 }
 
 // ─── HTML Builder ─────────────────────────────────────────

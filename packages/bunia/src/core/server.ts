@@ -34,6 +34,14 @@ if (existsSync(hooksPath)) {
 // ─── Core Request Resolver ────────────────────────────────
 // This is the inner handler that hooks wrap around.
 
+function isValidRoutePath(path: string, origin: string): boolean {
+    try {
+        return new URL(path, origin).origin === origin;
+    } catch {
+        return false;
+    }
+}
+
 async function resolve(event: RequestEvent): Promise<Response> {
     const { request, url, locals, cookies } = event;
     const path = url.pathname;
@@ -48,6 +56,9 @@ async function resolve(event: RequestEvent): Promise<Response> {
     // Data endpoint — returns server loader data as JSON for client-side navigation
     if (path === "/__bunia/data") {
         const routePath = url.searchParams.get("path") ?? "/";
+        if (!isValidRoutePath(routePath, url.origin)) {
+            return Response.json({ error: "Invalid path", status: 400 }, { status: 400 });
+        }
         const routeUrl = new URL(routePath, url.origin);
         // Rewrite event.url so logging middleware sees the real page path, not /__bunia/data
         event.url = routeUrl;
