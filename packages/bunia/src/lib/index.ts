@@ -10,6 +10,8 @@ export type { HttpError, Redirect, ActionFailure } from "../core/errors.ts";
 export type {
     RequestEvent,
     LoadEvent,
+    MetadataEvent,
+    Metadata,
     Handle,
     ResolveFunction,
     Cookies,

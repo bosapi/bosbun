@@ -114,7 +114,7 @@
 > Nice-to-haves for a growing framework.
 
 - [x] Form actions (SvelteKit-style)
-- [ ] Streaming SSR for metadata (non-blocking `load()`)
+- [x] Streaming SSR for metadata (non-blocking `load()`)
 - [ ] Production sourcemaps
 - [ ] Testing guide (Vitest + Playwright)
 - [ ] Deployment guides (Docker, Railway, Fly.io)
