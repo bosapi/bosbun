@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - Request timeouts: `LOAD_TIMEOUT` (default 5s) and `METADATA_TIMEOUT` (default 3s) env vars abort slow `load()` and `metadata()` functions; set to `0` or `Infinity` to disable
+- Prerender fetch timeout: `PRERENDER_TIMEOUT` env var (default 5s) aborts slow route fetches during build — prevents infinite build hangs
 
 ### Fixed
 - Security: `PUBLIC_*` env vars injected into client HTML are now scoped to keys declared in `.env` files only — system env vars that happen to start with `PUBLIC_` are no longer leaked to the browser

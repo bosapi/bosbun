@@ -133,7 +133,7 @@
 
 ### DX
 - [ ] Stale env cleanup in dev — reset removed `.env` vars on hot-reload
-- [ ] Prerender fetch timeout — prevent infinite build hangs on slow routes
+- [x] Prerender fetch timeout — prevent infinite build hangs on slow routes
 
 ### Types
 - [ ] Error page types in generated `$types.d.ts`
