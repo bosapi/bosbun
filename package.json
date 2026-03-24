@@ -1,5 +1,12 @@
 {
   "name": "bunia-monorepo",
   "private": true,
-  "workspaces": ["packages/*", "apps/*"]
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "publish": "npm publish --workspace packages/bunia --access public",
+    "publish:dry": "npm publish --workspace packages/bunia --dry-run"
+  }
 }

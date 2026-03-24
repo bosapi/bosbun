@@ -1,9 +1,16 @@
 {
-  "name": "bunia",
+  "name": "bosbun",
   "version": "0.0.1",
   "type": "module",
   "description": "A minimalist fullstack framework — SSR + Svelte 5 Runes + Bun + ElysiaJS",
-  "keywords": ["bun", "svelte", "ssr", "elysia", "fullstack", "framework"],
+  "keywords": [
+    "bun",
+    "svelte",
+    "ssr",
+    "elysia",
+    "fullstack",
+    "framework"
+  ],
   "license": "MIT",
   "author": {
     "name": "Jekibus",
@@ -12,7 +19,7 @@
   "homepage": "https://github.com/bosapi/bunia#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bosapi/bunia.git"
+    "url": "git+https://github.com/bosapi/bunia.git"
   },
   "bugs": {
     "url": "https://github.com/bosapi/bunia/issues"
@@ -27,7 +34,7 @@
     ".": "./src/lib/index.ts"
   },
   "bin": {
-    "bunia": "./src/cli/index.ts"
+    "bunia": "src/cli/index.ts"
   },
   "scripts": {
     "check": "tsc --noEmit"
