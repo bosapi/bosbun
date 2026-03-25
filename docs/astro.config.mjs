@@ -54,6 +54,11 @@ export default defineConfig({
               label: "SvelteKit Differences",
               slug: "reference/sveltekit-differences",
             },
+            {
+              label: "Changelog",
+              slug: "reference/changelog",
+              badge: { text: "v0.0.8", variant: "tip" },
+            },
           ],
         },
       ],
