@@ -46,7 +46,7 @@
 - [x] `bosbun dev` — dev server with file watching
 - [x] `bosbun build` — production build
 - [x] `bosbun start` — production server
-- [x] `bosbun create` — scaffold new project
+- [x] `bosbun create` — scaffold new project (with `--template` flag and interactive picker)
 - [x] `bosbun add` — registry-based UI component installation
 - [x] `bosbun feat` — registry-based feature scaffolding
 

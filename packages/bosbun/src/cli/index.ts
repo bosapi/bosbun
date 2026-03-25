@@ -13,7 +13,7 @@ async function main() {
     switch (command) {
         case "create": {
             const { runCreate } = await import("./create.ts");
-            await runCreate(args[0]);
+            await runCreate(args[0], args.slice(1));
             break;
         }
         case "dev": {
@@ -49,7 +49,7 @@ Usage:
   bosbun <command> [options]
 
 Commands:
-  create <name>       Scaffold a new Bosbun project
+  create <name> [--template <t>]  Scaffold a new Bosbun project
   dev                 Start the development server
   build               Build for production
   start               Run the production server
@@ -58,6 +58,7 @@ Commands:
 
 Examples:
   bosbun create my-app
+  bosbun create my-app --template demo
   bosbun dev
   bosbun build
   bosbun start
