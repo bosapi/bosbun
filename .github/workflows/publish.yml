@@ -1,0 +1,30 @@
+name: Publish to npm
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/bosbun/package.json"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine npm tag
+        id: tag
+        run: |
+          VERSION=$(jq -r '.version' packages/bosbun/package.json)
+          if echo "$VERSION" | grep -qE '-(rc|beta|alpha)'; then
+            echo "tag=next" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=latest" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Publishing $VERSION with tag: $(grep tag "$GITHUB_OUTPUT" | cut -d= -f2)"
+
+      - name: Publish
+        run: npm publish --tag "${{ steps.tag.outputs.tag }}" --access public
+        working-directory: packages/bosbun
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

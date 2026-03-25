@@ -8,14 +8,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [0.0.7] - 2026-03-25
 
+### Added
+- Multi-template support for `bosbun create`: interactive template picker when no `--template` flag is given; includes `default` (minimal starter) and `demo` (full-featured with hooks, API routes, blog, form actions, catch-all routes)
+- GitHub Actions workflow for auto-publishing to npm on push to `main` — only publishes when `package.json` version is greater than the currently published version; prereleases tagged as `next`, stable as `latest`
+
 ### Updated
 - Package description and README to better reflect the framework's identity — emphasizes file-based routing, no Node.js/Vite/adapters philosophy, and full feature set
 
 ### Changed
 - Replaced 🐰 emoji branding with new block-style SVG logo across all UI templates, CLI output, and favicon; favicon now served as `/favicon.svg` instead of blank `data:,` URI
-
-### Added
-- Multi-template support for `bosbun create`: interactive template picker when no `--template` flag is given; includes `default` (minimal starter) and `demo` (full-featured with hooks, API routes, blog, form actions, catch-all routes)
 
 ### Fixed
 - `bosbun create` now pins bosbun to the current version (`^x.y.z`) instead of `*`, ensuring new projects use the same version as the CLI that created them
@@ -80,7 +81,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [0.0.1] - 2026-03-19
 
 ### Added
-
 #### Core Framework
 - **SSR + Svelte 5 Runes** — Server-side rendering with full Svelte 5 Runes support (`$props`, `$state`, etc.)
 - **File-based routing** — Automatic route discovery via `src/routes/` directory structure (`+page.svelte`, `+page.server.ts`, `+layout.svelte`, `+layout.server.ts`, `+server.ts`)
