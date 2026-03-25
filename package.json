@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "publish": "npm publish --workspace packages/bosbun --access public",
-    "publish:dry": "npm publish --workspace packages/bosbun --dry-run"
+    "publish:dry": "npm publish --workspace packages/bosbun --dry-run",
+    "publish:force": "npm publish --workspace packages/bosbun --force"
   }
 }
