@@ -23,8 +23,9 @@ jobs:
           fi
           echo "Publishing $VERSION with tag: $(grep tag "$GITHUB_OUTPUT" | cut -d= -f2)"
 
+      - name: Setup npm auth
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
       - name: Publish
         run: npm publish --tag "${{ steps.tag.outputs.tag }}" --access public
         working-directory: packages/bosbun
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
