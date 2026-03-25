@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [0.0.7] - 2026-03-25
 
+### Updated
+- Package description and README to better reflect the framework's identity — emphasizes file-based routing, no Node.js/Vite/adapters philosophy, and full feature set
+
 ### Changed
 - Replaced 🐰 emoji branding with new block-style SVG logo across all UI templates, CLI output, and favicon; favicon now served as `/favicon.svg` instead of blank `data:,` URI
 

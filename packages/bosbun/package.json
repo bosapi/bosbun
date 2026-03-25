@@ -1,8 +1,8 @@
 {
   "name": "bosbun",
-  "version": "0.0.7-rc.1",
+  "version": "0.0.7-rc.2",
   "type": "module",
-  "description": "A minimalist fullstack framework — SSR + Svelte 5 Runes + Bun + ElysiaJS",
+  "description": "A fast, batteries-included fullstack framework — SSR · Svelte 5 Runes · Bun · ElysiaJS. File-based routing inspired by SvelteKit. No Node.js, no Vite, no adapters.",
   "keywords": [
     "bun",
     "svelte",
