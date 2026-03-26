@@ -1,16 +1,16 @@
 ---
 title: Memulai
-description: Buat proyek Bosbun pertama Anda dalam waktu kurang dari satu menit.
+description: Buat proyek Bosia pertama Anda dalam waktu kurang dari satu menit.
 ---
 
 ## Prasyarat
 
-- [Bun](https://bun.sh) >= 1.x — Bosbun berjalan sepenuhnya di atas Bun. Tidak memerlukan Node.js.
+- [Bun](https://bun.sh) >= 1.x — Bosia berjalan sepenuhnya di atas Bun. Tidak memerlukan Node.js.
 
 ## Membuat Proyek Baru
 
 ```bash
-bunx bosbun create my-app
+bunx bosia create my-app
 ```
 
 Anda akan diminta memilih template:
@@ -23,7 +23,7 @@ Anda akan diminta memilih template:
 Untuk melewati prompt:
 
 ```bash
-bunx bosbun create my-app --template demo
+bunx bosia create my-app --template demo
 ```
 
 ## Pengembangan
@@ -50,7 +50,7 @@ Buat file baru di `src/routes/hello/+page.svelte`:
 
 ```svelte
 <h1>Hello!</h1>
-<p>This is my first Bosbun page.</p>
+<p>This is my first Bosia page.</p>
 ```
 
 Kunjungi [http://localhost:9000/hello](http://localhost:9000/hello) — selesai. Tidak perlu konfigurasi, impor, atau pendaftaran. Router berbasis file mendeteksinya secara otomatis.
@@ -60,7 +60,7 @@ Kunjungi [http://localhost:9000/hello](http://localhost:9000/hello) — selesai.
 Buat `src/routes/hello/+page.server.ts` di samping halaman:
 
 ```ts
-import type { LoadEvent } from "bosbun";
+import type { LoadEvent } from "bosia";
 
 export async function load({ url }: LoadEvent) {
   return {

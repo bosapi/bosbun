@@ -1,6 +1,6 @@
 ---
 title: Deployment
-description: Build, run, and deploy Bosbun apps in production.
+description: Build, run, and deploy Bosia apps in production.
 ---
 
 ## Production Build
@@ -31,7 +31,7 @@ Set the port with the `PORT` environment variable (default: `9000`).
 
 ## Health Check
 
-Bosbun exposes a health endpoint at `/_health`:
+Bosia exposes a health endpoint at `/_health`:
 
 ```bash
 curl http://localhost:9000/_health
@@ -50,11 +50,11 @@ Mark routes for static prerendering:
 export const prerender = true;
 ```
 
-Prerendered pages are built as static HTML during `bosbun build` and served from `dist/prerendered/` with a 1-hour cache header.
+Prerendered pages are built as static HTML during `bosia build` and served from `dist/prerendered/` with a 1-hour cache header.
 
 ## Static Asset Caching
 
-Bosbun sets cache headers automatically:
+Bosia sets cache headers automatically:
 
 | Asset Type        | Cache Header                          |
 | ----------------- | ------------------------------------- |

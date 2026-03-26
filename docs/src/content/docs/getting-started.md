@@ -1,16 +1,16 @@
 ---
 title: Getting Started
-description: Create your first Bosbun project in under a minute.
+description: Create your first Bosia project in under a minute.
 ---
 
 ## Prerequisites
 
-- [Bun](https://bun.sh) >= 1.x — Bosbun runs entirely on Bun. No Node.js required.
+- [Bun](https://bun.sh) >= 1.x — Bosia runs entirely on Bun. No Node.js required.
 
 ## Create a New Project
 
 ```bash
-bunx bosbun create my-app
+bunx bosia create my-app
 ```
 
 You'll be prompted to pick a template:
@@ -23,7 +23,7 @@ You'll be prompted to pick a template:
 To skip the prompt:
 
 ```bash
-bunx bosbun create my-app --template demo
+bunx bosia create my-app --template demo
 ```
 
 ## Development
@@ -50,7 +50,7 @@ Create a new file at `src/routes/hello/+page.svelte`:
 
 ```svelte
 <h1>Hello!</h1>
-<p>This is my first Bosbun page.</p>
+<p>This is my first Bosia page.</p>
 ```
 
 Visit [http://localhost:9000/hello](http://localhost:9000/hello) — that's it. No config, no imports, no registration. The file-based router picks it up automatically.
@@ -60,7 +60,7 @@ Visit [http://localhost:9000/hello](http://localhost:9000/hello) — that's it. 
 Create `src/routes/hello/+page.server.ts` alongside the page:
 
 ```ts
-import type { LoadEvent } from "bosbun";
+import type { LoadEvent } from "bosia";
 
 export async function load({ url }: LoadEvent) {
   return {

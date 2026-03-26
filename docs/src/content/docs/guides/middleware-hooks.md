@@ -10,7 +10,7 @@ Middleware hooks let you run code on every request — authentication, logging, 
 Create `src/hooks.server.ts` and export a `handle` function:
 
 ```ts
-import type { Handle } from "bosbun";
+import type { Handle } from "bosia";
 
 export const handle: Handle = async ({ event, resolve }) => {
   // Runs before the route handler
@@ -44,8 +44,8 @@ type Handle = (input: {
 Use `sequence()` to compose multiple handlers:
 
 ```ts
-import { sequence } from "bosbun";
-import type { Handle } from "bosbun";
+import { sequence } from "bosia";
+import type { Handle } from "bosia";
 
 const authHandle: Handle = async ({ event, resolve }) => {
   event.locals.requestTime = Date.now();

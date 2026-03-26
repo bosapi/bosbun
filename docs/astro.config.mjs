@@ -2,10 +2,10 @@ import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 
 export default defineConfig({
-  site: "https://bosbun.bosapi.com",
+  site: "https://bosia.bosapi.com",
   integrations: [
     starlight({
-      title: "Bosbun",
+      title: "Bosia",
       logo: {
         light: "./src/assets/logo-light.svg",
         dark: "./src/assets/logo-dark.svg",
@@ -21,7 +21,7 @@ export default defineConfig({
         {
           icon: "github",
           label: "GitHub",
-          href: "https://github.com/bosapi/bosbun",
+          href: "https://github.com/bosapi/bosia",
         },
       ],
       sidebar: [

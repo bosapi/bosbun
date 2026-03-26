@@ -1,6 +1,6 @@
 ---
 title: Deployment
-description: Build, jalankan, dan deploy aplikasi Bosbun di produksi.
+description: Build, jalankan, dan deploy aplikasi Bosia di produksi.
 ---
 
 ## Build Produksi
@@ -31,7 +31,7 @@ Atur port dengan variabel lingkungan `PORT` (default: `9000`).
 
 ## Health Check
 
-Bosbun mengekspos endpoint health di `/_health`:
+Bosia mengekspos endpoint health di `/_health`:
 
 ```bash
 curl http://localhost:9000/_health
@@ -50,11 +50,11 @@ Tandai rute untuk prerendering statis:
 export const prerender = true;
 ```
 
-Halaman yang di-prerender dibuat sebagai HTML statis selama `bosbun build` dan disajikan dari `dist/prerendered/` dengan cache header 1 jam.
+Halaman yang di-prerender dibuat sebagai HTML statis selama `bosia build` dan disajikan dari `dist/prerendered/` dengan cache header 1 jam.
 
 ## Caching Aset Statis
 
-Bosbun mengatur cache header secara otomatis:
+Bosia mengatur cache header secara otomatis:
 
 | Tipe Aset              | Cache Header                          |
 | ---------------------- | ------------------------------------- |

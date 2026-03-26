@@ -5,7 +5,7 @@ description: Tailwind CSS v4 bawaan dengan design token terinspirasi shadcn dan 
 
 ## Tailwind CSS v4
 
-Tailwind CSS v4 sudah terintegrasi dalam Bosbun — tidak perlu instalasi atau konfigurasi tambahan. Dikompilasi saat build time oleh `@tailwindcss/cli`.
+Tailwind CSS v4 sudah terintegrasi dalam Bosia — tidak perlu instalasi atau konfigurasi tambahan. Dikompilasi saat build time oleh `@tailwindcss/cli`.
 
 Gaya global Anda berada di `src/app.css`:
 
@@ -81,7 +81,7 @@ Fungsi `cn()` menggabungkan [clsx](https://github.com/lukeed/clsx) dan [tailwind
 
 ```ts
 import { cn } from "$lib/utils";
-// or: import { cn } from "bosbun";
+// or: import { cn } from "bosia";
 
 cn("px-4 py-2", "px-6");
 // → "py-2 px-6" (px-4 removed, px-6 wins)

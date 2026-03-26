@@ -5,7 +5,7 @@ description: Load .env files, use typed imports, and understand the four-tier pr
 
 ## .env File Loading
 
-Bosbun loads environment variables from `.env` files in order (later overrides earlier):
+Bosia loads environment variables from `.env` files in order (later overrides earlier):
 
 1. `.env`
 2. `.env.local`
@@ -25,7 +25,7 @@ Variable names control where and when they're available:
 | `STATIC_`         | No     | Yes    | Build-time | `STATIC_BUILD_ID`          |
 | *(no prefix)*     | No     | Yes    | Runtime    | `DATABASE_URL`             |
 
-- **Build-time** variables are inlined during `bosbun build` — changing them requires a rebuild
+- **Build-time** variables are inlined during `bosia build` — changing them requires a rebuild
 - **Runtime** variables are read from `process.env` on each request
 - **Client** variables are safely exposed to the browser; **Server** variables never leave the server
 
@@ -41,7 +41,7 @@ Only variables declared in your `.env` files are available through this import. 
 
 ## Framework Variables
 
-These variables are reserved by Bosbun and control framework behavior:
+These variables are reserved by Bosia and control framework behavior:
 
 | Variable                | Default   | Description                                      |
 | ----------------------- | --------- | ------------------------------------------------ |

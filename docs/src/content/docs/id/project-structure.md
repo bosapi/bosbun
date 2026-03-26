@@ -1,6 +1,6 @@
 ---
 title: Struktur Proyek
-description: Pahami file dan direktori dalam sebuah proyek Bosbun.
+description: Pahami file dan direktori dalam sebuah proyek Bosia.
 ---
 
 ## Tata Letak Direktori
@@ -21,7 +21,7 @@ my-app/
 │   └── hooks.server.ts    # Middleware (opsional)
 ├── public/                # Aset statis (disajikan apa adanya)
 ├── dist/                  # Output build (diabaikan git)
-├── .bosbun/               # File yang dihasilkan (diabaikan git)
+├── .bosia/               # File yang dihasilkan (diabaikan git)
 ├── .env                   # Variabel lingkungan
 └── package.json
 ```
@@ -47,7 +47,7 @@ my-app/
 
 ## File yang Dihasilkan
 
-Direktori `.bosbun/` dibuat saat `dev` dan `build` dijalankan. Direktori ini berisi:
+Direktori `.bosia/` dibuat saat `dev` dan `build` dijalankan. Direktori ini berisi:
 
 - **`routes.ts`** — manifest rute (pemetaan rute halaman dan API)
 - **`types/`** — tipe TypeScript yang dihasilkan otomatis (`PageData`, `ActionData`, dll.)

@@ -3,7 +3,7 @@ title: Routing
 description: Routing berbasis file dengan parameter dinamis, catch-all routes, route groups, dan layouts.
 ---
 
-Bosbun menggunakan **routing berbasis file**. File-file di dalam `src/routes/` dipetakan langsung ke URL.
+Bosia menggunakan **routing berbasis file**. File-file di dalam `src/routes/` dipetakan langsung ke URL.
 
 ## Route Statis
 
@@ -64,7 +64,7 @@ Grup `(public)` dan `(admin)` tidak pernah muncul di URL. Mereka hanya mengontro
 
 ## Prioritas Route
 
-Ketika beberapa route bisa cocok dengan URL, Bosbun menyelesaikannya secara berurutan:
+Ketika beberapa route bisa cocok dengan URL, Bosia menyelesaikannya secara berurutan:
 
 1. **Pencocokan tepat** — route statis seperti `/about`
 2. **Segmen dinamis** — route `[param]`
@@ -99,7 +99,7 @@ Pasangkan layout dengan `+layout.server.ts` untuk memuat data:
 
 ```ts
 // src/routes/+layout.server.ts
-import type { LoadEvent } from "bosbun";
+import type { LoadEvent } from "bosia";
 
 export async function load({ locals }: LoadEvent) {
   return {

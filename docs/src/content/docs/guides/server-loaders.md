@@ -10,7 +10,7 @@ Server loaders run on every request to fetch data for pages and layouts.
 Export a `load` function from `+page.server.ts`:
 
 ```ts
-import type { LoadEvent } from "bosbun";
+import type { LoadEvent } from "bosia";
 
 export async function load({ params, url, locals, cookies }: LoadEvent) {
   const post = await db.getPost(params.slug);
@@ -35,11 +35,11 @@ The returned object becomes the `data` prop in `+page.svelte`:
 
 ```ts
 // src/routes/+layout.server.ts
-import type { LoadEvent } from "bosbun";
+import type { LoadEvent } from "bosia";
 
 export async function load({ locals }: LoadEvent) {
   return {
-    appName: "Bosbun Demo",
+    appName: "Bosia Demo",
     requestTime: locals.requestTime,
   };
 }
@@ -51,7 +51,7 @@ Child loaders can access data from parent layout loaders:
 
 ```ts
 // src/routes/blog/[slug]/+page.server.ts
-import type { LoadEvent } from "bosbun";
+import type { LoadEvent } from "bosia";
 
 export async function load({ params, parent }: LoadEvent) {
   const parentData = await parent();
@@ -71,7 +71,7 @@ Data flows top-down: root layout → group layout → page layout → page.
 Export a `metadata` function to set page title and meta tags:
 
 ```ts
-import type { MetadataEvent, LoadEvent } from "bosbun";
+import type { MetadataEvent, LoadEvent } from "bosia";
 
 export function metadata({ params }: MetadataEvent) {
   const post = getPost(params.slug);
@@ -113,7 +113,7 @@ The `data` property in `metadata()` return value is passed to `load()` as `event
 Throw errors from loaders to show the error page:
 
 ```ts
-import { error, redirect } from "bosbun";
+import { error, redirect } from "bosia";
 
 export async function load({ params }: LoadEvent) {
   const post = await db.getPost(params.slug);

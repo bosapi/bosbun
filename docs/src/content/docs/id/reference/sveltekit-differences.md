@@ -3,7 +3,7 @@ title: Perbedaan dengan SvelteKit
 description: Apa yang sama, apa yang berbeda, dan apa yang tidak didukung dibandingkan dengan SvelteKit.
 ---
 
-Bosbun mengikuti konvensi SvelteKit secara erat, namun terdapat beberapa perbedaan penting.
+Bosia mengikuti konvensi SvelteKit secara erat, namun terdapat beberapa perbedaan penting.
 
 ## Sama Seperti SvelteKit
 
@@ -22,7 +22,7 @@ Hal-hal berikut bekerja dengan cara yang sama seperti yang Anda harapkan:
 
 ## Berbeda dari SvelteKit
 
-| Fitur | SvelteKit | Bosbun |
+| Fitur | SvelteKit | Bosia |
 | ----- | --------- | ------ |
 | **Runtime** | Node.js | Bun |
 | **Bundler** | Vite | Bun.build |
@@ -33,14 +33,14 @@ Hal-hal berikut bekerja dengan cara yang sama seperti yang Anda harapkan:
 | **Navigation** | `$app/navigation` | Router klien bawaan |
 | **Env vars** | `$env/static/public`, dll. | `$env` dengan prefix empat tingkat |
 | **HMR** | Vite HMR (granular) | SSE full-page reload |
-| **Direktori generate** | `.svelte-kit/` | `.bosbun/` |
-| **Registry komponen** | Tidak ada | `bosbun add` (gaya shadcn) |
-| **Scaffolding fitur** | Tidak ada | `bosbun feat` |
+| **Direktori generate** | `.svelte-kit/` | `.bosia/` |
+| **Registry komponen** | Tidak ada | `bosia add` (gaya shadcn) |
+| **Scaffolding fitur** | Tidak ada | `bosia feat` |
 | **Metadata** | Via `<svelte:head>` | Fungsi `metadata()` di `+page.server.ts` |
 
 ### Penjelasan Perbedaan Utama
 
-**Tidak ada universal load functions** — Bosbun hanya mendukung `load()` sisi server di `+page.server.ts` dan `+layout.server.ts`. Tidak ada `+page.ts` atau `+layout.ts` untuk loading sisi klien atau universal.
+**Tidak ada universal load functions** — Bosia hanya mendukung `load()` sisi server di `+page.server.ts` dan `+layout.server.ts`. Tidak ada `+page.ts` atau `+layout.ts` untuk loading sisi klien atau universal.
 
 **Tidak ada `$app/stores`** — Sebagai gantinya, akses data melalui Svelte 5 runes:
 
@@ -50,28 +50,28 @@ Hal-hal berikut bekerja dengan cara yang sama seperti yang Anda harapkan:
   import { page } from "$app/stores";
 </script>
 
-<!-- Bosbun -->
+<!-- Bosia -->
 <script>
   let { data } = $props();
 </script>
 ```
 
-**Fungsi `metadata()`** — Unik untuk Bosbun. Mengembalikan `title`, `description`, dan tag `meta`. Dapat meneruskan `data` ke `load()` untuk menghindari duplikasi query database.
+**Fungsi `metadata()`** — Unik untuk Bosia. Mengembalikan `title`, `description`, dan tag `meta`. Dapat meneruskan `data` ke `load()` untuk menghindari duplikasi query database.
 
-**`$env`** — Sebagai pengganti empat modul `$env/*` terpisah milik SvelteKit, Bosbun menggunakan satu modul `$env` dengan sistem berbasis prefix:
+**`$env`** — Sebagai pengganti empat modul `$env/*` terpisah milik SvelteKit, Bosia menggunakan satu modul `$env` dengan sistem berbasis prefix:
 
 ```ts
 // SvelteKit
 import { PUBLIC_KEY } from "$env/static/public";
 import { SECRET } from "$env/static/private";
 
-// Bosbun
+// Bosia
 import { PUBLIC_STATIC_KEY, SECRET } from "$env";
 ```
 
 ## Tidak Didukung
 
-Fitur-fitur SvelteKit berikut tidak tersedia di Bosbun:
+Fitur-fitur SvelteKit berikut tidak tersedia di Bosia:
 
 - `+page.ts` / `+layout.ts` (universal load functions)
 - `$app/stores` (`page`, `navigating`, `updated`)

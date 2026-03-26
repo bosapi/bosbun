@@ -16,15 +16,15 @@ const files = [
     source: "CHANGELOG.md",
     dest: "changelog.md",
     title: "Changelog",
-    description: "All notable changes to Bosbun.",
+    description: "All notable changes to Bosia.",
     stripHeading: /^# Changelog\n+/,
   },
   {
     source: "ROADMAP.md",
     dest: "roadmap.md",
     title: "Roadmap",
-    description: "What's done, what's next, and where Bosbun is headed.",
-    stripHeading: /^# Bosbun — Roadmap\n+/,
+    description: "What's done, what's next, and where Bosia is headed.",
+    stripHeading: /^# Bosia — Roadmap\n+/,
   },
 ];
 

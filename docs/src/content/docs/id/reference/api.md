@@ -1,13 +1,13 @@
 ---
 title: Referensi API
-description: Semua fungsi dan tipe yang diekspor dari paket bosbun.
+description: Semua fungsi dan tipe yang diekspor dari paket bosia.
 ---
 
-Semua diimpor dari `"bosbun"`:
+Semua diimpor dari `"bosia"`:
 
 ```ts
-import { cn, sequence, error, redirect, fail } from "bosbun";
-import type { RequestEvent, LoadEvent, Handle, Cookies } from "bosbun";
+import { cn, sequence, error, redirect, fail } from "bosia";
+import type { RequestEvent, LoadEvent, Handle, Cookies } from "bosia";
 ```
 
 ## Fungsi
@@ -210,7 +210,7 @@ interface CorsConfig {
 
 | Import                                    | Sumber                   |
 | ----------------------------------------- | ------------------------ |
-| `import { cn, sequence } from "bosbun"`  | Paket framework          |
+| `import { cn, sequence } from "bosia"`  | Paket framework          |
 | `import { cn } from "$lib/utils"`         | Utilitas proyek          |
 | `import { VAR } from "$env"`             | Variabel lingkungan      |
 | `import type { PageData } from "./$types"` | Tipe yang digenerate   |

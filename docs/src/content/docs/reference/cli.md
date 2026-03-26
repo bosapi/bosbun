@@ -1,14 +1,14 @@
 ---
 title: CLI Reference
-description: All bosbun CLI commands — create, dev, build, start, add, feat.
+description: All bosia CLI commands — create, dev, build, start, add, feat.
 ---
 
-## bosbun create
+## bosia create
 
-Scaffold a new Bosbun project.
+Scaffold a new Bosia project.
 
 ```bash
-bosbun create <name> [--template <template>]
+bosia create <name> [--template <template>]
 ```
 
 | Option       | Description                              |
@@ -23,12 +23,12 @@ bosbun create <name> [--template <template>]
 
 After scaffolding, `bun install` runs automatically.
 
-## bosbun dev
+## bosia dev
 
 Start the development server with hot reload.
 
 ```bash
-bosbun dev
+bosia dev
 ```
 
 - Dev server runs at **http://localhost:9000**
@@ -36,12 +36,12 @@ bosbun dev
 - Uses a proxy architecture: dev proxy on `:9000`, app server on `:9001`
 - **Auto-restart on crash** — if the app process exits unexpectedly, it restarts automatically. After 3 rapid crashes within 5 seconds, it stops retrying and waits for a file change.
 
-## bosbun build
+## bosia build
 
 Build the project for production.
 
 ```bash
-bosbun build
+bosia build
 ```
 
 This runs:
@@ -55,52 +55,52 @@ This runs:
 
 Output goes to `dist/`.
 
-## bosbun start
+## bosia start
 
 Run the production server.
 
 ```bash
-bosbun start
+bosia start
 ```
 
-Runs the built server from `dist/`. Requires `bosbun build` to have been run first.
+Runs the built server from `dist/`. Requires `bosia build` to have been run first.
 
-## bosbun add
+## bosia add
 
 Install a UI component from the registry.
 
 ```bash
-bosbun add <component>
+bosia add <component>
 ```
 
 - Downloads component files to `src/lib/components/ui/<component>/`
 - Automatically installs component dependencies (other components it depends on)
 - Installs required npm packages via `bun add`
-- Registry hosted on GitHub: `bosapi/bosbun/main/registry/components/`
+- Registry hosted on GitHub: `bosapi/bosia/main/registry/components/`
 
 Example:
 
 ```bash
-bosbun add button
-bosbun add card
-bosbun add input
+bosia add button
+bosia add card
+bosia add input
 ```
 
-## bosbun feat
+## bosia feat
 
 Scaffold a feature (routes + components + server files).
 
 ```bash
-bosbun feat <feature>
+bosia feat <feature>
 ```
 
-- Installs required UI components first via `bosbun add`
+- Installs required UI components first via `bosia add`
 - Copies feature files to the appropriate locations in your project
 - Installs required npm packages
-- Registry hosted on GitHub: `bosapi/bosbun/main/registry/features/`
+- Registry hosted on GitHub: `bosapi/bosia/main/registry/features/`
 
 Example:
 
 ```bash
-bosbun feat login
+bosia feat login
 ```

@@ -1,13 +1,13 @@
 ---
 title: API Reference
-description: All exported functions and types from the bosbun package.
+description: All exported functions and types from the bosia package.
 ---
 
-Everything is imported from `"bosbun"`:
+Everything is imported from `"bosia"`:
 
 ```ts
-import { cn, sequence, error, redirect, fail } from "bosbun";
-import type { RequestEvent, LoadEvent, Handle, Cookies } from "bosbun";
+import { cn, sequence, error, redirect, fail } from "bosia";
+import type { RequestEvent, LoadEvent, Handle, Cookies } from "bosia";
 ```
 
 ## Functions
@@ -210,7 +210,7 @@ interface CorsConfig {
 
 | Import                                    | Source           |
 | ----------------------------------------- | ---------------- |
-| `import { cn, sequence } from "bosbun"`  | Framework package |
+| `import { cn, sequence } from "bosia"`  | Framework package |
 | `import { cn } from "$lib/utils"`         | Project utility   |
 | `import { VAR } from "$env"`             | Environment vars  |
 | `import type { PageData } from "./$types"` | Generated types  |

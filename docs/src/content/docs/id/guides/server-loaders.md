@@ -10,7 +10,7 @@ Server loader berjalan pada setiap request untuk mengambil data bagi halaman dan
 Ekspor fungsi `load` dari `+page.server.ts`:
 
 ```ts
-import type { LoadEvent } from "bosbun";
+import type { LoadEvent } from "bosia";
 
 export async function load({ params, url, locals, cookies }: LoadEvent) {
   const post = await db.getPost(params.slug);
@@ -35,11 +35,11 @@ Objek yang dikembalikan menjadi prop `data` di `+page.svelte`:
 
 ```ts
 // src/routes/+layout.server.ts
-import type { LoadEvent } from "bosbun";
+import type { LoadEvent } from "bosia";
 
 export async function load({ locals }: LoadEvent) {
   return {
-    appName: "Bosbun Demo",
+    appName: "Bosia Demo",
     requestTime: locals.requestTime,
   };
 }
@@ -51,7 +51,7 @@ Loader anak dapat mengakses data dari loader layout induknya:
 
 ```ts
 // src/routes/blog/[slug]/+page.server.ts
-import type { LoadEvent } from "bosbun";
+import type { LoadEvent } from "bosia";
 
 export async function load({ params, parent }: LoadEvent) {
   const parentData = await parent();
@@ -71,7 +71,7 @@ Data mengalir dari atas ke bawah: layout root → layout grup → layout halaman
 Ekspor fungsi `metadata` untuk mengatur judul halaman dan meta tag:
 
 ```ts
-import type { MetadataEvent, LoadEvent } from "bosbun";
+import type { MetadataEvent, LoadEvent } from "bosia";
 
 export function metadata({ params }: MetadataEvent) {
   const post = getPost(params.slug);
@@ -113,7 +113,7 @@ Properti `data` pada nilai kembalian `metadata()` diteruskan ke `load()` sebagai
 Lempar error dari loader untuk menampilkan halaman error:
 
 ```ts
-import { error, redirect } from "bosbun";
+import { error, redirect } from "bosia";
 
 export async function load({ params }: LoadEvent) {
   const post = await db.getPost(params.slug);

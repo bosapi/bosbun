@@ -11,8 +11,8 @@ Ekspor objek `actions` dari `+page.server.ts`:
 
 ```ts
 // src/routes/contact/+page.server.ts
-import { fail } from "bosbun";
-import type { RequestEvent } from "bosbun";
+import { fail } from "bosia";
+import type { RequestEvent } from "bosia";
 
 export async function load() {
   return { greeting: "Contact us" };
@@ -76,7 +76,7 @@ export const actions = {
 `fail()` mengembalikan sebuah `ActionFailure` — ia **dikembalikan**, bukan dilempar:
 
 ```ts
-import { fail } from "bosbun";
+import { fail } from "bosia";
 
 // Returns a 400 response with the error data
 return fail(400, {
@@ -109,7 +109,7 @@ Hasil action tersedia sebagai prop `form`:
 Gunakan `redirect()` untuk berpindah halaman setelah action berhasil:
 
 ```ts
-import { redirect } from "bosbun";
+import { redirect } from "bosia";
 
 export const actions = {
   default: async ({ request }: RequestEvent) => {
@@ -122,7 +122,7 @@ export const actions = {
 ## Cara Kerjanya
 
 1. Browser mengirimkan formulir sebagai request POST standar
-2. Bosbun memanggil fungsi action yang cocok
+2. Bosia memanggil fungsi action yang cocok
 3. Saat **berhasil**: halaman dirender ulang dengan nilai kembalian action sebagai prop `form` dan data `load()` yang segar
 4. Saat **fail()**: halaman dirender ulang dengan data kegagalan sebagai prop `form` pada kode status yang ditentukan
 5. Saat **redirect()**: browser mengikuti redirect

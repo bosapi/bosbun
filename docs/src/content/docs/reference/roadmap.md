@@ -1,6 +1,6 @@
 ---
 title: Roadmap
-description: What's done, what's next, and where Bosbun is headed.
+description: What's done, what's next, and where Bosia is headed.
 ---
 
 > Track what's done, what's next, and where we're headed.
@@ -41,7 +41,7 @@ description: What's done, what's next, and where Bosbun is headed.
 
 ### Security
 - [x] XSS escaping in HTML templates — sanitize `JSON.stringify()` output in `<script>` tags
-- [x] SSRF validation on `/__bosbun/data` — validate `path` query param
+- [x] SSRF validation on `/__bosia/data` — validate `path` query param
 - [x] CSRF protection — Origin/Referer header validation for state-changing requests
 - [x] Strip stack traces from error responses in production
 - [x] Request body size limits
@@ -58,7 +58,7 @@ description: What's done, what's next, and where Bosbun is headed.
 - [x] Navigation progress bar
 - [x] HMR via SSE in dev mode
 - [x] Per-page CSR opt-out (`export const csr = false`)
-- [x] Link prefetching — `data-bosbun-preload` attribute for hover/viewport prefetch
+- [x] Link prefetching — `data-bosia-preload` attribute for hover/viewport prefetch
 - [x] Form actions (SvelteKit-style)
 - [x] Streaming SSR for metadata (non-blocking `load()`)
 
@@ -68,17 +68,17 @@ description: What's done, what's next, and where Bosbun is headed.
 - [x] Static route prerendering (`export const prerender = true`)
 - [x] Tailwind CSS v4 integration
 - [x] `$lib` alias → `src/lib/*`
-- [x] `bosbun:routes` virtual module
+- [x] `bosia:routes` virtual module
 - [x] Validate Tailwind CSS binary exists before build
 - [x] Prerender fetch timeout
 
 ### CLI
-- [x] `bosbun dev` — dev server with file watching
-- [x] `bosbun build` — production build
-- [x] `bosbun start` — production server
-- [x] `bosbun create` — scaffold new project (with `--template` flag and interactive picker)
-- [x] `bosbun add` — registry-based UI component installation
-- [x] `bosbun feat` — registry-based feature scaffolding
+- [x] `bosia dev` — dev server with file watching
+- [x] `bosia build` — production build
+- [x] `bosia start` — production server
+- [x] `bosia create` — scaffold new project (with `--template` flag and interactive picker)
+- [x] `bosia add` — registry-based UI component installation
+- [x] `bosia feat` — registry-based feature scaffolding
 
 ### Hooks & Middleware
 - [x] `hooks.server.ts` with `Handle` interface

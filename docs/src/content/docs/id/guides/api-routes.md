@@ -11,11 +11,11 @@ Buat file `+server.ts` dan ekspor fungsi kata kerja HTTP yang diberi nama:
 
 ```ts
 // src/routes/api/hello/+server.ts
-import type { RequestEvent } from "bosbun";
+import type { RequestEvent } from "bosia";
 
 export function GET({ params, locals }: RequestEvent) {
   return Response.json({
-    message: "Hello from Bosbun API!",
+    message: "Hello from Bosia API!",
     user: locals.user,
   });
 }
@@ -81,7 +81,7 @@ export function DELETE({ params }: RequestEvent) {
 
 ## Method Not Allowed
 
-Jika sebuah request mengenai `+server.ts` yang tidak mengekspor method yang diminta, Bosbun merespons dengan `405 Method Not Allowed` dan header `Allow` yang mencantumkan method yang didukung.
+Jika sebuah request mengenai `+server.ts` yang tidak mengekspor method yang diminta, Bosia merespons dengan `405 Method Not Allowed` dan header `Allow` yang mencantumkan method yang didukung.
 
 ## Mengakses Locals
 

@@ -11,8 +11,8 @@ Export an `actions` object from `+page.server.ts`:
 
 ```ts
 // src/routes/contact/+page.server.ts
-import { fail } from "bosbun";
-import type { RequestEvent } from "bosbun";
+import { fail } from "bosia";
+import type { RequestEvent } from "bosia";
 
 export async function load() {
   return { greeting: "Contact us" };
@@ -76,7 +76,7 @@ export const actions = {
 `fail()` returns an `ActionFailure` — it's **returned**, not thrown:
 
 ```ts
-import { fail } from "bosbun";
+import { fail } from "bosia";
 
 // Returns a 400 response with the error data
 return fail(400, {
@@ -109,7 +109,7 @@ The action result is available as the `form` prop:
 Use `redirect()` to navigate after a successful action:
 
 ```ts
-import { redirect } from "bosbun";
+import { redirect } from "bosia";
 
 export const actions = {
   default: async ({ request }: RequestEvent) => {
@@ -122,7 +122,7 @@ export const actions = {
 ## How It Works
 
 1. Browser submits the form as a standard POST request
-2. Bosbun calls the matching action function
+2. Bosia calls the matching action function
 3. On **success**: the page re-renders with the action return value as `form` prop and fresh `load()` data
 4. On **fail()**: the page re-renders with the failure data as `form` prop at the specified status code
 5. On **redirect()**: the browser follows the redirect

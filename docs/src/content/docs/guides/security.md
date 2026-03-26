@@ -3,7 +3,7 @@ title: Security
 description: CSRF protection, CORS, security headers, cookie safety, and more.
 ---
 
-Bosbun includes several security features enabled by default.
+Bosia includes several security features enabled by default.
 
 ## CSRF Protection
 
@@ -43,7 +43,7 @@ Preflight `OPTIONS` requests are handled automatically when CORS is configured.
 
 ## Security Headers
 
-Bosbun sets these headers on every response:
+Bosia sets these headers on every response:
 
 | Header                    | Value                              |
 | ------------------------- | ---------------------------------- |

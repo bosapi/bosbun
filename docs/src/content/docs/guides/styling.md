@@ -5,7 +5,7 @@ description: Built-in Tailwind CSS v4 with shadcn-inspired design tokens and dar
 
 ## Tailwind CSS v4
 
-Tailwind CSS v4 is built into Bosbun — no installation or configuration needed. It's compiled at build time by `@tailwindcss/cli`.
+Tailwind CSS v4 is built into Bosia — no installation or configuration needed. It's compiled at build time by `@tailwindcss/cli`.
 
 Your global styles live in `src/app.css`:
 
@@ -81,7 +81,7 @@ The `cn()` function combines [clsx](https://github.com/lukeed/clsx) and [tailwin
 
 ```ts
 import { cn } from "$lib/utils";
-// or: import { cn } from "bosbun";
+// or: import { cn } from "bosia";
 
 cn("px-4 py-2", "px-6");
 // → "py-2 px-6" (px-4 removed, px-6 wins)

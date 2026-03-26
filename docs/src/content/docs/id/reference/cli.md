@@ -1,14 +1,14 @@
 ---
 title: Referensi CLI
-description: Semua perintah CLI bosbun — create, dev, build, start, add, feat.
+description: Semua perintah CLI bosia — create, dev, build, start, add, feat.
 ---
 
-## bosbun create
+## bosia create
 
-Buat kerangka proyek Bosbun baru.
+Buat kerangka proyek Bosia baru.
 
 ```bash
-bosbun create <name> [--template <template>]
+bosia create <name> [--template <template>]
 ```
 
 | Opsi         | Deskripsi                                     |
@@ -23,12 +23,12 @@ bosbun create <name> [--template <template>]
 
 Setelah kerangka dibuat, `bun install` akan berjalan secara otomatis.
 
-## bosbun dev
+## bosia dev
 
 Jalankan server pengembangan dengan hot reload.
 
 ```bash
-bosbun dev
+bosia dev
 ```
 
 - Server dev berjalan di **http://localhost:9000**
@@ -36,12 +36,12 @@ bosbun dev
 - Menggunakan arsitektur proxy: dev proxy di `:9000`, server aplikasi di `:9001`
 - **Auto-restart saat crash** — jika proses aplikasi keluar secara tak terduga, server akan restart otomatis. Setelah 3 crash cepat dalam 5 detik, server berhenti mencoba ulang dan menunggu perubahan file.
 
-## bosbun build
+## bosia build
 
 Build proyek untuk produksi.
 
 ```bash
-bosbun build
+bosia build
 ```
 
 Perintah ini menjalankan:
@@ -55,52 +55,52 @@ Perintah ini menjalankan:
 
 Output disimpan ke `dist/`.
 
-## bosbun start
+## bosia start
 
 Jalankan server produksi.
 
 ```bash
-bosbun start
+bosia start
 ```
 
-Menjalankan server yang sudah di-build dari `dist/`. Membutuhkan `bosbun build` yang sudah dijalankan terlebih dahulu.
+Menjalankan server yang sudah di-build dari `dist/`. Membutuhkan `bosia build` yang sudah dijalankan terlebih dahulu.
 
-## bosbun add
+## bosia add
 
 Instal komponen UI dari registry.
 
 ```bash
-bosbun add <component>
+bosia add <component>
 ```
 
 - Mengunduh file komponen ke `src/lib/components/ui/<component>/`
 - Secara otomatis menginstal dependensi komponen (komponen lain yang menjadi dependensinya)
 - Menginstal paket npm yang diperlukan melalui `bun add`
-- Registry dihosting di GitHub: `bosapi/bosbun/main/registry/components/`
+- Registry dihosting di GitHub: `bosapi/bosia/main/registry/components/`
 
 Contoh:
 
 ```bash
-bosbun add button
-bosbun add card
-bosbun add input
+bosia add button
+bosia add card
+bosia add input
 ```
 
-## bosbun feat
+## bosia feat
 
 Buat kerangka fitur (routes + components + server files).
 
 ```bash
-bosbun feat <feature>
+bosia feat <feature>
 ```
 
-- Menginstal komponen UI yang diperlukan terlebih dahulu melalui `bosbun add`
+- Menginstal komponen UI yang diperlukan terlebih dahulu melalui `bosia add`
 - Menyalin file fitur ke lokasi yang sesuai dalam proyek Anda
 - Menginstal paket npm yang diperlukan
-- Registry dihosting di GitHub: `bosapi/bosbun/main/registry/features/`
+- Registry dihosting di GitHub: `bosapi/bosia/main/registry/features/`
 
 Contoh:
 
 ```bash
-bosbun feat login
+bosia feat login
 ```

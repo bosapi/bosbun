@@ -5,7 +5,7 @@ description: Muat file .env, gunakan import bertipe, dan pahami sistem prefix em
 
 ## Pemuatan File .env
 
-Bosbun memuat variabel lingkungan dari file `.env` secara berurutan (yang belakangan menimpa yang sebelumnya):
+Bosia memuat variabel lingkungan dari file `.env` secara berurutan (yang belakangan menimpa yang sebelumnya):
 
 1. `.env`
 2. `.env.local`
@@ -25,7 +25,7 @@ Nama variabel mengontrol di mana dan kapan variabel tersebut tersedia:
 | `STATIC_`         | Tidak  | Ya     | Build-time | `STATIC_BUILD_ID`          |
 | *(tanpa prefix)*  | Tidak  | Ya     | Runtime    | `DATABASE_URL`             |
 
-- Variabel **Build-time** disematkan saat `bosbun build` — mengubahnya memerlukan build ulang
+- Variabel **Build-time** disematkan saat `bosia build` — mengubahnya memerlukan build ulang
 - Variabel **Runtime** dibaca dari `process.env` pada setiap request
 - Variabel **Client** diekspos secara aman ke browser; variabel **Server** tidak pernah meninggalkan server
 
@@ -41,7 +41,7 @@ Hanya variabel yang dideklarasikan dalam file `.env` Anda yang tersedia melalui 
 
 ## Variabel Framework
 
-Variabel-variabel ini dicadangkan oleh Bosbun dan mengontrol perilaku framework:
+Variabel-variabel ini dicadangkan oleh Bosia dan mengontrol perilaku framework:
 
 | Variabel                | Default   | Deskripsi                                                    |
 | ----------------------- | --------- | ------------------------------------------------------------ |

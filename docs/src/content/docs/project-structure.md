@@ -1,6 +1,6 @@
 ---
 title: Project Structure
-description: Understand the files and directories in a Bosbun project.
+description: Understand the files and directories in a Bosia project.
 ---
 
 ## Directory Layout
@@ -21,7 +21,7 @@ my-app/
 │   └── hooks.server.ts    # Middleware (optional)
 ├── public/                # Static assets (served as-is)
 ├── dist/                  # Build output (gitignored)
-├── .bosbun/               # Generated files (gitignored)
+├── .bosia/               # Generated files (gitignored)
 ├── .env                   # Environment variables
 └── package.json
 ```
@@ -47,7 +47,7 @@ my-app/
 
 ## Generated Files
 
-The `.bosbun/` directory is created during `dev` and `build`. It contains:
+The `.bosia/` directory is created during `dev` and `build`. It contains:
 
 - **`routes.ts`** — the route manifest (page and API route mappings)
 - **`types/`** — auto-generated TypeScript types (`PageData`, `ActionData`, etc.)

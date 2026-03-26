@@ -3,7 +3,7 @@ title: Security
 description: Proteksi CSRF, CORS, header keamanan, keamanan cookie, dan lainnya.
 ---
 
-Bosbun menyertakan beberapa fitur keamanan yang diaktifkan secara bawaan.
+Bosia menyertakan beberapa fitur keamanan yang diaktifkan secara bawaan.
 
 ## Proteksi CSRF
 
@@ -43,7 +43,7 @@ Request preflight `OPTIONS` ditangani secara otomatis saat CORS dikonfigurasi.
 
 ## Header Keamanan
 
-Bosbun menyetel header-header ini pada setiap response:
+Bosia menyetel header-header ini pada setiap response:
 
 | Header                    | Nilai                              |
 | ------------------------- | ---------------------------------- |

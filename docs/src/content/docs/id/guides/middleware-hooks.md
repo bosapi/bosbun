@@ -10,7 +10,7 @@ Middleware hook memungkinkan Anda menjalankan kode pada setiap request — auten
 Buat `src/hooks.server.ts` dan ekspor fungsi `handle`:
 
 ```ts
-import type { Handle } from "bosbun";
+import type { Handle } from "bosia";
 
 export const handle: Handle = async ({ event, resolve }) => {
   // Runs before the route handler
@@ -44,8 +44,8 @@ type Handle = (input: {
 Gunakan `sequence()` untuk menyusun beberapa handler:
 
 ```ts
-import { sequence } from "bosbun";
-import type { Handle } from "bosbun";
+import { sequence } from "bosia";
+import type { Handle } from "bosia";
 
 const authHandle: Handle = async ({ event, resolve }) => {
   event.locals.requestTime = Date.now();

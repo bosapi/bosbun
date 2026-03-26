@@ -11,11 +11,11 @@ Create a `+server.ts` file and export named HTTP verb functions:
 
 ```ts
 // src/routes/api/hello/+server.ts
-import type { RequestEvent } from "bosbun";
+import type { RequestEvent } from "bosia";
 
 export function GET({ params, locals }: RequestEvent) {
   return Response.json({
-    message: "Hello from Bosbun API!",
+    message: "Hello from Bosia API!",
     user: locals.user,
   });
 }
@@ -81,7 +81,7 @@ export function DELETE({ params }: RequestEvent) {
 
 ## Method Not Allowed
 
-If a request hits a `+server.ts` that doesn't export the requested method, Bosbun responds with `405 Method Not Allowed` and an `Allow` header listing the supported methods.
+If a request hits a `+server.ts` that doesn't export the requested method, Bosia responds with `405 Method Not Allowed` and an `Allow` header listing the supported methods.
 
 ## Accessing Locals
 

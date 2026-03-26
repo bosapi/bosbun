@@ -3,7 +3,7 @@ title: Routing
 description: File-based routing with dynamic params, catch-all routes, route groups, and layouts.
 ---
 
-Bosbun uses **file-based routing**. Files in `src/routes/` map directly to URLs.
+Bosia uses **file-based routing**. Files in `src/routes/` map directly to URLs.
 
 ## Static Routes
 
@@ -64,7 +64,7 @@ The `(public)` and `(admin)` groups never appear in the URL. They only control w
 
 ## Route Priority
 
-When multiple routes could match a URL, Bosbun resolves them in order:
+When multiple routes could match a URL, Bosia resolves them in order:
 
 1. **Exact matches** — static routes like `/about`
 2. **Dynamic segments** — `[param]` routes
@@ -99,7 +99,7 @@ Pair a layout with `+layout.server.ts` to load data:
 
 ```ts
 // src/routes/+layout.server.ts
-import type { LoadEvent } from "bosbun";
+import type { LoadEvent } from "bosia";
 
 export async function load({ locals }: LoadEvent) {
   return {
