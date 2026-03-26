@@ -1,5 +1,6 @@
 node_modules/
 dist/
+docs/.astro/
 .bosbun/
 **/public/bosbun-tw.css
 .DS_Store
