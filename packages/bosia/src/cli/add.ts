@@ -4,7 +4,11 @@ import { spawn } from "bun";
 
 // ─── bosia add <component> ────────────────────────────────
 // Fetches a component from the GitHub registry (or local registry
-// with --local) and copies it into src/lib/components/ui/<name>/.
+// with --local) and copies it into src/lib/components/<path>/.
+//
+// Path-based names:
+//   bosia add button       → src/lib/components/ui/button/
+//   bosia add shop/cart    → src/lib/components/shop/cart/
 
 const REMOTE_BASE = "https://raw.githubusercontent.com/bosapi/bosia/main/registry";
 
@@ -38,29 +42,41 @@ export async function runAdd(name: string | undefined, flags: string[] = []) {
     await addComponent(name, true);
 }
 
+/**
+ * Resolve the destination path for a component.
+ * - "button"     → "ui/button"     (default ui/ prefix)
+ * - "shop/cart"  → "shop/cart"     (explicit path used as-is)
+ */
+function resolveDestPath(name: string): string {
+    return name.includes("/") ? name : `ui/${name}`;
+}
+
 export async function addComponent(name: string, root = false) {
-    if (installed.has(name)) return;
-    installed.add(name);
+    // Resolve the full path (e.g. "button" → "ui/button", "shop/cart" stays "shop/cart")
+    const fullPath = resolveDestPath(name);
+
+    if (installed.has(fullPath)) return;
+    installed.add(fullPath);
 
     console.log(root ? `⬡ Installing component: ${name}\n` : `   📦 Dependency: ${name}`);
 
-    const meta = await readMeta(name);
+    const meta = await readMeta(fullPath);
 
     // Install component dependencies first (recursive)
     for (const dep of meta.dependencies) {
         await addComponent(dep, false);
     }
 
-    // Download/copy component files into src/lib/components/ui/<name>/
-    const destDir = join(process.cwd(), "src", "lib", "components", "ui", name);
+    // Download/copy component files into src/lib/components/<fullPath>/
+    const destDir = join(process.cwd(), "src", "lib", "components", fullPath);
     mkdirSync(destDir, { recursive: true });
 
     for (const file of meta.files) {
-        const content = await readFile(name, file);
+        const content = await readFile(fullPath, file);
         const dest = join(destDir, file);
         mkdirSync(dirname(dest), { recursive: true });
         writeFileSync(dest, content, "utf-8");
-        console.log(`   ✍️  src/lib/components/ui/${name}/${file}`);
+        console.log(`   ✍️  src/lib/components/${fullPath}/${file}`);
     }
 
     // Install npm dependencies
@@ -78,7 +94,7 @@ export async function addComponent(name: string, root = false) {
         }
     }
 
-    if (root) console.log(`\n✅ ${name} installed at src/lib/components/ui/${name}/`);
+    if (root) console.log(`\n✅ ${name} installed at src/lib/components/${fullPath}/`);
 }
 
 // ─── Ensure $lib/utils.ts exists ─────────────────────────────

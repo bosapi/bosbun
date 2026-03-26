@@ -1,16 +1,16 @@
 {
   "components": [
-    "avatar",
-    "badge",
-    "button",
-    "card",
-    "chart",
-    "data-table",
-    "dropdown-menu",
-    "icon",
-    "input",
-    "navbar",
-    "separator",
-    "sidebar"
+    "ui/avatar",
+    "ui/badge",
+    "ui/button",
+    "ui/card",
+    "ui/chart",
+    "ui/data-table",
+    "ui/dropdown-menu",
+    "ui/icon",
+    "ui/input",
+    "ui/navbar",
+    "ui/separator",
+    "ui/sidebar"
   ]
 }

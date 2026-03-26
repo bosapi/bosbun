@@ -64,7 +64,8 @@ Examples:
   bosia dev
   bosia build
   bosia start
-  bosia add button
+  bosia add button              → src/lib/components/ui/button/
+  bosia add shop/cart           → src/lib/components/shop/cart/
   bosia feat login
 `);
             break;

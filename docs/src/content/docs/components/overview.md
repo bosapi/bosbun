@@ -13,6 +13,17 @@ bosia add <component>
 
 This downloads the component files into `src/lib/components/ui/<component>/` and auto-creates `src/lib/utils.ts` (the `cn()` helper) if it doesn't exist.
 
+### Path-based Names
+
+Use a path to install components outside the default `ui/` directory:
+
+```bash
+bosia add button              # → src/lib/components/ui/button/
+bosia add shop/cart           # → src/lib/components/shop/cart/
+```
+
+Components without a `/` default to the `ui/` prefix. Components with a path are installed to the exact path under `src/lib/components/`.
+
 Dependencies between components are resolved automatically. For example, `bosia add data-table` also installs `button`, `input`, and `separator`.
 
 ### Local Development
