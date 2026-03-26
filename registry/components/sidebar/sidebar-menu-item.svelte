@@ -7,7 +7,7 @@
         href = "",
         label = "",
         active = false,
-        icon = "",
+        icon,
         children,
         ...restProps
     }: {
@@ -15,7 +15,7 @@
         href?: string;
         label?: string;
         active?: boolean;
-        icon?: string;
+        icon?: Snippet;
         children?: Snippet;
         [key: string]: any;
     } = $props();
@@ -35,7 +35,7 @@
             )}
         >
             {#if icon}
-                <span class="flex h-4 w-4 shrink-0 items-center justify-center text-muted-foreground">{icon}</span>
+                <span class="flex h-4 w-4 shrink-0 items-center justify-center text-muted-foreground">{@render icon()}</span>
             {/if}
             <span class="flex-1 truncate text-left">{label}</span>
             <svg
@@ -65,14 +65,14 @@
             )}
         >
             {#if icon}
-                <span class="flex h-4 w-4 shrink-0 items-center justify-center text-muted-foreground">{icon}</span>
+                <span class="flex h-4 w-4 shrink-0 items-center justify-center text-muted-foreground">{@render icon()}</span>
             {/if}
             <span class="truncate">{label}</span>
         </a>
     {:else}
         <span class="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-sidebar-foreground">
             {#if icon}
-                <span class="flex h-4 w-4 shrink-0 items-center justify-center text-muted-foreground">{icon}</span>
+                <span class="flex h-4 w-4 shrink-0 items-center justify-center text-muted-foreground">{@render icon()}</span>
             {/if}
             <span class="truncate">{label}</span>
         </span>
