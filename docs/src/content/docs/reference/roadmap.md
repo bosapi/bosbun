@@ -87,6 +87,7 @@ description: What's done, what's next, and where Bosbun is headed.
 
 ### Docs & Ecosystem
 - [x] Deployment guides (Docker, Railway, Fly.io)
+- [x] Indonesian (Bahasa Indonesia) documentation translation with Starlight i18n
 
 </details>
 

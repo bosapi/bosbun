@@ -27,41 +27,103 @@ export default defineConfig({
       sidebar: [
         {
           label: "Start Here",
+          translations: { id: "Mulai di Sini" },
           items: [
-            { label: "Introduction", slug: "" },
-            { label: "Getting Started", slug: "getting-started" },
-            { label: "Project Structure", slug: "project-structure" },
+            {
+              label: "Introduction",
+              translations: { id: "Pengenalan" },
+              slug: "",
+            },
+            {
+              label: "Getting Started",
+              translations: { id: "Memulai" },
+              slug: "getting-started",
+            },
+            {
+              label: "Project Structure",
+              translations: { id: "Struktur Proyek" },
+              slug: "project-structure",
+            },
           ],
         },
         {
           label: "Guides",
+          translations: { id: "Panduan" },
           items: [
-            { label: "Routing", slug: "guides/routing" },
-            { label: "Server Loaders", slug: "guides/server-loaders" },
-            { label: "API Routes", slug: "guides/api-routes" },
-            { label: "Form Actions", slug: "guides/form-actions" },
-            { label: "Middleware Hooks", slug: "guides/middleware-hooks" },
+            {
+              label: "Routing",
+              translations: { id: "Routing" },
+              slug: "guides/routing",
+            },
+            {
+              label: "Server Loaders",
+              translations: { id: "Server Loader" },
+              slug: "guides/server-loaders",
+            },
+            {
+              label: "API Routes",
+              translations: { id: "API Route" },
+              slug: "guides/api-routes",
+            },
+            {
+              label: "Form Actions",
+              translations: { id: "Form Action" },
+              slug: "guides/form-actions",
+            },
+            {
+              label: "Middleware Hooks",
+              translations: { id: "Middleware Hook" },
+              slug: "guides/middleware-hooks",
+            },
             {
               label: "Environment Variables",
+              translations: { id: "Variabel Lingkungan" },
               slug: "guides/environment-variables",
             },
-            { label: "Styling", slug: "guides/styling" },
-            { label: "Security", slug: "guides/security" },
+            {
+              label: "Styling",
+              translations: { id: "Styling" },
+              slug: "guides/styling",
+            },
+            {
+              label: "Security",
+              translations: { id: "Keamanan" },
+              slug: "guides/security",
+            },
           ],
         },
         {
           label: "Reference",
+          translations: { id: "Referensi" },
           items: [
-            { label: "CLI", slug: "reference/cli" },
-            { label: "API Reference", slug: "reference/api" },
-            { label: "Deployment", slug: "reference/deployment" },
+            {
+              label: "CLI",
+              translations: { id: "CLI" },
+              slug: "reference/cli",
+            },
+            {
+              label: "API Reference",
+              translations: { id: "Referensi API" },
+              slug: "reference/api",
+            },
+            {
+              label: "Deployment",
+              translations: { id: "Deployment" },
+              slug: "reference/deployment",
+            },
             {
               label: "SvelteKit Differences",
+              translations: { id: "Perbedaan dengan SvelteKit" },
               slug: "reference/sveltekit-differences",
             },
-            { label: "Roadmap", slug: "reference/roadmap" },
+            {
+              label: "Roadmap",
+              translations: { id: "Roadmap" },
+              slug: "reference/roadmap",
+            },
             {
               label: "Changelog",
+              translations: { id: "Changelog" },
               slug: "reference/changelog",
               badge: { text: "v0.0.8", variant: "tip" },
             },

@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Dev server auto-restart — app process is automatically restarted when it crashes unexpectedly; stops after 3 rapid crashes within 5s to prevent crash loops
 - Documentation site built with Astro Starlight — 14 pages covering getting started, routing, server loaders, API routes, form actions, middleware hooks, environment variables, styling, security, CLI reference, API reference, deployment, and SvelteKit differences
 - GitHub Actions workflow for auto-deploying docs to GitHub Pages on push to `main`
+- Indonesian (Bahasa Indonesia) documentation — full translation of all 15 doc pages with Starlight i18n, language switcher, and `/id/` URL prefix
 
 ### Removed
 - Remove unused `renderSSR` function from `renderer.ts` (fully replaced by `renderSSRStream`)
