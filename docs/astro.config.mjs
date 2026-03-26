@@ -12,6 +12,11 @@ export default defineConfig({
       },
       description:
         "Fast, batteries-included fullstack framework built on Bun + Svelte 5 + ElysiaJS",
+      defaultLocale: "root",
+      locales: {
+        root: { label: "English", lang: "en" },
+        id: { label: "Bahasa Indonesia", lang: "id" },
+      },
       social: [
         {
           icon: "github",

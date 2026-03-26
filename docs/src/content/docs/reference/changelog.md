@@ -12,8 +12,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [0.0.8] - 2026-03-26
 
 ### Added
+- Dev server auto-restart — app process is automatically restarted when it crashes unexpectedly; stops after 3 rapid crashes within 5s to prevent crash loops
 - Documentation site built with Astro Starlight — 14 pages covering getting started, routing, server loaders, API routes, form actions, middleware hooks, environment variables, styling, security, CLI reference, API reference, deployment, and SvelteKit differences
 - GitHub Actions workflow for auto-deploying docs to GitHub Pages on push to `main`
+
+### Removed
+- Remove unused `renderSSR` function from `renderer.ts` (fully replaced by `renderSSRStream`)
+- Remove unused `buildHtmlShell` function and `_shell` cache from `html.ts`
+- Remove dead `buildHtmlShell` import from `renderer.ts`
+- Un-export `STATIC_EXTS`, `DEFAULT_CSRF_CONFIG`, and `matchPattern` — internal-only, not part of public API
+
+### Changed
+- Use `splitCsvEnv` helper for CSRF/CORS origin parsing in `server.ts` — eliminates duplicate `.split(",").map().filter()` pattern
+
+### Fixed
+- Route PUT/PATCH/DELETE through `handleRequest()` — these methods now get CSRF, CORS, security headers, cookie handling, and user hooks applied consistently (previously returned bare 404 responses)
+- Fix `withTimeout` timer leak — `setTimeout` is now cleared via `.finally()` when the main promise resolves, preventing dangling timers under load
+- Remove duplicate static file serving — removed `@elysiajs/static` plugin; all static files now served through `resolve()` with consistent path traversal protection, CSRF, CORS, security headers, and user hooks
+- Fix `_shellOpen` and `_shell` caching in dev — hoist `cacheBust` to module level so it's computed once at startup (stable within a process, fresh after dev server restart on rebuild)
+- Fix client-side navigation with query strings/hashes — `currentRoute` now initialized with full path (including search + hash) for consistent deduplication; `findMatch` in both `router.navigate()` and `App.svelte` now receives only the pathname, so query-driven patterns like pagination work via client-side navigation instead of falling back to full page reloads
 
 ---
 
