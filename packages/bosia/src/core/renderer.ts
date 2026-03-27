@@ -92,6 +92,7 @@ export async function loadRouteData(
             if (err instanceof HttpError || err instanceof Redirect) throw err;
             if (isDev) console.error("Layout server load error:", err);
             else console.error("Layout server load error:", (err as Error).message ?? err);
+            throw new HttpError(500, "Internal Server Error");
         }
     }
 
@@ -114,6 +115,7 @@ export async function loadRouteData(
             if (err instanceof HttpError || err instanceof Redirect) throw err;
             if (isDev) console.error("Page server load error:", err);
             else console.error("Page server load error:", (err as Error).message ?? err);
+            throw new HttpError(500, "Internal Server Error");
         }
     }
 
@@ -294,14 +296,11 @@ export async function renderErrorPage(status: number, message: string, url: URL,
     if (errorPage) {
         try {
             const mod = await errorPage();
-            const { body, head } = render(App, {
-                props: {
-                    ssrMode: true,
-                    ssrPageComponent: mod.default,
-                    ssrLayoutComponents: [],
-                    ssrPageData: { status, message },
-                    ssrLayoutData: [],
-                },
+            // Render the error component directly — NOT through App.svelte.
+            // App.svelte always remaps ssrPageData to a `data` prop, but +error.svelte
+            // expects `error` as a direct prop: `let { error } = $props()`.
+            const { body, head } = render(mod.default, {
+                props: { error: { status, message } },
             });
             const html = buildHtml(body, head, { status, message }, [], false);
             return compress(html, "text/html; charset=utf-8", req, status);
