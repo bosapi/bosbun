@@ -96,6 +96,7 @@ export function buildHtml(
   ${head}
   ${cssLinks}
   <link rel="stylesheet" href="/bosia-tw.css${cacheBust}">
+  <script>try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark')}catch(_){}</script>
 </head>
 <body data-bosia-preload="hover">
   <div id="app">${body}</div>${scripts}
@@ -121,6 +122,7 @@ export function buildHtmlShellOpen(): string {
         `  <link rel="icon" type="image/svg+xml" href="/favicon.svg">\n` +
         `  ${cssLinks}\n` +
         `  <link rel="stylesheet" href="/bosia-tw.css${cacheBust}">\n` +
+        `  <script>try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark')}catch(_){}</script>\n` +
         `  <link rel="modulepreload" href="/dist/client/${distManifest.entry}${cacheBust}">`;
     return _shellOpen;
 }

@@ -144,7 +144,7 @@ mkdirSync("./dist", { recursive: true });
 const distManifest = {
     js: jsFiles,
     css: cssFiles,
-    entry: jsFiles.find(f => f.startsWith("hydrate")) ?? jsFiles[0] ?? "hydrate.js",
+    entry: jsFiles.find(f => f === "hydrate.js") ?? jsFiles.find(f => f.startsWith("hydrate")) ?? "hydrate.js",
     serverEntry,
 };
 writeFileSync("./dist/manifest.json", JSON.stringify(distManifest, null, 2));
