@@ -1,6 +1,7 @@
 ---
 title: Sidebar
 description: A composable sidebar with header, content, groups, menus, and collapsible icon mode.
+demo: SidebarDemo
 ---
 
 ```bash

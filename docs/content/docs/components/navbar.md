@@ -1,6 +1,7 @@
 ---
 title: Navbar
 description: A responsive navbar with desktop links, mobile dropdown menu, theme toggle, and user avatar.
+demo: NavbarDemo
 ---
 
 ```bash

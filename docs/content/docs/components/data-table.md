@@ -1,6 +1,7 @@
 ---
 title: Data Table
 description: A fully-featured data table with sorting, filtering, and pagination.
+demo: DataTableDemo
 ---
 
 ```bash

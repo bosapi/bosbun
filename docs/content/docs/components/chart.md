@@ -1,6 +1,7 @@
 ---
 title: Chart
 description: SVG line and bar charts with tooltips — zero dependencies, pure Svelte.
+demo: ChartDemo
 ---
 
 ```bash
