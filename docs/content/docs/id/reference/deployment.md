@@ -73,7 +73,7 @@ Server produksi menangani sinyal `SIGTERM` dan `SIGINT`:
 
 Contoh `Dockerfile`:
 
-```dockerfile
+```docker
 FROM oven/bun:1 AS base
 WORKDIR /app
 

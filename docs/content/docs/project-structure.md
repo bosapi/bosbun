@@ -5,7 +5,7 @@ description: Understand the files and directories in a Bosia project.
 
 ## Directory Layout
 
-```
+```bash
 my-app/
 ├── src/
 │   ├── routes/            # Pages and API endpoints

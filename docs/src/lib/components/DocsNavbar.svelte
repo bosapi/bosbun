@@ -29,8 +29,8 @@
         <!-- Logo -->
         <a href={locale === "id" ? "/id" : "/"} class="flex items-center gap-2 font-semibold">
             <picture>
-                <source srcset="/logo-dark.svg" media="(prefers-color-scheme: dark)" />
-                <img src="/logo-light.svg" alt="Bosia" class="h-6 w-6" />
+                <source srcset="/logo-light.svg" media="(prefers-color-scheme: dark)" />
+                <img src="/logo-dark.svg" alt="Bosia" class="h-6 w-6" />
             </picture>
             <span>Bosia</span>
             {#if version}

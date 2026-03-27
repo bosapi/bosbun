@@ -7,7 +7,7 @@ Bosia uses **file-based routing**. Files in `src/routes/` map directly to URLs.
 
 ## Static Routes
 
-```
+```bash
 src/routes/+page.svelte          →  /
 src/routes/about/+page.svelte    →  /about
 src/routes/blog/+page.svelte     →  /blog
@@ -19,7 +19,7 @@ Each `+page.svelte` file becomes a page at its directory's path.
 
 Wrap a directory name in brackets to create a dynamic segment:
 
-```
+```bash
 src/routes/blog/[slug]/+page.svelte  →  /blog/hello-world
                                         /blog/my-post
                                         /blog/anything
@@ -39,7 +39,7 @@ export async function load({ params }: LoadEvent) {
 
 Use `[...rest]` to match multiple path segments:
 
-```
+```bash
 src/routes/all/[...catchall]/+page.svelte  →  /all/a
                                                /all/a/b/c
                                                /all/anything/here
@@ -51,13 +51,13 @@ src/routes/all/[...catchall]/+page.svelte  →  /all/a
 
 Directories wrapped in parentheses are **invisible in the URL** but let you share layouts:
 
-```
-src/routes/(public)/+layout.svelte    ← shared layout
-src/routes/(public)/+page.svelte      →  /
-src/routes/(public)/about/+page.svelte →  /about
+```bash
+src/routes/(public)/+layout.svelte          ← shared layout
+src/routes/(public)/+page.svelte            →  /
+src/routes/(public)/about/+page.svelte      →  /about
 
-src/routes/(admin)/+layout.svelte     ← different layout
-src/routes/(admin)/dashboard/+page.svelte →  /dashboard
+src/routes/(admin)/+layout.svelte           ← different layout
+src/routes/(admin)/dashboard/+page.svelte   →  /dashboard
 ```
 
 The `(public)` and `(admin)` groups never appear in the URL. They only control which `+layout.svelte` wraps the pages inside.

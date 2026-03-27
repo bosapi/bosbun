@@ -73,7 +73,7 @@ The production server handles `SIGTERM` and `SIGINT` signals:
 
 Example `Dockerfile`:
 
-```dockerfile
+```bash
 FROM oven/bun:1 AS base
 WORKDIR /app
 

@@ -2,8 +2,10 @@ import { readFileSync, statSync, existsSync } from "fs";
 import { join, resolve } from "path";
 import { parseMarkdown, type DocPage } from "./markdown";
 
-// Resolve content directory relative to the docs project root (cwd at runtime)
-const contentDir = resolve(process.cwd(), "content", "docs");
+// Resolve content directory relative to the compiled bundle location.
+// In the compiled output (docs/dist/server/*.js), import.meta.dir = docs/dist/server/
+// so ../../content/docs reliably points to docs/content/docs regardless of cwd.
+const contentDir = resolve(import.meta.dir, "../../content/docs");
 
 interface CacheEntry {
     mtime: number;
