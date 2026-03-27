@@ -1,6 +1,6 @@
 import { readFileSync, statSync, existsSync } from "fs";
 import { join, resolve } from "path";
-import { parseMarkdown, type DocPage } from "./markdown";
+import { parseMarkdown, getHighlighter, type DocPage } from "./markdown";
 
 // Resolve content directory relative to the compiled bundle location.
 // In the compiled output (docs/dist/server/*.js), import.meta.dir = docs/dist/server/
@@ -41,6 +41,25 @@ export async function loadDoc(slug: string): Promise<DocPage | null> {
 
     const raw = readFileSync(filePath, "utf-8");
     const page = await parseMarkdown(raw);
+
+    // If the page has a demo, load and highlight its source
+    if (page.frontmatter.demo) {
+        const demoFile = resolve(
+            import.meta.dir,
+            `../../src/lib/components/demos/${page.frontmatter.demo}.svelte`
+        );
+        if (existsSync(demoFile)) {
+            try {
+                const demoSrc = readFileSync(demoFile, "utf-8");
+                const hl = await getHighlighter();
+                page.demoCode = hl.codeToHtml(demoSrc, {
+                    lang: "svelte",
+                    themes: { light: "github-light", dark: "github-dark" },
+                    defaultColor: false,
+                });
+            } catch { }
+        }
+    }
 
     cache.set(key, { mtime, page });
     return page;

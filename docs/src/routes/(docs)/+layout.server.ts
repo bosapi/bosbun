@@ -1,6 +1,6 @@
 import type { LoadEvent } from "bosia";
 import { sidebar } from "$lib/docs/nav";
-import { getLocale, switchLocaleUrl } from "$lib/docs/i18n";
+import { getLocale, stripLocale, switchLocaleUrl } from "$lib/docs/i18n";
 import { getVersion } from "$lib/utils";
 
 export async function load({ url }: LoadEvent) {
@@ -13,6 +13,7 @@ export async function load({ url }: LoadEvent) {
         sidebar,
         locale,
         version,
+        currentSlug: stripLocale(slug),
         switchLocaleUrl: switchUrl.url,
     };
 }

@@ -40,7 +40,7 @@
 
         <!-- Component demo preview -->
         {#if demo}
-            <ComponentPreview>
+            <ComponentPreview demoCode={data.demoCode}>
                 {@const DemoComponent = demo}
                 <DemoComponent />
             </ComponentPreview>

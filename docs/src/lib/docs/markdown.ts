@@ -3,7 +3,7 @@ import matter from "gray-matter";
 
 let highlighter: any = null;
 
-async function getHighlighter() {
+export async function getHighlighter() {
     if (highlighter) return highlighter;
     const { createHighlighter } = await import("shiki");
     highlighter = await createHighlighter({
@@ -17,6 +17,7 @@ export interface DocPage {
     frontmatter: Record<string, any>;
     html: string;
     headings: { id: string; text: string; level: number }[];
+    demoCode?: string;
 }
 
 export async function parseMarkdown(raw: string): Promise<DocPage> {

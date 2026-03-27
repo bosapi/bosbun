@@ -44,7 +44,7 @@
 {#each groups as [group, names]}
     <div class="mb-6">
         <h3 class="text-base font-semibold mb-2">{group}</h3>
-        <div class="grid gap-2" style="grid-template-columns: repeat(auto-fill, 56px)">
+        <div class="grid grid-cols-9 gap-2">
             {#each names as name}
                 <button
                     onclick={() => copyName(name)}

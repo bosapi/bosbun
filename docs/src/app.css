@@ -107,7 +107,6 @@
 /* ─── Prose Styles (Rendered Markdown) ───────────────────── */
 
 .prose {
-  max-width: 65ch;
   line-height: 1.75;
   color: hsl(var(--foreground));
 }

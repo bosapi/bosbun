@@ -18,6 +18,7 @@ export async function load({ params, url }: LoadEvent) {
         html: page.html,
         headings: page.headings,
         frontmatter: page.frontmatter,
+        demoCode: page.demoCode ?? null,
         currentSlug: bareSlug,
         locale,
     };
