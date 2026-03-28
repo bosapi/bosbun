@@ -1,7 +1,7 @@
 # Bosia — Roadmap
 
 > Track what's done, what's next, and where we're headed.
-> Current version: **0.1.0**
+> Current version: **0.1.2**
 
 ---
 
@@ -125,6 +125,7 @@
 - [ ] Bound prefetch cache size — `prefetchCache` grows unbounded between navigations
 
 ### Build
+- [ ] Static site output — merge prerendered HTML + client assets + public into `dist/static/` for static hosting (GitHub Pages, Netlify, etc.)
 - [ ] Validate `.env` variable names — reject invalid identifiers that break codegen
 - [ ] Fail build on tsconfig.json corruption — don't silently continue with degraded config
 - [ ] `.env` parser escape sequence support — handle `\n`, `\"`, etc. in quoted values
@@ -148,7 +149,7 @@
 - [ ] Scroll restoration and snapshot support (`export const snapshot`)
 
 ### Routing
-- [ ] Dynamic route prerendering with `entries()` export
+- [ ] Dynamic route prerendering with `entries()` export — enumerate dynamic route params for static prerendering
 - [ ] Page option: `ssr` toggle (`export const ssr = false`)
 - [ ] Page option: `trailingSlash` configuration
 - [ ] Layout reset (`+layout@.svelte` or `+page@.svelte`)

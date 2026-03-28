@@ -2,13 +2,43 @@ import { error } from "bosia";
 import type { LoadEvent } from "bosia";
 import { loadDoc } from "$lib/docs/content";
 import { getLocale, stripLocale } from "$lib/docs/i18n";
+import { readdirSync } from "fs";
+import { join } from "path";
 
-export async function load({ params, url }: LoadEvent) {
+export const prerender = true;
+
+export function entries(): Record<string, string>[] {
+    const contentDir = join(process.cwd(), "content", "docs");
+    const slugs: Record<string, string>[] = [];
+
+    function scan(dir: string, prefix: string) {
+        for (const entry of readdirSync(dir, { withFileTypes: true })) {
+            if (entry.isDirectory()) {
+                scan(join(dir, entry.name), prefix ? `${prefix}/${entry.name}` : entry.name);
+            } else if (entry.name.endsWith(".md")) {
+                const base = entry.name.replace(/\.md$/, "");
+                const slug = base === "index"
+                    ? prefix          // e.g. id/index.md → "id"
+                    : prefix
+                        ? `${prefix}/${base}`  // e.g. guides/routing.md → "guides/routing"
+                        : base;                // e.g. getting-started.md → "getting-started"
+                if (slug) {  // Filter out root empty slug (landing page handled separately)
+                    slugs.push({ slug });
+                }
+            }
+        }
+    }
+
+    scan(contentDir, "");
+    return slugs;
+}
+
+export async function load({ params, url, metadata }: LoadEvent) {
     const slug = params.slug || "";
     const locale = getLocale(slug);
     const bareSlug = stripLocale(slug);
 
-    const page = await loadDoc(slug);
+    const page = metadata?.page ?? await loadDoc(slug);
 
     if (!page) {
         error(404, "Not found");
@@ -24,9 +54,14 @@ export async function load({ params, url }: LoadEvent) {
     };
 }
 
-export function metadata({ data }: { data?: { frontmatter?: Record<string, any> } }) {
-    const title = data?.frontmatter?.title;
+export async function metadata({ params }: { params: Record<string, string> }) {
+    const slug = params.slug || "";
+    const page = await loadDoc(slug);
+    const title = page?.frontmatter?.title;
+    const description = page?.frontmatter?.description;
     return {
         title: title ? `${title} - Bosia Docs` : `Bosia Docs`,
+        description: description || undefined,
+        data: { page },
     };
 }
