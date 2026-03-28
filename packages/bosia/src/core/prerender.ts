@@ -1,4 +1,4 @@
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync, mkdirSync, cpSync, existsSync } from "fs";
 import { join } from "path";
 import type { RouteManifest } from "./types.ts";
 
@@ -14,13 +14,33 @@ async function detectPrerenderRoutes(manifest: RouteManifest): Promise<string[]>
     const paths: string[] = [];
     for (const route of manifest.pages) {
         if (!route.pageServer) continue;
+        const filePath = join("src", "routes", route.pageServer);
+        const content = await Bun.file(filePath).text();
+        if (!/export\s+const\s+prerender\s*=\s*true/.test(content)) continue;
+
         if (route.pattern.includes("[")) {
-            // TODO: Support dynamic routes by reading export const entries() and calling it to get param values
-            // Then prerender each route variant: /blog/slug1, /blog/slug2, etc.
-            continue;
-        }
-        const content = await Bun.file(join("src", "routes", route.pageServer)).text();
-        if (/export\s+const\s+prerender\s*=\s*true/.test(content)) {
+            // Dynamic route — import module and call entries() to get param values
+            try {
+                const mod = await import(join(process.cwd(), filePath));
+                if (typeof mod.entries !== "function") {
+                    console.warn(`   ⚠️  ${route.pattern} has prerender=true but no entries() export — skipped`);
+                    continue;
+                }
+                const entryList: Record<string, string>[] = await mod.entries();
+                for (const entry of entryList) {
+                    let resolved = route.pattern;
+                    for (const [key, value] of Object.entries(entry)) {
+                        // [...slug] → value (rest param)
+                        resolved = resolved.replace(`[...${key}]`, value);
+                        // [param] → value
+                        resolved = resolved.replace(`[${key}]`, value);
+                    }
+                    paths.push(resolved);
+                }
+            } catch (err) {
+                console.error(`   ❌ Failed to resolve entries() for ${route.pattern}:`, err);
+            }
+        } else {
             paths.push(route.pattern);
         }
     }
@@ -83,4 +103,29 @@ export async function prerenderStaticRoutes(manifest: RouteManifest): Promise<vo
 
     child.kill();
     console.log("✅ Prerendering complete");
+}
+
+// ─── Static Site Output ──────────────────────────────────
+
+export function generateStaticSite(): void {
+    if (!existsSync("./dist/prerendered")) {
+        console.log("\n⏭️  No prerendered pages — skipping static site output");
+        return;
+    }
+
+    console.log("\n📦 Generating static site...");
+    mkdirSync("./dist/static", { recursive: true });
+
+    // 1. HTML files from prerendering
+    cpSync("./dist/prerendered", "./dist/static", { recursive: true });
+
+    // 2. Client JS/CSS — preserves /dist/client/... absolute paths used in HTML
+    cpSync("./dist/client", "./dist/static/dist/client", { recursive: true });
+
+    // 3. Public assets (bosia-tw.css, favicon, etc.) — preserves /bosia-tw.css path
+    if (existsSync("./public")) {
+        cpSync("./public", "./dist/static", { recursive: true });
+    }
+
+    console.log("✅ Static site generated: dist/static/");
 }

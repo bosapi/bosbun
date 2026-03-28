@@ -7,7 +7,7 @@ import { scanRoutes } from "./scanner.ts";
 import { generateRoutesFile } from "./routeFile.ts";
 import { generateRouteTypes, ensureRootDirs } from "./routeTypes.ts";
 import { makeBosiaPlugin } from "./plugin.ts";
-import { prerenderStaticRoutes } from "./prerender.ts";
+import { prerenderStaticRoutes, generateStaticSite } from "./prerender.ts";
 import { loadEnv, classifyEnvVars } from "./env.ts";
 import { generateEnvModules } from "./envCodegen.ts";
 import { BOSIA_NODE_PATH, resolveBosiaBin } from "./paths.ts";
@@ -153,5 +153,8 @@ console.log(`✅ Server entry:  dist/server/${serverEntry}`);
 
 // 9. Prerender static routes
 await prerenderStaticRoutes(manifest);
+
+// 10. Generate static site output (HTML + client assets + public → dist/static/)
+generateStaticSite();
 
 console.log("\n🎉 Build complete!");
