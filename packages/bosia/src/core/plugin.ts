@@ -22,9 +22,11 @@ export function makeBosiaPlugin(target: "browser" | "bun" = "bun") {
     return {
         name: "bosia-resolver",
         setup(build: import("bun").PluginBuilder) {
-            // bosia:routes → .bosia/routes.ts
+            // bosia:routes → .bosia/routes.client.ts (browser) or .bosia/routes.ts (server)
+            // Client-only file excludes serverRoutes/apiRoutes to prevent the browser
+            // bundler from following server-side dynamic imports into Node builtins.
             build.onResolve({ filter: /^bosia:routes$/ }, () => ({
-                path: join(process.cwd(), ".bosia", "routes.ts"),
+                path: join(process.cwd(), ".bosia", target === "browser" ? "routes.client.ts" : "routes.ts"),
             }));
 
             // $env → .bosia/env.client.ts (browser) or .bosia/env.server.ts (bun)

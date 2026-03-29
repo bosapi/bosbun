@@ -1,4 +1,4 @@
-import { resolve, join, basename } from "path";
+import { resolve, join, basename, relative } from "path";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
 import { spawn } from "bun";
 import * as p from "@clack/prompts";
@@ -35,6 +35,9 @@ export async function runCreate(name: string | undefined, args: string[] = []) {
         template = args[templateIdx + 1];
     }
 
+    // Parse --local flag
+    const isLocal = args.includes("--local");
+
     // If no --template flag, prompt interactively
     if (!template) {
         template = await promptTemplate();
@@ -50,7 +53,7 @@ export async function runCreate(name: string | undefined, args: string[] = []) {
 
     console.log(`\n⬡ Creating Bosia project: ${basename(targetDir)} (template: ${template})\n`);
 
-    copyDir(templateDir, targetDir, name);
+    copyDir(templateDir, targetDir, name, isLocal);
 
     console.log(`✅ Project created at ${targetDir}\n`);
 
@@ -97,17 +100,25 @@ async function promptTemplate(): Promise<string> {
     return selected as string;
 }
 
-function copyDir(src: string, dest: string, projectName: string) {
+function copyDir(src: string, dest: string, projectName: string, isLocal: boolean) {
     mkdirSync(dest, { recursive: true });
     for (const entry of readdirSync(src, { withFileTypes: true })) {
         const srcPath = join(src, entry.name);
         const destPath = join(dest, entry.name);
         if (entry.isDirectory()) {
-            copyDir(srcPath, destPath, projectName);
+            copyDir(srcPath, destPath, projectName, isLocal);
         } else {
-            const content = readFileSync(srcPath, "utf-8")
-                .replaceAll("{{PROJECT_NAME}}", projectName)
-                .replaceAll("{{BOSIA_VERSION}}", BOSIA_VERSION);
+            let content = readFileSync(srcPath, "utf-8")
+                .replaceAll("{{PROJECT_NAME}}", projectName);
+
+            if (entry.name === "package.json" && isLocal) {
+                const bosiaPath = resolve(import.meta.dir, "../../");
+                const relPath = relative(dest, bosiaPath);
+                content = content.replaceAll("\"^{{BOSIA_VERSION}}\"", `"file:${relPath}"`);
+            } else {
+                content = content.replaceAll("{{BOSIA_VERSION}}", BOSIA_VERSION);
+            }
+
             writeFileSync(destPath, content, "utf-8");
         }
     }
