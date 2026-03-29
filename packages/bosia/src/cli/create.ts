@@ -55,6 +55,10 @@ export async function runCreate(name: string | undefined, args: string[] = []) {
 
     copyDir(templateDir, targetDir, name, isLocal);
 
+    if (existsSync(join(targetDir, ".env.example"))) {
+        writeFileSync(join(targetDir, ".env"), readFileSync(join(targetDir, ".env.example"), "utf-8"));
+    }
+
     console.log(`✅ Project created at ${targetDir}\n`);
 
     console.log("Installing dependencies...");
@@ -67,7 +71,15 @@ export async function runCreate(name: string | undefined, args: string[] = []) {
     if (exitCode !== 0) {
         console.warn("⚠️  bun install failed — run it manually.");
     } else {
-        console.log(`\n🎉 Ready!\n\n  cd ${name}\n  bun x bosia dev\n`);
+        console.log(`\n🎉 Ready!\n\ncd ${name}`);
+        
+        const instPath = join(templateDir, "instructions.txt");
+        if (existsSync(instPath)) {
+            const instructions = readFileSync(instPath, "utf-8").trimEnd();
+            if (instructions) console.log(instructions);
+        }
+
+        console.log(`bun x bosia dev\n`);
     }
 }
 
@@ -105,6 +117,10 @@ function copyDir(src: string, dest: string, projectName: string, isLocal: boolea
     for (const entry of readdirSync(src, { withFileTypes: true })) {
         const srcPath = join(src, entry.name);
         const destPath = join(dest, entry.name);
+        
+        // Do not copy instructions.txt to the final project
+        if (entry.name === "instructions.txt") continue;
+
         if (entry.isDirectory()) {
             copyDir(srcPath, destPath, projectName, isLocal);
         } else {

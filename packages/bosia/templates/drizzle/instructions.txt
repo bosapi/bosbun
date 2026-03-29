@@ -1,0 +1,3 @@
+Update .env with your DATABASE_URL
+bun run db:generate
+bun run db:migrate
