@@ -40,7 +40,9 @@ async function main() {
         }
         case "feat": {
             const { runFeat } = await import("./feat.ts");
-            await runFeat(args[0]);
+            const featName = args.find((a) => !a.startsWith("--"));
+            const featFlags = args.filter((a) => a.startsWith("--"));
+            await runFeat(featName, featFlags);
             break;
         }
         default: {
@@ -56,7 +58,7 @@ Commands:
   build               Build for production
   start               Run the production server
   add <component>     Add a UI component from the registry
-  feat <feature>      Add a feature scaffold from the registry
+  feat <feature>      Add a feature scaffold from the registry [--local]
 
 Examples:
   bosia create my-app

@@ -1,11 +1,11 @@
 import { join, dirname } from "path";
-import { mkdirSync, writeFileSync } from "fs";
+import { mkdirSync, writeFileSync, readFileSync, existsSync } from "fs";
 import { spawn } from "bun";
 import { addComponent } from "./add.ts";
 
-// ─── bosia feat <feature> ─────────────────────────────────
-// Fetches a feature scaffold from the GitHub registry.
-// Installs required components, copies route/lib files, installs npm deps.
+// ─── bosia feat <feature> [--local] ──────────────────────
+// Fetches a feature scaffold from the GitHub registry (or local
+// registry with --local) and copies route/lib files, installs npm deps.
 
 const REGISTRY_BASE = "https://raw.githubusercontent.com/bosapi/bosia/main/registry";
 
@@ -18,15 +18,22 @@ interface FeatureMeta {
     npmDeps: Record<string, string>;
 }
 
-export async function runFeat(name: string | undefined) {
+let registryRoot: string | null = null;
+
+export async function runFeat(name: string | undefined, flags: string[] = []) {
     if (!name) {
-        console.error("❌ Please provide a feature name.\n   Usage: bosia feat <feature>");
+        console.error("❌ Please provide a feature name.\n   Usage: bosia feat <feature> [--local]");
         process.exit(1);
+    }
+
+    if (flags.includes("--local")) {
+        registryRoot = resolveLocalRegistry();
+        console.log(`⬡ Using local registry: ${registryRoot}\n`);
     }
 
     console.log(`⬡ Installing feature: ${name}\n`);
 
-    const meta = await fetchJSON<FeatureMeta>(`${REGISTRY_BASE}/features/${name}/meta.json`);
+    const meta = await readMeta(name);
 
     // Install required UI components
     if (meta.components.length > 0) {
@@ -41,7 +48,7 @@ export async function runFeat(name: string | undefined) {
     for (let i = 0; i < meta.files.length; i++) {
         const file = meta.files[i]!;
         const target = meta.targets[i] ?? file;
-        const content = await fetchText(`${REGISTRY_BASE}/features/${name}/${file}`);
+        const content = await readFile(name, file);
         const dest = join(process.cwd(), target);
         mkdirSync(dirname(dest), { recursive: true });
         writeFileSync(dest, content, "utf-8");
@@ -65,6 +72,43 @@ export async function runFeat(name: string | undefined) {
 
     console.log(`\n✅ Feature "${name}" scaffolded!`);
     if (meta.description) console.log(`   ${meta.description}`);
+}
+
+// ─── Registry resolvers ──────────────────────────────────────
+
+function resolveLocalRegistry(): string {
+    let dir = dirname(new URL(import.meta.url).pathname);
+    for (let i = 0; i < 10; i++) {
+        const candidate = join(dir, "registry");
+        if (existsSync(join(candidate, "index.json"))) return candidate;
+        const parent = dirname(dir);
+        if (parent === dir) break;
+        dir = parent;
+    }
+    console.error("❌ Could not find local registry/ directory.");
+    process.exit(1);
+}
+
+async function readMeta(name: string): Promise<FeatureMeta> {
+    if (registryRoot) {
+        const path = join(registryRoot, "features", name, "meta.json");
+        if (!existsSync(path)) {
+            throw new Error(`Feature "${name}" not found in local registry`);
+        }
+        return JSON.parse(readFileSync(path, "utf-8"));
+    }
+    return fetchJSON<FeatureMeta>(`${REGISTRY_BASE}/features/${name}/meta.json`);
+}
+
+async function readFile(name: string, file: string): Promise<string> {
+    if (registryRoot) {
+        const path = join(registryRoot, "features", name, file);
+        if (!existsSync(path)) {
+            throw new Error(`File "${file}" not found for feature "${name}" in local registry`);
+        }
+        return readFileSync(path, "utf-8");
+    }
+    return fetchText(`${REGISTRY_BASE}/features/${name}/${file}`);
 }
 
 async function fetchJSON<T>(url: string): Promise<T> {
