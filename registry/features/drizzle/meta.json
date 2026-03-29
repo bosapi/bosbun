@@ -1,0 +1,24 @@
+{
+  "name": "drizzle",
+  "description": "Adds PostgreSQL + Drizzle ORM — DB connection, schema aggregator, migration dir, and seed runner.",
+  "components": [],
+  "files": [
+    "drizzle-index.ts",
+    "drizzle-schemas.ts",
+    "migrations-gitkeep",
+    "seed-runner.ts",
+    "drizzle.config.ts"
+  ],
+  "targets": [
+    "src/features/drizzle/index.ts",
+    "src/features/drizzle/schemas.ts",
+    "src/features/drizzle/migrations/.gitkeep",
+    "src/features/drizzle/seeds/runner.ts",
+    "drizzle.config.ts"
+  ],
+  "npmDeps": {
+    "drizzle-orm": "^0.44.0",
+    "postgres": "^3.4.5",
+    "drizzle-kit": "^0.31.0"
+  }
+}

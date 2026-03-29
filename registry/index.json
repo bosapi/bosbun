@@ -1,5 +1,6 @@
 {
   "components": [
+    "todo",
     "ui/avatar",
     "ui/badge",
     "ui/button",
@@ -12,5 +13,9 @@
     "ui/navbar",
     "ui/separator",
     "ui/sidebar"
+  ],
+  "features": [
+    "drizzle",
+    "todo"
   ]
 }

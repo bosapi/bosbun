@@ -81,6 +81,12 @@
 - [x] `bosia add` — registry-based UI component installation
 - [x] `bosia feat` — registry-based feature scaffolding
 
+### Templates & Features
+- [x] `drizzle` template — PostgreSQL + Drizzle ORM with full CRUD todo demo
+- [x] `drizzle` feature — `bosia feat drizzle` scaffolds DB connection, schema aggregator, migrations dir, seed runner
+- [x] `todo` feature — `bosia feat todo` scaffolds todo schema, queries, routes, components, and seed data
+- [x] `todo` component — `bosia add todo` installs todo-form, todo-item, todo-list components
+
 ### Hooks & Middleware
 - [x] `hooks.server.ts` with `Handle` interface
 - [x] `sequence()` helper for composing middleware

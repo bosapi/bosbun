@@ -1,0 +1,30 @@
+{
+  "name": "todo",
+  "description": "Full-stack todo feature — schema, queries, types, routes, components, and seed data. Requires: bosia feat drizzle",
+  "components": ["todo"],
+  "files": [
+    "todo.table.ts",
+    "types.ts",
+    "queries.ts",
+    "todo-index.ts",
+    "schemas.ts",
+    "seed-todos.ts",
+    "page.server.ts",
+    "page.svelte",
+    "api-todos-server.ts",
+    "api-todos-id-server.ts"
+  ],
+  "targets": [
+    "src/features/todo/schemas/todo.table.ts",
+    "src/features/todo/types.ts",
+    "src/features/todo/queries.ts",
+    "src/features/todo/index.ts",
+    "src/features/drizzle/schemas.ts",
+    "src/features/drizzle/seeds/001_initial_todos.ts",
+    "src/routes/todos/+page.server.ts",
+    "src/routes/todos/+page.svelte",
+    "src/routes/api/todos/+server.ts",
+    "src/routes/api/todos/[id]/+server.ts"
+  ],
+  "npmDeps": {}
+}
