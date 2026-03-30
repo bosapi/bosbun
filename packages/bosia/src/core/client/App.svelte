@@ -86,6 +86,9 @@
       layoutData = result?.layoutData ?? [];
       routeParams = result?.pageData?.params ?? match.params;
 
+      // Scroll to top on forward navigation (not on popstate/back-forward)
+      if (router.isPush) window.scrollTo(0, 0);
+
       // Update document title and meta description from server metadata
       if (result?.metadata) {
         if (result.metadata.title) document.title = result.metadata.title;

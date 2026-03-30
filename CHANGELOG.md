@@ -11,6 +11,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - Open redirect validation on `redirect()` — rejects external URLs, protocol-relative URLs (`//evil.com`), and dangerous schemes (`javascript:`, `data:`, `vbscript:`) by default; opt in to external redirects with `redirect(303, url, { allowExternal: true })`
 
+### Fixed
+- Client-side navigation now scrolls to top when navigating to a new page (previously retained scroll position from the previous page)
+- Back/forward browser navigation preserves scroll behavior (does not force scroll to top)
+
 ## [0.1.3] - 2026-03-29
 
 ### Added

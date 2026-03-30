@@ -8,6 +8,8 @@ import { clientRoutes } from "bosia:routes";
 export const router = new class Router {
     currentRoute = $state(typeof window !== "undefined" ? window.location.pathname + window.location.search + window.location.hash : "/");
     params = $state<Record<string, string>>({});
+    /** True when navigation was triggered by a link click / navigate() call, false on popstate (back/forward). */
+    isPush = $state(true);
 
     navigate(path: string) {
         if (this.currentRoute === path) return;
@@ -17,6 +19,7 @@ export const router = new class Router {
             window.location.href = path;
             return;
         }
+        this.isPush = true;
         this.currentRoute = path;
         if (typeof history !== "undefined") {
             history.pushState({}, "", path);
@@ -41,6 +44,7 @@ export const router = new class Router {
 
         // Browser back/forward
         window.addEventListener("popstate", () => {
+            this.isPush = false;
             this.currentRoute = window.location.pathname + window.location.search + window.location.hash;
         });
     }
