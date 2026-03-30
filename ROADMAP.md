@@ -120,7 +120,7 @@
 ### Security
 - [ ] Trusted proxy configuration — `TRUST_PROXY` env to control when `X-Forwarded-*` headers are trusted in CSRF checks
 - [ ] Cookie RFC 6265 validation — also review `encodeURIComponent` on cookie names (interop concern)
-- [ ] Open redirect validation on `redirect()`
+- [x] Open redirect validation on `redirect()`
 - [ ] CORS preflight validation — validate requested method/headers against allowed config
 
 ### Server Reliability

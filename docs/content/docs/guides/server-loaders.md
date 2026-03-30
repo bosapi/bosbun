@@ -130,6 +130,14 @@ export async function load({ params }: LoadEvent) {
 }
 ```
 
+Redirects are validated to prevent open redirect attacks — only relative paths are allowed by default. For external redirects (e.g., OAuth), opt in explicitly:
+
+```ts
+redirect(303, "https://oauth.provider.com/authorize", {
+  allowExternal: true,
+});
+```
+
 ## Timeouts
 
 Loaders have configurable timeouts to prevent hung responses:

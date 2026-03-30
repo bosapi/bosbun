@@ -5,6 +5,12 @@ All notable changes to Bosia are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
+
+## [0.1.4] - 2026-03-30
+
+### Added
+- Open redirect validation on `redirect()` — rejects external URLs, protocol-relative URLs (`//evil.com`), and dangerous schemes (`javascript:`, `data:`, `vbscript:`) by default; opt in to external redirects with `redirect(303, url, { allowExternal: true })`
+
 ## [0.1.3] - 2026-03-29
 
 ### Added

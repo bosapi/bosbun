@@ -6,7 +6,7 @@
 export { cn, getServerTime } from "./utils.ts";
 export { sequence } from "../core/hooks.ts";
 export { error, redirect, fail } from "../core/errors.ts";
-export type { HttpError, Redirect, ActionFailure } from "../core/errors.ts";
+export type { HttpError, Redirect, RedirectOptions, ActionFailure } from "../core/errors.ts";
 export type {
     RequestEvent,
     LoadEvent,

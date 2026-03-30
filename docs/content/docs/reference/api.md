@@ -39,12 +39,22 @@ Throw an HTTP error from a `load()` function. Renders the nearest `+error.svelte
 error(404, "Post not found");     // never returns
 ```
 
-### redirect(status, location)
+### redirect(status, location, options?)
 
 Redirect from a `load()` function or form action.
 
 ```ts
 redirect(303, "/login");          // never returns
+```
+
+**Open redirect protection:** By default, `redirect()` only allows relative paths and same-origin URLs. External URLs, protocol-relative URLs (`//evil.com`), and dangerous schemes (`javascript:`, `data:`) are rejected with a descriptive error.
+
+To redirect to an external URL (e.g., an OAuth provider), pass `{ allowExternal: true }`:
+
+```ts
+redirect(303, "https://oauth.provider.com/authorize?...", {
+  allowExternal: true,
+});
 ```
 
 ### fail(status, data)
@@ -164,12 +174,21 @@ class HttpError extends Error {
 
 ### Redirect
 
-Redirect class thrown by `redirect()`.
+Redirect class thrown by `redirect()`. Validates the location at construction time to prevent open redirects.
 
 ```ts
 class Redirect {
   status: number;
   location: string;
+}
+```
+
+### RedirectOptions
+
+```ts
+interface RedirectOptions {
+  /** Allow redirects to external origins. */
+  allowExternal?: boolean;
 }
 ```
 
