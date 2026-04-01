@@ -173,7 +173,7 @@ export function buildHtmlTail(
 ): string {
     let out = `<script>document.getElementById('__bs__').remove()</script>`;
     out += `\n<div id="app">${body}</div>`;
-    if (head) out += `\n<script>document.head.innerHTML+=${safeJsonStringify(head)}</script>`;
+    if (head) out += `\n<script>document.head.insertAdjacentHTML('beforeend',${safeJsonStringify(head)})</script>`;
     if (csr) {
         const publicEnv = getPublicDynamicEnv();
         if (Object.keys(publicEnv).length > 0) {

@@ -130,7 +130,7 @@
 - [ ] Concurrent build guard in dev — prevent overlapping builds when rapid file changes trigger `buildAndRestart()` while a build is already running
 
 ### Client
-- [ ] Use `insertAdjacentHTML` for head injection — current `innerHTML+=` re-parses entire `<head>`, risking duplicate stylesheets and script re-execution
+- [x] Use `insertAdjacentHTML` for head injection — current `innerHTML+=` re-parses entire `<head>`, risking duplicate stylesheets and script re-execution
 - [ ] Bound prefetch cache size — `prefetchCache` grows unbounded between navigations
 
 ### Build
