@@ -5,7 +5,7 @@
 
 ---
 
-## Completed (v0.0.1 – v0.1.0)
+## Completed (v0.0.1 – v0.1.6)
 
 <details>
 <summary>Click to expand completed items</summary>
@@ -38,6 +38,8 @@
 - [x] Session-aware fetch (cookies forwarded in internal API calls)
 - [x] Request timeouts on `load()` and `metadata()` functions
 - [x] Route PUT/PATCH/DELETE through `handleRequest()` — consistent CSRF, CORS, security headers, and cookie handling
+- [x] Graceful shutdown drain — drain in-flight requests before stopping; return 503 from health check during shutdown
+- [x] Concurrent build guard in dev — prevent overlapping builds when rapid file changes trigger `buildAndRestart()` while a build is already running
 
 ### Security
 - [x] XSS escaping in HTML templates — sanitize `JSON.stringify()` output in `<script>` tags
@@ -51,6 +53,8 @@
 - [x] `PUBLIC_` env scoping — only expose vars declared in `.env` files
 - [x] Streaming error safety — validate route match before creating stream
 - [x] `safeJsonStringify` crash guard — try-catch for circular reference protection
+- [x] Open redirect validation on `redirect()`
+- [x] Cookie RFC 6265 validation — validate names against HTTP token spec; use `encodeURIComponent` only for values
 
 ### Client
 - [x] Client-side hydration
@@ -60,6 +64,7 @@
 - [x] Per-page CSR opt-out (`export const csr = false`)
 - [x] Link prefetching — `data-bosia-preload` attribute for hover/viewport prefetch
 - [x] Fix client-side navigation with query strings/hashes
+- [x] Use `insertAdjacentHTML` for head injection — prevents re-parsing `<head>`, avoiding duplicate stylesheets and script re-execution
 
 ### Build & Tooling
 - [x] Bun build pipeline (client + server bundles)
@@ -72,6 +77,12 @@
 - [x] Prerender fetch timeout
 - [x] Fix `withTimeout` timer leak
 - [x] Remove duplicate static file serving
+- [x] Static site output — merge prerendered HTML + client assets + public into `dist/static/` for static hosting
+- [x] Validate `.env` variable names — reject invalid identifiers that break codegen
+- [x] `.env` parser escape sequence support — handle `\n`, `\"`, etc. in quoted values
+
+### Routing
+- [x] Dynamic route prerendering with `entries()` export — enumerate dynamic route params for static prerendering
 
 ### CLI
 - [x] `bosia dev` — dev server with file watching
@@ -113,31 +124,23 @@
 
 ---
 
-## v0.1.1 — Production Hardening & Security
+## v0.1.7 — Production Hardening
 
-> Stability, reliability, and security improvements for production workloads.
+> Stability and security improvements for production workloads.
 
 ### Security
 - [ ] Trusted proxy configuration — `TRUST_PROXY` env to control when `X-Forwarded-*` headers are trusted in CSRF checks
-- [x] Cookie RFC 6265 validation — validate names against HTTP token spec; use `encodeURIComponent` only for values
-- [x] Open redirect validation on `redirect()`
 - [ ] CORS preflight validation — validate requested method/headers against allowed config
 
 ### Server Reliability
-- [x] Graceful shutdown drain — drain in-flight requests before stopping; return 503 from health check during shutdown
 - [ ] Stream backpressure handling — check `controller.desiredSize` to prevent memory buildup on slow/disconnected clients
 - [ ] Prerender process cleanup — proper signal handling, verified termination, use random port instead of hardcoded 13572
-- [x] Concurrent build guard in dev — prevent overlapping builds when rapid file changes trigger `buildAndRestart()` while a build is already running
 
 ### Client
-- [x] Use `insertAdjacentHTML` for head injection — current `innerHTML+=` re-parses entire `<head>`, risking duplicate stylesheets and script re-execution
 - [ ] Bound prefetch cache size — `prefetchCache` grows unbounded between navigations
 
 ### Build
-- [x] Static site output — merge prerendered HTML + client assets + public into `dist/static/` for static hosting (GitHub Pages, Netlify, etc.)
-- [x] Validate `.env` variable names — reject invalid identifiers that break codegen
 - [ ] Fail build on tsconfig.json corruption — don't silently continue with degraded config
-- [x] `.env` parser escape sequence support — handle `\n`, `\"`, etc. in quoted values
 - [ ] Tune gzip compression threshold — current 1024-byte threshold is low; consider raising to ~2KB
 
 ### DX
@@ -145,7 +148,7 @@
 
 ---
 
-## v0.1.2 — Features & DX
+## v0.1.8 — Features & DX
 
 > New capabilities and developer experience improvements.
 
@@ -158,7 +161,6 @@
 - [ ] Scroll restoration and snapshot support (`export const snapshot`)
 
 ### Routing
-- [x] Dynamic route prerendering with `entries()` export — enumerate dynamic route params for static prerendering
 - [ ] Page option: `ssr` toggle (`export const ssr = false`)
 - [ ] Page option: `trailingSlash` configuration
 - [ ] Layout reset (`+layout@.svelte` or `+page@.svelte`)
@@ -171,7 +173,7 @@
 
 ---
 
-## v0.1.3 — Ecosystem & Observability
+## v0.1.9 — Ecosystem & Observability
 
 > Nice-to-haves for a growing framework.
 
