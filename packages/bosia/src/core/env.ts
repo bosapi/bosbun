@@ -21,24 +21,54 @@ const FRAMEWORK_VARS = new Set([
 
 // ─── .env File Parser ────────────────────────────────────
 
+/** Valid JS/TS identifier: starts with letter/underscore, then alphanumeric/underscore. */
+const VALID_ENV_NAME = /^[A-Za-z_][A-Za-z0-9_]*$/;
+
+/** Process escape sequences in double-quoted values. */
+function processEscapes(raw: string): string {
+    return raw.replace(/\\(.)/g, (_, ch) => {
+        switch (ch) {
+            case "n": return "\n";
+            case "r": return "\r";
+            case "t": return "\t";
+            case "\\": return "\\";
+            case '"': return '"';
+            default: return `\\${ch}`; // preserve unknown escapes
+        }
+    });
+}
+
 /** Parse a .env file content into key/value pairs. Skips comments and empty lines. */
-function parseEnvFile(content: string): Record<string, string> {
+function parseEnvFile(content: string, filename?: string): Record<string, string> {
     const result: Record<string, string> = {};
-    for (const line of content.split("\n")) {
-        const trimmed = line.trim();
+    const lines = content.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+        const trimmed = lines[i].trim();
         if (!trimmed || trimmed.startsWith("#")) continue;
         const eqIdx = trimmed.indexOf("=");
         if (eqIdx === -1) continue;
         const key = trimmed.slice(0, eqIdx).trim();
+        if (!key) continue;
+
+        // Validate key is a valid identifier (required for codegen)
+        if (!VALID_ENV_NAME.test(key)) {
+            const loc = filename ? ` in ${filename}` : "";
+            throw new Error(
+                `Invalid env variable name "${key}"${loc} (line ${i + 1}). ` +
+                `Names must start with a letter or underscore and contain only [A-Za-z0-9_].`
+            );
+        }
+
         let value = trimmed.slice(eqIdx + 1).trim();
-        // Strip surrounding quotes (single or double)
-        if (
-            (value.startsWith('"') && value.endsWith('"')) ||
-            (value.startsWith("'") && value.endsWith("'"))
-        ) {
+        // Double-quoted: process escape sequences
+        if (value.startsWith('"') && value.endsWith('"')) {
+            value = processEscapes(value.slice(1, -1));
+        }
+        // Single-quoted: literal (no escape processing)
+        else if (value.startsWith("'") && value.endsWith("'")) {
             value = value.slice(1, -1);
         }
-        if (key) result[key] = value;
+        result[key] = value;
     }
     return result;
 }
@@ -75,7 +105,7 @@ export function loadEnv(mode: string, dir?: string): Record<string, string> {
         const filepath = join(root, filename);
         if (!existsSync(filepath)) continue;
         const content = readFileSync(filepath, "utf-8");
-        const parsed = parseEnvFile(content);
+        const parsed = parseEnvFile(content, filename);
         merged = { ...merged, ...parsed };
         loaded.push(filename);
     }

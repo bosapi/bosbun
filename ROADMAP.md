@@ -135,9 +135,9 @@
 
 ### Build
 - [x] Static site output — merge prerendered HTML + client assets + public into `dist/static/` for static hosting (GitHub Pages, Netlify, etc.)
-- [ ] Validate `.env` variable names — reject invalid identifiers that break codegen
+- [x] Validate `.env` variable names — reject invalid identifiers that break codegen
 - [ ] Fail build on tsconfig.json corruption — don't silently continue with degraded config
-- [ ] `.env` parser escape sequence support — handle `\n`, `\"`, etc. in quoted values
+- [x] `.env` parser escape sequence support — handle `\n`, `\"`, etc. in quoted values
 - [ ] Tune gzip compression threshold — current 1024-byte threshold is low; consider raising to ~2KB
 
 ### DX

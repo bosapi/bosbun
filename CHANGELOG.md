@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 - Cookie RFC 6265 compliance — validate cookie names against the HTTP token spec instead of blindly `encodeURIComponent`-ing them; fixes interop with other servers/libraries that don't expect URL-encoded cookie names
+- `.env` variable name validation — reject invalid identifiers (e.g. `MY-VAR`, `123BAD`) at parse time with clear error messages including filename and line number; prevents broken codegen
+- `.env` parser escape sequence support — double-quoted values now process `\n`, `\r`, `\t`, `\\`, `\"` escape sequences; single-quoted values remain literal (no processing)
 
 ## [0.1.5] - 2026-04-01
 
