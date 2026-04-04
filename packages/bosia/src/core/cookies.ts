@@ -11,6 +11,15 @@ const VALID_SAMESITE = new Set(["Strict", "Lax", "None"]);
  */
 const VALID_COOKIE_NAME = /^[!#$%&'*+\-.0-9A-Z^_`a-z|~]+$/;
 
+// ─── Cookie Defaults ─────────────────────────────────────
+/** Secure defaults matching SvelteKit conventions. */
+const COOKIE_DEFAULTS: CookieOptions = {
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    sameSite: "Lax",
+};
+
 // ─── Cookie Helpers ──────────────────────────────────────
 
 function parseCookies(header: string): Record<string, string> {
@@ -31,9 +40,14 @@ function parseCookies(header: string): Record<string, string> {
 export class CookieJar implements Cookies {
     private _incoming: Record<string, string>;
     private _outgoing: string[] = [];
+    private _defaults: CookieOptions;
 
-    constructor(cookieHeader: string) {
+    constructor(cookieHeader: string, dev = false) {
         this._incoming = parseCookies(cookieHeader);
+        // In dev mode, omit Secure — browsers reject Secure cookies over http://localhost
+        this._defaults = dev
+            ? { ...COOKIE_DEFAULTS, secure: false }
+            : COOKIE_DEFAULTS;
     }
 
     get(name: string): string | undefined {
@@ -46,27 +60,29 @@ export class CookieJar implements Cookies {
 
     set(name: string, value: string, options?: CookieOptions): void {
         if (!VALID_COOKIE_NAME.test(name)) throw new Error(`Invalid cookie name: ${name}`);
+        const opts = { ...this._defaults, ...options };
         let header = `${name}=${encodeURIComponent(value)}`;
-        const path = options?.path ?? "/";
-        if (UNSAFE_COOKIE_VALUE.test(path)) throw new Error(`Invalid cookie path: ${path}`);
-        header += `; Path=${path}`;
-        if (options?.domain) {
-            if (UNSAFE_COOKIE_VALUE.test(options.domain)) throw new Error(`Invalid cookie domain: ${options.domain}`);
-            header += `; Domain=${options.domain}`;
+        if (opts.path) {
+            if (UNSAFE_COOKIE_VALUE.test(opts.path)) throw new Error(`Invalid cookie path: ${opts.path}`);
+            header += `; Path=${opts.path}`;
         }
-        if (options?.maxAge != null) header += `; Max-Age=${options.maxAge}`;
-        if (options?.expires) header += `; Expires=${options.expires.toUTCString()}`;
-        if (options?.httpOnly) header += "; HttpOnly";
-        if (options?.secure) header += "; Secure";
-        if (options?.sameSite) {
-            if (!VALID_SAMESITE.has(options.sameSite)) throw new Error(`Invalid cookie sameSite: ${options.sameSite}`);
-            header += `; SameSite=${options.sameSite}`;
+        if (opts.domain) {
+            if (UNSAFE_COOKIE_VALUE.test(opts.domain)) throw new Error(`Invalid cookie domain: ${opts.domain}`);
+            header += `; Domain=${opts.domain}`;
+        }
+        if (opts.maxAge != null) header += `; Max-Age=${opts.maxAge}`;
+        if (opts.expires) header += `; Expires=${opts.expires.toUTCString()}`;
+        if (opts.httpOnly) header += "; HttpOnly";
+        if (opts.secure) header += "; Secure";
+        if (opts.sameSite) {
+            if (!VALID_SAMESITE.has(opts.sameSite)) throw new Error(`Invalid cookie sameSite: ${opts.sameSite}`);
+            header += `; SameSite=${opts.sameSite}`;
         }
         this._outgoing.push(header);
     }
 
     delete(name: string, options?: Pick<CookieOptions, "path" | "domain">): void {
-        this.set(name, "", { path: options?.path, domain: options?.domain, maxAge: 0 });
+        this.set(name, "", { ...options, maxAge: 0 });
     }
 
     get outgoing(): readonly string[] {

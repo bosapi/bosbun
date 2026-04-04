@@ -328,7 +328,7 @@ async function handleRequest(request: Request, url: URL): Promise<Response> {
             return Response.json({ error: "Forbidden", message: csrfError }, { status: 403 });
         }
 
-        const cookieJar = new CookieJar(request.headers.get("cookie") ?? "");
+        const cookieJar = new CookieJar(request.headers.get("cookie") ?? "", isDev);
         const event: RequestEvent = { request, url, locals: {}, params: {}, cookies: cookieJar };
         const response = userHandle
             ? await userHandle({ event, resolve })

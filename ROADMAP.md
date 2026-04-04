@@ -1,7 +1,7 @@
 # Bosia — Roadmap
 
 > Track what's done, what's next, and where we're headed.
-> Current version: **0.1.6**
+> Current version: **0.1.7**
 
 ---
 
@@ -131,10 +131,19 @@
 ### Security
 - [ ] Trusted proxy configuration — `TRUST_PROXY` env to control when `X-Forwarded-*` headers are trusted in CSRF checks
 - [ ] CORS preflight validation — validate requested method/headers against allowed config
+- [x] Cookie secure defaults — default `HttpOnly; Secure; SameSite=Lax` on `cookies.set()` with opt-out
+- [ ] `Cache-Control: no-store, private` on `/__bosia/data/` — prevent shared caches from leaking per-user load data
+- [ ] CORS `Vary: Origin` on all responses when CORS is configured — prevent CDN caching bugs on non-matching origins
+- [ ] Validate `CORS_MAX_AGE` env — reject non-numeric values instead of producing `NaN` header
+- [ ] `allowExternal` redirect validation — still validate against `javascript:`, `data:`, `vbscript:` schemes even when `allowExternal: true`
+- [ ] CSP nonce infrastructure — per-request nonce generation, inject into all framework `<script>` tags, expose nonce in hooks for user scripts
+- [ ] Validate prerender `entries()` return values — sanitize path segments before URL substitution
 
 ### Server Reliability
 - [ ] Stream backpressure handling — check `controller.desiredSize` to prevent memory buildup on slow/disconnected clients
 - [ ] Prerender process cleanup — proper signal handling, verified termination, use random port instead of hardcoded 13572
+- [ ] Streaming SSR error recovery — render proper error page instead of bare `<p>Internal Server Error</p>` when `render()` throws mid-stream
+- [ ] Fix `buildAndRestart` recursive tail call — replace recursion with `while` loop to prevent stack growth under rapid file changes
 
 ### Client
 - [ ] Bound prefetch cache size — `prefetchCache` grows unbounded between navigations
@@ -145,6 +154,7 @@
 
 ### DX
 - [ ] Stale env cleanup in dev — reset removed `.env` vars on hot-reload
+- [ ] Document cookie forwarding risk — `load()` fetch helper forwards session cookies to all requests including external APIs
 
 ---
 
@@ -164,12 +174,17 @@
 - [ ] Page option: `ssr` toggle (`export const ssr = false`)
 - [ ] Page option: `trailingSlash` configuration
 - [ ] Layout reset (`+layout@.svelte` or `+page@.svelte`)
+- [ ] Route-level `+error.svelte` — per-layout error boundaries instead of global-only
 
 ### Server
 - [ ] Structured logging with request correlation IDs
 
+### Forms
+- [ ] `use:enhance` progressive enhancement — client-side fetch submission with automatic form state management (like SvelteKit)
+
 ### Types
 - [ ] Error page types in generated `$types.d.ts`
+- [ ] Typed route params — generate `{ slug: string }` from `[slug]` instead of `Record<string, string>`
 
 ---
 

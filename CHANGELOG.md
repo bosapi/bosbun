@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.1.7] - 2026-04-04
+
+### Added
+- Cookie secure defaults — `cookies.set()` now defaults to `{ path: "/", httpOnly: true, secure: true, sameSite: "Lax" }`; user-provided options override defaults via spread merge; `secure` is automatically disabled in dev mode so cookies work over `http://localhost`
+
 ## [0.1.6] - 2026-04-03
 
 ### Fixed

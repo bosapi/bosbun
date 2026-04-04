@@ -53,23 +53,41 @@ Bosia sets these headers on every response:
 
 ## Cookie Security
 
-The cookie API includes several protections:
+Every `cookies.set()` call applies secure defaults automatically — no need to specify them manually:
+
+| Option     | Default  | Description                        |
+| ---------- | -------- | ---------------------------------- |
+| `path`     | `"/"`    | Available to all routes            |
+| `httpOnly` | `true`   | Not accessible via JavaScript      |
+| `secure`   | `true`   | HTTPS only (auto-disabled in dev)  |
+| `sameSite` | `"Lax"`  | Protects against CSRF              |
+
+In **dev mode**, `secure` is automatically set to `false` so cookies work over `http://localhost` without browser rejection.
+
+Set a cookie with just the values you care about — secure defaults are applied for everything else:
+
+```ts
+event.cookies.set("session", token, {
+  maxAge: 60 * 60 * 24 * 7, // 7 days
+});
+// → Set-Cookie: session=...; Path=/; Max-Age=604800; HttpOnly; Secure; SameSite=Lax
+```
+
+To opt out of a default, pass it explicitly:
+
+```ts
+// Client-readable cookie (e.g. theme preference)
+event.cookies.set("theme", "dark", {
+  httpOnly: false,
+  maxAge: 60 * 60 * 24 * 365,
+});
+```
+
+Additional protections:
 
 - **Header injection prevention** — values containing `;`, `\r`, or `\n` are rejected
 - **SameSite validation** — only `Strict`, `Lax`, or `None` are accepted
 - **Automatic encoding** — cookie values are safely encoded with `encodeURIComponent`
-
-Set secure cookie options:
-
-```ts
-event.cookies.set("session", token, {
-  path: "/",
-  httpOnly: true,    // not accessible via JavaScript
-  secure: true,      // HTTPS only
-  sameSite: "Lax",   // protects against CSRF
-  maxAge: 60 * 60 * 24 * 7, // 7 days
-});
-```
 
 ## XSS Protection
 

@@ -98,10 +98,8 @@ const handle: Handle = async ({ event, resolve }) => {
   // Read
   const token = event.cookies.get("auth_token");
 
-  // Write (added to the response)
+  // Write (secure defaults applied automatically)
   event.cookies.set("visited", "true", {
-    path: "/",
-    httpOnly: true,
     maxAge: 60 * 60 * 24, // 1 day
   });
 
