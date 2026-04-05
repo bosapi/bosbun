@@ -9,7 +9,7 @@
     let lastAction = $state("");
 </script>
 
-<div class="flex flex-col items-center gap-4">
+<div class="flex flex-col items-center gap-4 h-40">
     <DropdownMenu>
         <DropdownMenuTrigger>
             <Button variant="outline">Options</Button>

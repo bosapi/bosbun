@@ -8,7 +8,7 @@
     ];
 </script>
 
-<div class="w-full rounded-lg border overflow-hidden">
+<div class="w-full rounded-lg border overflow-hidden h-60">
     <Navbar
         brand="MyApp"
         version="v1.0"

@@ -96,6 +96,8 @@ export async function load({ params, parent, metadata }: LoadEvent) {
 
 The `data` property in `metadata()` return value is passed to `load()` as `event.metadata`. This lets you fetch data once and share it between both functions.
 
+For the full guide on `metadata()` — including Open Graph tags, language/link tags, and all available properties — see [Server Metadata](/guides/server-metadata).
+
 ## LoadEvent Properties
 
 | Property   | Type                     | Description                              |

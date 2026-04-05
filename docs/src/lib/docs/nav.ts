@@ -26,6 +26,7 @@ export const sidebar: NavGroup[] = [
         items: [
             { label: "Routing", slug: "guides/routing" },
             { label: "Server Loaders", labelId: "Server Loader", slug: "guides/server-loaders" },
+            { label: "Server Metadata", labelId: "Server Metadata", slug: "guides/server-metadata" },
             { label: "API Routes", labelId: "API Route", slug: "guides/api-routes" },
             { label: "Form Actions", labelId: "Form Action", slug: "guides/form-actions" },
             { label: "Middleware Hooks", labelId: "Middleware Hook", slug: "guides/middleware-hooks" },
