@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @source "../src";
+@source "../../../registry/components";
 
 /*
  * ─── shadcn-inspired Design Tokens ──────────────────────

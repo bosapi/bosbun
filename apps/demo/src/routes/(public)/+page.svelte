@@ -1,5 +1,6 @@
 <script lang="ts">
     import { PUBLIC_STATIC_BASE_URL } from "$env";
+    import Button from "$components/ui/button/button.svelte";
 
     let count = $state(0);
 
@@ -34,18 +35,8 @@
         <p class="text-sm font-medium text-muted-foreground">Svelte 5 $state demo</p>
         <p class="text-5xl font-bold tabular-nums">{count}</p>
         <div class="flex gap-2">
-            <button
-                onclick={() => count++}
-                class="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
-            >
-                +1
-            </button>
-            <button
-                onclick={() => count = 0}
-                class="rounded-md border px-4 py-2 text-sm font-medium hover:bg-muted transition-colors"
-            >
-                Reset
-            </button>
+            <Button onclick={() => count++}>+1</Button>
+            <Button variant="outline" onclick={() => count = 0}>Reset</Button>
         </div>
     </div>
 
