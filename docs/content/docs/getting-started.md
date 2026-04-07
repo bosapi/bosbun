@@ -19,11 +19,12 @@ You'll be prompted to pick a template:
 | ----------- | -------------------------------------------------- |
 | **default** | Minimal starter — home page, about page, one loader |
 | **demo**    | Full-featured — blog, API routes, form actions, hooks |
+| **todo**    | Todo app with PostgreSQL + Drizzle ORM              |
 
 To skip the prompt:
 
 ```bash
-bunx bosia create my-app --template demo
+bunx bosia create my-app --template todo
 ```
 
 ## Development

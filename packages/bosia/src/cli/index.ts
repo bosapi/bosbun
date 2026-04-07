@@ -62,7 +62,7 @@ Commands:
 
 Examples:
   bosia create my-app
-  bosia create my-app --template demo
+  bosia create my-app --template todo
   bosia dev
   bosia build
   bosia start

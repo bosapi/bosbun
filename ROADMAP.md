@@ -1,7 +1,7 @@
 # Bosia — Roadmap
 
 > Track what's done, what's next, and where we're headed.
-> Current version: **0.1.10**
+> Current version: **0.1.11**
 
 ---
 
@@ -96,11 +96,11 @@
 - [x] `bosia feat` overwrite prompt — asks before replacing existing files
 
 ### Templates & Features
-- [x] `drizzle` template — PostgreSQL + Drizzle ORM with full CRUD todo demo
+- [x] `todo` template (formerly `drizzle`) — PostgreSQL + Drizzle ORM with full CRUD todo demo
 - [x] `drizzle` feature — `bosia feat drizzle` scaffolds DB connection, schema aggregator, migrations dir, seed runner
 - [x] `todo` feature — `bosia feat todo` scaffolds todo schema, repository, service, routes, components, and seed data
 - [x] `todo` component — `bosia add todo` installs todo-form, todo-item, todo-list components
-- [x] Registry as single source of truth — `bosia create --template drizzle` installs features from registry via `template.json` instead of duplicating files
+- [x] Registry as single source of truth — `bosia create --template todo` installs features from registry via `template.json` instead of duplicating files
 
 ### Hooks & Middleware
 - [x] `hooks.server.ts` with `Handle` interface
