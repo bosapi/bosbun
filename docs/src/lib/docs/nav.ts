@@ -66,6 +66,7 @@ export const sidebar: NavGroup[] = [
                     { label: "Toggle", slug: "components/ui/toggle" },
                     { label: "Toggle Group", slug: "components/ui/toggle-group" },
                     { label: "Sidebar", slug: "components/ui/sidebar" },
+                    { label: "Slider", slug: "components/ui/slider" },
                 ],
             },
             {

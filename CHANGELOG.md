@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `switch` UI component — toggle switch with `role="switch"` and `aria-checked`, pill-shaped track with sliding thumb, hidden `<input type="checkbox">` for form submission, focus-visible ring, disabled state, and `data-state` attribute
 - `field` UI component — form field accessibility wrapper with `Field` (root, generates unique `id`, sets context), `FieldLabel` (auto-wired `for`), `FieldControl` (passes `id`, `aria-describedby`, `aria-invalid` via `child` snippet prop), `FieldDescription` (helper text), and `FieldError` (`role="alert"`, falls back to context `error`)
 - `toggle-group` UI component — compound toggle group with `ToggleGroup` (root, `role="group"`, `setContext`) and `ToggleGroupItem` (button with `aria-pressed`, `data-state`); supports `type="single"` (one active) and `type="multiple"` (many active), `default` and `outline` variants, three sizes (`sm`, `default`, `lg`), roving tabindex with arrow key focus navigation, group-level and per-item disabled states
+- `slider` UI component — numeric slider with `role="slider"` and full ARIA attributes; supports `type="single"` (one thumb) and `type="range"` (two thumbs, ordered values), horizontal and vertical orientations, pointer drag and track click interaction, keyboard navigation (Arrow keys, Home/End, PageUp/PageDown), hidden `<input>` for form submission, step snapping, and `$bindable()` value
 
 ## [0.1.12] - 2026-04-08
 

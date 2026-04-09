@@ -25,7 +25,8 @@
     "ui/textarea",
     "ui/toggle",
     "ui/toggle-group",
-    "ui/sidebar"
+    "ui/sidebar",
+    "ui/slider"
   ],
   "features": [
     "drizzle",

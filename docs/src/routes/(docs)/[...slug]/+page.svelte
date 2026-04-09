@@ -23,6 +23,7 @@
     import TextareaDemo from "$lib/components/demos/TextareaDemo.svelte";
     import ToggleDemo from "$lib/components/demos/ToggleDemo.svelte";
     import ToggleGroupDemo from "$lib/components/demos/ToggleGroupDemo.svelte";
+    import SliderDemo from "$lib/components/demos/SliderDemo.svelte";
     import FieldDemo from "$lib/components/demos/FieldDemo.svelte";
     import IconGrid from "$lib/components/IconGrid.svelte";
 
@@ -48,6 +49,7 @@
         TextareaDemo,
         ToggleDemo,
         ToggleGroupDemo,
+        SliderDemo,
         IconGrid,
     };
 
