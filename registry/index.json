@@ -24,6 +24,7 @@
     "ui/switch",
     "ui/textarea",
     "ui/toggle",
+    "ui/toggle-group",
     "ui/sidebar"
   ],
   "features": [
