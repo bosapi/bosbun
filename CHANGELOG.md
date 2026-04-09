@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.1.14] - 2026-04-10
+
+### Added
+- `alert` UI component — compound alert with `Alert` (`role="alert"`, `default` and `destructive` variants), `AlertTitle` (`<h5>`), and `AlertDescription` (`<div>`); supports icon positioning via SVG child selectors, `cn()` class merging
+- `alert-dialog` UI component — modal alert dialog with `role="alertdialog"` that requires explicit user response; includes `AlertDialog`, `AlertDialogContent` (focus trap, no backdrop close), `AlertDialogTrigger`, `AlertDialogAction` (primary button), `AlertDialogCancel` (outline button), `AlertDialogHeader`, `AlertDialogTitle`, `AlertDialogDescription`, and `AlertDialogFooter`
+
 ## [0.1.13] - 2026-04-09
 
 ### Added

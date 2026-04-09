@@ -44,6 +44,8 @@ export const sidebar: NavGroup[] = [
             {
                 label: "UI",
                 children: [
+                    { label: "Alert", slug: "components/ui/alert" },
+                    { label: "Alert Dialog", slug: "components/ui/alert-dialog" },
                     { label: "Avatar", slug: "components/ui/avatar" },
                     { label: "Badge", slug: "components/ui/badge" },
                     { label: "Button", slug: "components/ui/button" },

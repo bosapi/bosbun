@@ -4,6 +4,8 @@
     "todo/todo-form",
     "todo/todo-item",
     "todo/todo-list",
+    "ui/alert",
+    "ui/alert-dialog",
     "ui/avatar",
     "ui/badge",
     "ui/button",
