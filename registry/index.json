@@ -30,6 +30,7 @@
     "ui/sonner",
     "ui/spinner",
     "ui/switch",
+    "ui/tabs",
     "ui/textarea",
     "ui/toggle",
     "ui/toggle-group",

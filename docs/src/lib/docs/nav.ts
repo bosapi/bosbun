@@ -70,6 +70,7 @@ export const sidebar: NavGroup[] = [
                     { label: "Sonner", slug: "components/ui/sonner" },
                     { label: "Spinner", slug: "components/ui/spinner" },
                     { label: "Switch", slug: "components/ui/switch" },
+                    { label: "Tabs", slug: "components/ui/tabs" },
                     { label: "Textarea", slug: "components/ui/textarea" },
                     { label: "Toggle", slug: "components/ui/toggle" },
                     { label: "Toggle Group", slug: "components/ui/toggle-group" },

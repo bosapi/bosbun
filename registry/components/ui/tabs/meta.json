@@ -1,0 +1,7 @@
+{
+  "name": "tabs",
+  "description": "A set of layered sections of content displayed one at a time.",
+  "dependencies": [],
+  "files": ["tabs.svelte", "tabs-list.svelte", "tabs-trigger.svelte", "tabs-content.svelte", "index.ts"],
+  "npmDeps": {}
+}
