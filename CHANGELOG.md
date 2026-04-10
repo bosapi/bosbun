@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `alert` UI component — compound alert with `Alert` (`role="alert"`, `default` and `destructive` variants), `AlertTitle` (`<h5>`), and `AlertDescription` (`<div>`); supports icon positioning via SVG child selectors, `cn()` class merging
 - `alert-dialog` UI component — modal alert dialog with `role="alertdialog"` that requires explicit user response; includes `AlertDialog`, `AlertDialogContent` (focus trap, no backdrop close), `AlertDialogTrigger`, `AlertDialogAction` (primary button), `AlertDialogCancel` (outline button), `AlertDialogHeader`, `AlertDialogTitle`, `AlertDialogDescription`, and `AlertDialogFooter`
 - `sonner` UI component — zero-dependency toast notifications; `Toaster` component with configurable `position`, shadcn-compatible theming, dismiss button, and auto-dismiss after 4s; `toast()` function with `.success()`, `.error()`, `.info()`, `.warning()` variants and optional `description`; `toast.dismiss(id)` for programmatic dismissal; uses `SvelteMap` for reactive state
+- `tooltip` UI component — compound tooltip with `Tooltip` (root, context provider, configurable `delayDuration`, Escape-to-dismiss), `TooltipTrigger` (button with hover/focus/blur handlers, `aria-describedby` when open), and `TooltipContent` (`role="tooltip"`, four sides `top`/`right`/`bottom`/`left`, three alignments `start`/`center`/`end`, `sideOffset`, fade-in animation); supports `$bindable()` `open` and keyboard accessibility via focus events
 
 ## [0.1.13] - 2026-04-09
 

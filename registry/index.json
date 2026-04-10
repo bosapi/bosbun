@@ -28,6 +28,7 @@
     "ui/textarea",
     "ui/toggle",
     "ui/toggle-group",
+    "ui/tooltip",
     "ui/sidebar",
     "ui/slider"
   ],
