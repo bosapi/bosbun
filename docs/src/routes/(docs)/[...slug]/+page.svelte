@@ -30,6 +30,7 @@
     import SkeletonDemo from "$lib/components/demos/SkeletonDemo.svelte";
     import SonnerDemo from "$lib/components/demos/SonnerDemo.svelte";
     import SpinnerDemo from "$lib/components/demos/SpinnerDemo.svelte";
+    import ProgressDemo from "$lib/components/demos/ProgressDemo.svelte";
     import TooltipDemo from "$lib/components/demos/TooltipDemo.svelte";
     import IconGrid from "$lib/components/IconGrid.svelte";
 
@@ -61,6 +62,7 @@
         SkeletonDemo,
         SonnerDemo,
         SpinnerDemo,
+        ProgressDemo,
         TooltipDemo,
         IconGrid,
     };

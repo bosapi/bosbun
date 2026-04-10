@@ -20,6 +20,7 @@
     "ui/input",
     "ui/label",
     "ui/navbar",
+    "ui/progress",
     "ui/radio-group",
     "ui/select",
     "ui/separator",

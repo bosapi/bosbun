@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [0.1.14] - 2026-04-10
 
 ### Added
+- `progress` UI component — linear progress indicator with `role="progressbar"` and full ARIA attributes (`aria-valuemin`, `aria-valuemax`, `aria-valuenow`); `value` (nullable for indeterminate state) and `max` props; CSS `translateX` transform on inner indicator for left-to-right fill animation with `transition-all`; `bg-primary/20` track and `bg-primary` indicator; single-file component, zero dependencies
 - `alert` UI component — compound alert with `Alert` (`role="alert"`, `default` and `destructive` variants), `AlertTitle` (`<h5>`), and `AlertDescription` (`<div>`); supports icon positioning via SVG child selectors, `cn()` class merging
 - `alert-dialog` UI component — modal alert dialog with `role="alertdialog"` that requires explicit user response; includes `AlertDialog`, `AlertDialogContent` (focus trap, no backdrop close), `AlertDialogTrigger`, `AlertDialogAction` (primary button), `AlertDialogCancel` (outline button), `AlertDialogHeader`, `AlertDialogTitle`, `AlertDialogDescription`, and `AlertDialogFooter`
 - `sonner` UI component — zero-dependency toast notifications; `Toaster` component with configurable `position`, shadcn-compatible theming, dismiss button, and auto-dismiss after 4s; `toast()` function with `.success()`, `.error()`, `.info()`, `.warning()` variants and optional `description`; `toast.dismiss(id)` for programmatic dismissal; uses `SvelteMap` for reactive state
