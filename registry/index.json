@@ -24,6 +24,7 @@
     "ui/select",
     "ui/separator",
     "ui/sonner",
+    "ui/spinner",
     "ui/switch",
     "ui/textarea",
     "ui/toggle",

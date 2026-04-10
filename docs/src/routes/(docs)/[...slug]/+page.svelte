@@ -28,6 +28,7 @@
     import SliderDemo from "$lib/components/demos/SliderDemo.svelte";
     import FieldDemo from "$lib/components/demos/FieldDemo.svelte";
     import SonnerDemo from "$lib/components/demos/SonnerDemo.svelte";
+    import SpinnerDemo from "$lib/components/demos/SpinnerDemo.svelte";
     import TooltipDemo from "$lib/components/demos/TooltipDemo.svelte";
     import IconGrid from "$lib/components/IconGrid.svelte";
 
@@ -57,6 +58,7 @@
         ToggleGroupDemo,
         SliderDemo,
         SonnerDemo,
+        SpinnerDemo,
         TooltipDemo,
         IconGrid,
     };
