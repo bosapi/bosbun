@@ -15,6 +15,7 @@
     "ui/checkbox",
     "ui/chart",
     "ui/command",
+    "ui/combobox",
     "ui/data-table",
     "ui/dialog",
     "ui/dropdown-menu",
