@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.1.17] - 2026-04-14
+
+### Added
+- `button-group` UI component — CSS-only container that merges adjacent `Button` elements into a single connected unit; `ButtonGroup` (`role="group"`, `data-slot="button-group"`, `data-orientation`) with `orientation="horizontal"` (default) and `orientation="vertical"` support; horizontal mode collapses borders via `-ml-px` and restores outer radius (`[&>*:first-child]:rounded-l-md`, `[&>*:last-child]:rounded-r-md`); vertical mode collapses borders via `-mt-px` and restores outer radius (`[&>*:first-child]:rounded-t-md`, `[&>*:last-child]:rounded-b-md`); all children get `rounded-none` via `[&>*]` selector; hovered/focused children are lifted with `z-10` so their borders render above siblings; no Svelte context, no sub-components — consumers compose existing `Button` components inside; zero dependencies
+
 ## [0.1.16] - 2026-04-12
 
 ### Added

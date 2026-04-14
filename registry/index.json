@@ -11,6 +11,7 @@
     "ui/badge",
     "ui/breadcrumb",
     "ui/button",
+    "ui/button-group",
     "ui/card",
     "ui/checkbox",
     "ui/chart",
