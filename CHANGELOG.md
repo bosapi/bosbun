@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.1.20] - 2026-04-18
+
+### Added
+- `date-picker` UI component — convenience wrapper that composes `Popover` + `Calendar` into a single date picker; `DatePicker` with `$bindable()` `value` (`Date | undefined`), configurable `placeholder`, `min`/`max` date constraints, custom `disabled` function, `weekStartsOn` 0–6, `fixedWeeks` boolean, `buttonDisabled`, custom `formatDate` function (default `toLocaleDateString`), `trigger` snippet for custom trigger content, `contentClass` for popover styling; auto-closes popover on date selection via `$effect` + `untrack()` pattern; inlined calendar icon SVG; depends on `ui/popover` and `ui/calendar`
+
+---
+
 ## [0.1.19] - 2026-04-17
 
 ### Added

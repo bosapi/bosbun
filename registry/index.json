@@ -19,6 +19,7 @@
     "ui/command",
     "ui/combobox",
     "ui/data-table",
+    "ui/date-picker",
     "ui/dialog",
     "ui/dropdown-menu",
     "ui/field",

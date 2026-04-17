@@ -21,6 +21,7 @@
     import SeparatorDemo from "$lib/components/demos/SeparatorDemo.svelte";
     import DropdownMenuDemo from "$lib/components/demos/DropdownMenuDemo.svelte";
     import ChartDemo from "$lib/components/demos/ChartDemo.svelte";
+    import DatePickerDemo from "$lib/components/demos/DatePickerDemo.svelte";
     import DataTableDemo from "$lib/components/demos/DataTableDemo.svelte";
     import NavbarDemo from "$lib/components/demos/NavbarDemo.svelte";
     import NativeSelectDemo from "$lib/components/demos/NativeSelectDemo.svelte";
@@ -70,6 +71,7 @@
         DropdownMenuDemo,
         ChartDemo,
         DialogDemo,
+        DatePickerDemo,
         DataTableDemo,
         FieldDemo,
         NativeSelectDemo,
