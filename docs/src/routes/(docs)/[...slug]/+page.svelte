@@ -43,6 +43,7 @@
     import ToggleGroupDemo from "$lib/components/demos/ToggleGroupDemo.svelte";
     import SliderDemo from "$lib/components/demos/SliderDemo.svelte";
     import FieldDemo from "$lib/components/demos/FieldDemo.svelte";
+    import FormDemo from "$lib/components/demos/FormDemo.svelte";
     import SkeletonDemo from "$lib/components/demos/SkeletonDemo.svelte";
     import SonnerDemo from "$lib/components/demos/SonnerDemo.svelte";
     import SpinnerDemo from "$lib/components/demos/SpinnerDemo.svelte";
@@ -78,6 +79,7 @@
         DatePickerDemo,
         DataTableDemo,
         FieldDemo,
+        FormDemo,
         NativeSelectDemo,
         NavbarDemo,
         NavigationMenuDemo,

@@ -64,6 +64,7 @@ export const sidebar: NavGroup[] = [
                     { label: "Dialog", slug: "components/ui/dialog" },
                     { label: "Dropdown Menu", slug: "components/ui/dropdown-menu" },
                     { label: "Field", slug: "components/ui/field" },
+                    { label: "Form", slug: "components/ui/form" },
                     { label: "Hover Card", slug: "components/ui/hover-card" },
                     { label: "Icon", slug: "components/ui/icon" },
                     { label: "Input", slug: "components/ui/input" },
