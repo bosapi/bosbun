@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.1.23] - 2026-04-21
+
+### Added
+
+- `typography` UI component — 12 semantic typography wrappers with pre-styled Tailwind classes; `TypographyH1` (`<h1>`, extrabold 4xl), `TypographyH2` (`<h2>`, semibold 3xl with border-b), `TypographyH3` (`<h3>`, semibold 2xl), `TypographyH4` (`<h4>`, semibold xl), `TypographyP` (`<p>`, leading-7 with sibling spacing), `TypographyBlockquote` (`<blockquote>`, italic with left border), `TypographyList` (`<ul>`, disc list with item spacing), `TypographyInlineCode` (`<code>`, mono on muted bg), `TypographyLead` (`<p>`, xl muted-foreground), `TypographyLarge` (`<div>`, lg semibold), `TypographySmall` (`<small>`, sm medium), `TypographyMuted` (`<p>`, sm muted-foreground); all support `cn()` class merging and `...restProps`; zero dependencies
+
 ## [0.1.22] - 2026-04-20
 
 ### Added

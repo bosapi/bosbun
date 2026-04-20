@@ -53,6 +53,7 @@
     "ui/toggle",
     "ui/toggle-group",
     "ui/tooltip",
+    "ui/typography",
     "ui/sidebar",
     "ui/slider"
   ],

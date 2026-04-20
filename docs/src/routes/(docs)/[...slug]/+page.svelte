@@ -53,6 +53,7 @@
     import PopoverDemo from "$lib/components/demos/PopoverDemo.svelte";
     import TooltipDemo from "$lib/components/demos/TooltipDemo.svelte";
     import HoverCardDemo from "$lib/components/demos/HoverCardDemo.svelte";
+    import TypographyDemo from "$lib/components/demos/TypographyDemo.svelte";
     import IconGrid from "$lib/components/IconGrid.svelte";
 
     const demos: Record<string, any> = {
@@ -106,6 +107,7 @@
         PopoverDemo,
         TooltipDemo,
         HoverCardDemo,
+        TypographyDemo,
         IconGrid,
     };
 
