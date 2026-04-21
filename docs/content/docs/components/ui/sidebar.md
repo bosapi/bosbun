@@ -63,6 +63,7 @@ A composable sidebar with header, scrollable content, grouped menus, collapsible
 | `SidebarGroup`      | Groups items under an optional uppercase label   |
 | `SidebarMenu`       | `<ul>` wrapper for menu items                    |
 | `SidebarMenuItem`   | Link, button, or static text item with optional icon snippet |
+| `SidebarTrigger`    | Toggle button — place in your main content area  |
 
 ## Sidebar Props
 
@@ -101,6 +102,45 @@ The `icon` prop accepts a Svelte snippet:
 <Sidebar side="right">
   ...
 </Sidebar>
+```
+
+## SidebarTrigger
+
+A pre-styled toggle button. Place it in your main content area and wire it to the sidebar's `collapsed` state:
+
+```svelte
+<script lang="ts">
+  import { Sidebar, SidebarTrigger } from "$lib/components/ui/sidebar";
+
+  let collapsed = $state(false);
+</script>
+
+<div class="flex h-screen">
+  <Sidebar collapsible="icon" bind:collapsed>
+    ...
+  </Sidebar>
+
+  <main class="flex-1 p-6">
+    <SidebarTrigger {collapsed} onclick={() => (collapsed = !collapsed)} />
+    <!-- Page content -->
+  </main>
+</div>
+```
+
+## Accessing Sidebar State
+
+Use `getSidebarContext()` in any component inside the sidebar tree to read `collapsed` or call `toggle()`:
+
+```svelte
+<script lang="ts">
+  import { getSidebarContext } from "$lib/components/ui/sidebar";
+
+  const sidebar = getSidebarContext();
+</script>
+
+{#if !sidebar.collapsed}
+  <span>Visible when expanded</span>
+{/if}
 ```
 
 ## Controlled Collapse

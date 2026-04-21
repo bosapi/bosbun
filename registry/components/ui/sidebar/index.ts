@@ -5,3 +5,5 @@ export { default as SidebarFooter } from "./sidebar-footer.svelte";
 export { default as SidebarGroup } from "./sidebar-group.svelte";
 export { default as SidebarMenu } from "./sidebar-menu.svelte";
 export { default as SidebarMenuItem } from "./sidebar-menu-item.svelte";
+export { default as SidebarTrigger } from "./sidebar-trigger.svelte";
+export { getSidebarContext } from "./context.ts";
