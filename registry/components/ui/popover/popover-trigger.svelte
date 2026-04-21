@@ -16,8 +16,13 @@
     const popover = getContext<{
         open: boolean;
         id: string;
+        trigger: "click" | "hover";
         toggle: () => void;
+        show: () => void;
+        hide: () => void;
     }>("popover");
+
+    const isHover = $derived(popover?.trigger === "hover");
 </script>
 
 <button
@@ -26,7 +31,12 @@
     aria-haspopup="dialog"
     aria-expanded={popover?.open ?? false}
     aria-controls={popover?.id}
-    onclick={() => popover?.toggle()}
+    onclick={() => isHover ? popover?.toggle() : popover?.toggle()}
+    onmouseenter={() => { if (isHover) popover?.show(); }}
+    onmouseleave={() => { if (isHover) popover?.hide(); }}
+    onfocus={() => { if (isHover) popover?.show(); }}
+    onblur={() => { if (isHover) popover?.hide(); }}
+    ontouchstart={(e) => { if (isHover) { e.preventDefault(); popover?.toggle(); } }}
     {...restProps}
 >
     {@render children?.()}

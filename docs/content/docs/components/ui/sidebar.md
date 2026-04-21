@@ -102,6 +102,22 @@ When the sidebar is collapsed to icon mode, parent menu items (those with childr
 
 This behavior is automatic — no extra props needed.
 
+### Hover Trigger
+
+Set `trigger="hover"` on a `SidebarMenuItem` to open its collapsed popover on hover instead of click. The popover stays open while the cursor is over the trigger or the popover content, and closes after a short delay when the cursor leaves. On touch devices, hover mode degrades to tap-to-toggle.
+
+```svelte
+<SidebarMenuItem label="Models" trigger="hover">
+  {#snippet icon()}<Icon name="package" size={16} />{/snippet}
+  <SidebarMenuItem href="#" label="Genesis" />
+  <SidebarMenuItem href="#" label="Explorer" />
+</SidebarMenuItem>
+```
+
+| Prop      | Type                        | Default   |
+| --------- | --------------------------- | --------- |
+| `trigger` | `"click"` \| `"hover"`     | `"click"` |
+
 ## Right-Side Sidebar
 
 ```svelte

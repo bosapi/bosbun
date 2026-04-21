@@ -33,26 +33,26 @@
             <SidebarContent>
                 <SidebarGroup label="Platform">
                     <SidebarMenu>
-                        <SidebarMenuItem label="Playground" active>
+                        <SidebarMenuItem label="Playground" active trigger="hover">
                             {#snippet icon()}<Icon name="terminal" size={16} />{/snippet}
                             <SidebarMenuItem href="#" label="History" />
                             <SidebarMenuItem href="#" label="Starred" />
                             <SidebarMenuItem href="#" label="Settings" />
                         </SidebarMenuItem>
-                        <SidebarMenuItem label="Models">
+                        <SidebarMenuItem label="Models" trigger="hover">
                             {#snippet icon()}<Icon name="package" size={16} />{/snippet}
                             <SidebarMenuItem href="#" label="Genesis" />
                             <SidebarMenuItem href="#" label="Explorer" />
                             <SidebarMenuItem href="#" label="Quantum" />
                         </SidebarMenuItem>
-                        <SidebarMenuItem label="Documentation">
+                        <SidebarMenuItem label="Documentation" trigger="hover">
                             {#snippet icon()}<Icon name="book" size={16} />{/snippet}
                             <SidebarMenuItem href="#" label="Introduction" />
                             <SidebarMenuItem href="#" label="Get Started" />
                             <SidebarMenuItem href="#" label="Tutorials" />
                             <SidebarMenuItem href="#" label="Changelog" />
                         </SidebarMenuItem>
-                        <SidebarMenuItem label="Settings">
+                        <SidebarMenuItem label="Settings" trigger="hover">
                             {#snippet icon()}<Icon name="settings" size={16} />{/snippet}
                             <SidebarMenuItem href="#" label="General" />
                             <SidebarMenuItem href="#" label="Team" />

@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.1.24] - 2026-04-22
+
+### Added
+
+- `trigger` prop on `Popover` component — `"click"` (default) or `"hover"` mode; hover keeps popover open while cursor is over trigger or content; touch devices degrade to tap-to-toggle
+- `closeDelay` prop on `Popover` — configurable delay (ms) before closing in hover mode (default `150`)
+- `show()` and `hide()` methods exposed in Popover context for programmatic open/close with timer
+- `trigger` prop on `SidebarMenuItem` — `"click"` (default) or `"hover"` for collapsed popover sub-menus; hover opens on mouse enter, closes on leave with 150ms delay; touch devices degrade to tap-to-toggle
+
+---
+
 ## [0.1.23] - 2026-04-21
 
 ### Added

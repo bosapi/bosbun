@@ -1,6 +1,6 @@
 ---
 title: Popover
-description: A click-triggered floating content panel with configurable side and alignment.
+description: A floating content panel with configurable trigger, side, and alignment.
 demo: PopoverDemo
 ---
 
@@ -8,7 +8,7 @@ demo: PopoverDemo
 bosia add popover
 ```
 
-A click-triggered floating panel anchored to a trigger. Dismisses on click-outside and Escape.
+A floating panel anchored to a trigger. Supports click (default) and hover modes. Dismisses on click-outside (click mode) and Escape.
 
 ## Preview
 
@@ -16,10 +16,12 @@ A click-triggered floating panel anchored to a trigger. Dismisses on click-outsi
 
 ### Popover
 
-| Prop    | Type      | Default |
-| ------- | --------- | ------- |
-| `open`  | `boolean` | `false` |
-| `class` | `string`  | `""`    |
+| Prop         | Type                        | Default   |
+| ------------ | --------------------------- | --------- |
+| `open`       | `boolean`                   | `false`   |
+| `trigger`    | `"click"` \| `"hover"`     | `"click"` |
+| `closeDelay` | `number`                    | `150`     |
+| `class`      | `string`                    | `""`      |
 
 ### PopoverContent
 
@@ -80,6 +82,19 @@ Use `side` and `align` to place the content relative to the trigger.
 
 <!-- Below, aligned to the end with extra offset -->
 <PopoverContent side="bottom" align="end" sideOffset={8}>...</PopoverContent>
+```
+
+## Hover Trigger
+
+Set `trigger="hover"` to open the popover on mouse enter. The popover stays open while the cursor is over the trigger or content. On touch devices, hover mode degrades to tap-to-toggle. Adjust `closeDelay` (ms) to control the delay before closing.
+
+```svelte
+<Popover trigger="hover" closeDelay={200}>
+  <PopoverTrigger>
+    <Button variant="outline">Hover me</Button>
+  </PopoverTrigger>
+  <PopoverContent>Tooltip-style content</PopoverContent>
+</Popover>
 ```
 
 ## Controlled Open State

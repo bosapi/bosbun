@@ -1,5 +1,6 @@
 <script lang="ts">
     import { cn } from "$lib/utils.ts";
+    import { onDestroy } from "svelte";
     import type { Snippet } from "svelte";
     import { getSidebarContext } from "./context.ts";
     import SidebarPopover from "./sidebar-popover.svelte";
@@ -9,6 +10,7 @@
         href = "",
         label = "",
         active = false,
+        trigger = "click" as "click" | "hover",
         icon,
         children,
         ...restProps
@@ -17,6 +19,7 @@
         href?: string;
         label?: string;
         active?: boolean;
+        trigger?: "click" | "hover";
         icon?: Snippet;
         children?: Snippet;
         [key: string]: any;
@@ -31,6 +34,8 @@
     let triggerEl: HTMLButtonElement | undefined = $state();
     let popoverOpen = $state(false);
     let popoverStyle = $state("");
+    let closeTimer: ReturnType<typeof setTimeout> | undefined;
+    const CLOSE_DELAY = 150;
 
     function updatePopoverPosition() {
         if (!triggerEl) return;
@@ -38,12 +43,31 @@
         popoverStyle = `position:fixed;top:${rect.top}px;left:${rect.right + 4}px;z-index:50;`;
     }
 
-    function togglePopover() {
-        popoverOpen = !popoverOpen;
-        if (popoverOpen) updatePopoverPosition();
+    function openPopover() {
+        clearTimeout(closeTimer);
+        if (!popoverOpen) {
+            popoverOpen = true;
+            updatePopoverPosition();
+        }
     }
 
+    function closePopover() {
+        clearTimeout(closeTimer);
+        closeTimer = setTimeout(() => { popoverOpen = false; }, CLOSE_DELAY);
+    }
+
+    function togglePopover() {
+        if (popoverOpen) {
+            popoverOpen = false;
+        } else {
+            openPopover();
+        }
+    }
+
+    onDestroy(() => clearTimeout(closeTimer));
+
     function handlePopoverClickOutside(e: MouseEvent) {
+        if (trigger !== "click") return;
         if (!popoverOpen) return;
         const target = e.target as Node;
         if (triggerEl?.contains(target)) return;
@@ -56,6 +80,7 @@
         if (e.key === "Escape" && popoverOpen) popoverOpen = false;
     }
 
+    const isHover = $derived(trigger === "hover");
     const popoverId = `sidebar-popover-${crypto.randomUUID().slice(0, 8)}`;
 </script>
 
@@ -68,6 +93,11 @@
                 bind:this={triggerEl}
                 type="button"
                 onclick={togglePopover}
+                onmouseenter={() => { if (isHover) openPopover(); }}
+                onmouseleave={() => { if (isHover) closePopover(); }}
+                onfocus={() => { if (isHover) openPopover(); }}
+                onblur={() => { if (isHover) closePopover(); }}
+                ontouchstart={(e) => { if (isHover) { e.preventDefault(); togglePopover(); } }}
                 aria-haspopup="dialog"
                 aria-expanded={popoverOpen}
                 aria-controls={popoverId}
@@ -90,6 +120,8 @@
                     role="dialog"
                     class="w-48 rounded-md border bg-popover p-2 text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95"
                     style={popoverStyle}
+                    onmouseenter={() => { if (isHover) openPopover(); }}
+                    onmouseleave={() => { if (isHover) closePopover(); }}
                 >
                     <p class="px-2 py-1 text-sm font-medium">{label}</p>
                     <ul class="flex flex-col gap-0.5">

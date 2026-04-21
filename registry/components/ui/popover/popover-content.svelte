@@ -22,7 +22,15 @@
         [key: string]: any;
     } = $props();
 
-    const popover = getContext<{ open: boolean; id: string }>("popover");
+    const popover = getContext<{
+        open: boolean;
+        id: string;
+        trigger: "click" | "hover";
+        show: () => void;
+        hide: () => void;
+    }>("popover");
+
+    const isHover = $derived(popover?.trigger === "hover");
 
     const sidePosition: Record<Side, string> = {
         top: "bottom-full left-1/2 -translate-x-1/2",
@@ -75,6 +83,8 @@
             className,
         )}
         style={offsetStyle}
+        onmouseenter={() => { if (isHover) popover?.show(); }}
+        onmouseleave={() => { if (isHover) popover?.hide(); }}
         {...restProps}
     >
         {@render children?.()}
