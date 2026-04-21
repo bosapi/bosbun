@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - 6 new Lucide icons — `terminal`, `book`, `package`, `hash`, `map`, `circle`
 - `SidebarTrigger` component — standalone toggle button for sidebar collapse; place anywhere in the main content area; uses `panel-left` icon
 - `getSidebarContext()` export — access `collapsed` state and `toggle()` from any component inside the sidebar tree
+- Collapsed sidebar popover sub-menus — clicking a parent menu item when collapsed opens a fixed-position popover showing the label as a header and all children as links; uses `SidebarPopover` context wrapper so children render in expanded mode; click-outside and Escape dismiss
 
 ### Changed
 

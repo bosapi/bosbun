@@ -11,7 +11,7 @@
 
 <div class="w-full rounded-lg border overflow-hidden" style="height: 460px;">
     <div class="flex h-full">
-        <Sidebar collapsible="icon" bind:collapsed>
+        <Sidebar collapsible="icon" bind:collapsed class="bg-primary-foreground">
             <SidebarHeader class={collapsed ? "px-3" : "px-4"}>
                 <div class="flex items-center gap-2 w-full">
                     <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-primary border">

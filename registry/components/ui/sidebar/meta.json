@@ -10,6 +10,9 @@
     "sidebar-group.svelte",
     "sidebar-menu.svelte",
     "sidebar-menu-item.svelte",
+    "sidebar-popover.svelte",
+    "sidebar-trigger.svelte",
+    "context.ts",
     "index.ts"
   ],
   "npmDeps": {}

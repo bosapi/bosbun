@@ -96,6 +96,12 @@ The `icon` prop accepts a Svelte snippet:
 </SidebarMenuItem>
 ```
 
+## Collapsed Popover Sub-Menus
+
+When the sidebar is collapsed to icon mode, parent menu items (those with children) show a **popover** on click instead of the inline accordion. The popover appears to the right with the item label as a header and all children rendered as expanded links. Click outside or press Escape to dismiss.
+
+This behavior is automatic — no extra props needed.
+
 ## Right-Side Sidebar
 
 ```svelte
