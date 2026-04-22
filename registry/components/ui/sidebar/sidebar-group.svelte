@@ -22,7 +22,7 @@
     {#if label}
         <h4
             class={cn(
-                "mb-1 truncate px-2 text-xs uppercase tracking-wider text-muted-foreground transition-opacity duration-200",
+                "mb-1 truncate px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground transition-opacity duration-200",
                 sidebar.collapsed &&
                     "pointer-events-none h-0 overflow-hidden opacity-0 mb-0",
             )}

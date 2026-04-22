@@ -12,19 +12,19 @@
 <div class="w-full rounded-lg border overflow-hidden" style="height: 460px;">
     <div class="flex h-full">
         <Sidebar collapsible="icon" bind:collapsed class="bg-primary-foreground">
-            <SidebarHeader class={collapsed ? "px-3" : "px-4"}>
-                <div class="flex items-center gap-2 w-full">
-                    <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-primary border">
-                        <img src="/logo-dark.svg" alt="Bosia" class="hidden h-5 w-5 dark:block" />
-                        <img src="/logo-light.svg" alt="Bosia" class="block h-5 w-5 dark:hidden" />
-                    </div>
+            <SidebarHeader class={collapsed ? "px-2" : "pl-4"}>
+                <div class="flex items-center gap-2 w-full justify-center">
+                    <button onclick={() => (collapsed = !collapsed)} class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border-primary border">
+                        <img src="/logo-dark.svg" alt="Bosia" class="hidden dark:block" />
+                        <img src="/logo-light.svg" alt="Bosia" class="block dark:hidden" />
+                    </button>
                     {#if !collapsed}
                         <div class="flex items-center justify-between w-full">
                             <div class="flex flex-1 flex-col leading-tight">
                                 <span class="text-sm font-semibold">Acme Inc</span>
                                 <span class="text-xs text-muted-foreground">Enterprise</span>
                             </div>
-                            <Icon name="chevron-down" size={14} class="text-muted-foreground" />
+                            <SidebarTrigger {collapsed} onclick={() => (collapsed = !collapsed)} />
                         </div>
                     {/if}
                 </div>
@@ -97,10 +97,7 @@
         </Sidebar>
 
         <main class="flex-1 p-1 bg-background mt-3">
-            <div class="flex items-center gap-2 mb-4">
-                <SidebarTrigger {collapsed} onclick={() => (collapsed = !collapsed)} />
-                <span class="text-sm text-muted-foreground">Toggle sidebar</span>
-            </div>
+
         </main>
     </div>
 </div>

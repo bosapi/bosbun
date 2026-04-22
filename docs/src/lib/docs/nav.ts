@@ -83,7 +83,9 @@ export const sidebar: NavGroup[] = [
                     { label: "Radio Group", slug: "components/ui/radio-group" },
                     { label: "Select", slug: "components/ui/select" },
                     { label: "Separator", slug: "components/ui/separator" },
+                    { label: "Sidebar", slug: "components/ui/sidebar" },
                     { label: "Skeleton", slug: "components/ui/skeleton" },
+                    { label: "Slider", slug: "components/ui/slider" },
                     { label: "Sonner", slug: "components/ui/sonner" },
                     { label: "Spinner", slug: "components/ui/spinner" },
                     { label: "Switch", slug: "components/ui/switch" },
@@ -94,8 +96,6 @@ export const sidebar: NavGroup[] = [
                     { label: "Toggle Group", slug: "components/ui/toggle-group" },
                     { label: "Tooltip", slug: "components/ui/tooltip" },
                     { label: "Typography", slug: "components/ui/typography" },
-                    { label: "Sidebar", slug: "components/ui/sidebar" },
-                    { label: "Slider", slug: "components/ui/slider" },
                 ],
             },
             {

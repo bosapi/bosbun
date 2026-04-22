@@ -16,10 +16,15 @@
     const sidebar = getSidebarContext();
 </script>
 
-<div class={cn(
-    "mt-auto border-t overflow-hidden transition-[padding] duration-200",
-    sidebar.collapsed ? "flex items-center justify-center px-0 py-3" : "px-3 py-3",
-    className,
-)} {...restProps}>
+<div
+    class={cn(
+        "mt-auto overflow-hidden transition-[padding] duration-200",
+        sidebar.collapsed
+            ? "flex items-center justify-center px-0 py-3"
+            : "px-3 py-3",
+        className,
+    )}
+    {...restProps}
+>
     {@render children?.()}
 </div>
