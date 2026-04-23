@@ -27,6 +27,7 @@
     import ChartDemo from "$lib/components/demos/ChartDemo.svelte";
     import DatePickerDemo from "$lib/components/demos/DatePickerDemo.svelte";
     import DataTableDemo from "$lib/components/demos/DataTableDemo.svelte";
+    import DirectionDemo from "$lib/components/demos/DirectionDemo.svelte";
     import EmptyDemo from "$lib/components/demos/EmptyDemo.svelte";
     import NavbarDemo from "$lib/components/demos/NavbarDemo.svelte";
     import NativeSelectDemo from "$lib/components/demos/NativeSelectDemo.svelte";
@@ -85,6 +86,7 @@
         DialogDemo,
         DatePickerDemo,
         DataTableDemo,
+        DirectionDemo,
         EmptyDemo,
         FieldDemo,
         FormDemo,

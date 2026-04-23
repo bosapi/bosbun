@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.1.26] - 2026-04-24
+
+### Added
+
+- `direction` UI component — RTL/LTR context provider; wraps content with `dir` attribute and exposes `useDirection()` for descendant components to read text direction; zero dependencies
+
+---
+
 ## [0.1.25] - 2026-04-23
 
 ### Added
