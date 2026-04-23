@@ -10,6 +10,8 @@ bosia add data-table
 
 A fully-featured data table with sorting, filtering, and pagination. Automatically installs dependencies: `button`, `input`, `separator`.
 
+## Preview
+
 ## Basic Usage
 
 ```svelte

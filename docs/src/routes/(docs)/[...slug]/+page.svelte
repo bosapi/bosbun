@@ -137,6 +137,14 @@
             {/if}
         </div>
 
+        <!-- Component demo preview (fallback: top of page when no ## Preview heading) -->
+        {#if demo && splitIndex < 0}
+            <ComponentPreview demoCode={data.demoCode}>
+                {@const DemoComponent = demo}
+                <DemoComponent />
+            </ComponentPreview>
+        {/if}
+
         <!-- Rendered markdown (before preview) -->
         <div class="prose">
             {@html beforePreview}

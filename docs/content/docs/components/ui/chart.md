@@ -10,6 +10,8 @@ bosia add chart
 
 Pure SVG chart components with tooltips, responsive sizing, and automatic axis formatting. No external charting library needed.
 
+## Preview
+
 ## Line Chart
 
 ```svelte

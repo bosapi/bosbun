@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 - Component preview renders at `## Preview` heading instead of above all markdown content — split HTML at preview marker so demo appears inline where the heading is
+- Restore previews for components without `## Preview` heading (sidebar, navbar, chart, data-table, icon) — added missing `## Preview` heading to all 5 markdown files; also added top-of-page fallback rendering for any future components missing the heading
 
 ---
 
