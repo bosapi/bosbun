@@ -35,6 +35,7 @@
     "ui/input-group",
     "ui/input-otp",
     "ui/item",
+    "ui/kbd",
     "ui/label",
     "ui/navbar",
     "ui/native-select",
