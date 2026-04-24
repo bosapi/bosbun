@@ -8,6 +8,9 @@
         MenubarSeparator,
         MenubarLabel,
         MenubarShortcut,
+        MenubarSub,
+        MenubarSubTrigger,
+        MenubarSubContent,
     } from "$lib/components/ui/menubar";
 </script>
 
@@ -20,6 +23,15 @@
                 <MenubarShortcut>⌘N</MenubarShortcut>
             </MenubarItem>
             <MenubarItem>New Window</MenubarItem>
+            <MenubarSeparator />
+            <MenubarSub>
+                <MenubarSubTrigger>Share</MenubarSubTrigger>
+                <MenubarSubContent>
+                    <MenubarItem>Email</MenubarItem>
+                    <MenubarItem>Messages</MenubarItem>
+                    <MenubarItem>Copy Link</MenubarItem>
+                </MenubarSubContent>
+            </MenubarSub>
             <MenubarSeparator />
             <MenubarItem>
                 Save

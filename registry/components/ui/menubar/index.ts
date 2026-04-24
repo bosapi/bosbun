@@ -6,3 +6,6 @@ export { default as MenubarItem } from "./menubar-item.svelte";
 export { default as MenubarSeparator } from "./menubar-separator.svelte";
 export { default as MenubarLabel } from "./menubar-label.svelte";
 export { default as MenubarShortcut } from "./menubar-shortcut.svelte";
+export { default as MenubarSub } from "./menubar-sub.svelte";
+export { default as MenubarSubTrigger } from "./menubar-sub-trigger.svelte";
+export { default as MenubarSubContent } from "./menubar-sub-content.svelte";

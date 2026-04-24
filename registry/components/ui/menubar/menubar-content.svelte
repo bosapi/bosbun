@@ -27,7 +27,7 @@
 {#if menu?.isOpen}
     <div
         class={cn(
-            "menubar-content absolute top-full mt-1 z-50 min-w-48 overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
+            "menubar-content absolute top-full mt-1 z-50 min-w-48 rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
             alignClasses[align],
             className,
         )}

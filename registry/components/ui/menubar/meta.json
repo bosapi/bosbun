@@ -11,6 +11,9 @@
     "menubar-separator.svelte",
     "menubar-label.svelte",
     "menubar-shortcut.svelte",
+    "menubar-sub.svelte",
+    "menubar-sub-trigger.svelte",
+    "menubar-sub-content.svelte",
     "index.ts"
   ],
   "npmDeps": {}

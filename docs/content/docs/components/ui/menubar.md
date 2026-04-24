@@ -31,6 +31,9 @@ A horizontal menu bar with multiple dropdown menus. Click to open a menu, then h
 - `MenubarSeparator` — divider between items
 - `MenubarLabel` — non-interactive section header
 - `MenubarShortcut` — keyboard shortcut display
+- `MenubarSub` — wrapper for a nested sub-menu
+- `MenubarSubTrigger` — item that opens a sub-menu (shows `›` chevron)
+- `MenubarSubContent` — sub-menu panel, flies out to the right
 
 ## Usage
 
@@ -39,7 +42,8 @@ A horizontal menu bar with multiple dropdown menus. Click to open a menu, then h
   import {
     Menubar, MenubarMenu, MenubarTrigger,
     MenubarContent, MenubarItem,
-    MenubarSeparator, MenubarLabel, MenubarShortcut
+    MenubarSeparator, MenubarLabel, MenubarShortcut,
+    MenubarSub, MenubarSubTrigger, MenubarSubContent
   } from "$lib/components/ui/menubar";
 </script>
 
