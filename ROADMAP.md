@@ -162,7 +162,7 @@
 
 ### Client
 - [x] 🟡 Bound prefetch cache size — `prefetchCache` grows unbounded between navigations; add LRU eviction (max ~50 entries)
-- [ ] 🟡 Prefetch cache TTL — stale prefetch data served after long idle; discard entries older than 30s on `consumePrefetch()`
+- [x] 🟡 Prefetch cache TTL — stale prefetch data served after long idle; discard entries older than 30s on `consumePrefetch()`
 
 ### Build
 - [ ] 🟡 Fail build on tsconfig.json corruption — don't silently continue with degraded config

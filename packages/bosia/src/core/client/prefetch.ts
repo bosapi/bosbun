@@ -9,7 +9,7 @@ export function dataUrl(path: string): string {
     return `/__bosia/data${p || "/index"}.json${url.search}`;
 }
 
-export const prefetchCache = new Map<string, any>();
+export const prefetchCache = new Map<string, { data: any; ts: number }>();
 const MAX_PREFETCH_ENTRIES = 50;
 
 // In-flight fetch deduplication
@@ -17,15 +17,18 @@ const pending = new Set<string>();
 
 /** Returns cached prefetch data for a path and removes it from cache. */
 export function consumePrefetch(path: string): any | null {
-    const data = prefetchCache.get(path);
-    if (data === undefined) return null;
+    const entry = prefetchCache.get(path);
+    if (entry === undefined) return null;
     prefetchCache.delete(path);
-    return data;
+    if (Date.now() - entry.ts > 30_000) return null;
+    return entry.data;
 }
 
 /** Prefetches data for a path and stores in cache. No-op if already cached/in-flight. */
 export async function prefetchPath(path: string): Promise<void> {
-    if (prefetchCache.has(path)) return;
+    const existing = prefetchCache.get(path);
+    if (existing && Date.now() - existing.ts <= 30_000) return;
+    if (existing) prefetchCache.delete(path);
     if (pending.has(path)) return;
 
     pending.add(path);
@@ -36,7 +39,7 @@ export async function prefetchPath(path: string): Promise<void> {
                 const oldest = prefetchCache.keys().next().value;
                 if (oldest !== undefined) prefetchCache.delete(oldest);
             }
-            prefetchCache.set(path, await res.json());
+            prefetchCache.set(path, { data: await res.json(), ts: Date.now() });
         }
     } catch {
         // Silently ignore — prefetch is best-effort

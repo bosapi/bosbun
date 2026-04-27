@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 - Bound prefetch cache to 50 entries with LRU eviction — oldest entry evicted when cache is full, preventing unbounded memory growth on pages with many prefetchable links
+- Prefetch cache TTL — entries older than 30s are discarded on consumption and re-fetched on hover/viewport, preventing stale data after long idle
 
 ---
 
