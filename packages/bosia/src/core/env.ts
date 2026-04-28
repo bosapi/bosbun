@@ -61,6 +61,26 @@ function parseEnvFile(content: string, filename?: string): Record<string, string
         }
 
         let value = trimmed.slice(eqIdx + 1).trim();
+        // Strip inline comments before quote-unescaping.
+        // Quoted: find the real closing quote, verify trailing chars are whitespace+comment, truncate.
+        // Unquoted: strip \s+#... (no space before # keeps foo#bar intact).
+        if (value.startsWith('"')) {
+            let end = -1;
+            for (let j = 1; j < value.length; j++) {
+                if (value[j] === "\\") { j++; continue; } // skip escaped char
+                if (value[j] === '"') { end = j; break; }
+            }
+            if (end !== -1 && /^\s*(#.*)?$/.test(value.slice(end + 1))) {
+                value = value.slice(0, end + 1);
+            }
+        } else if (value.startsWith("'")) {
+            const end = value.indexOf("'", 1);
+            if (end !== -1 && /^\s*(#.*)?$/.test(value.slice(end + 1))) {
+                value = value.slice(0, end + 1);
+            }
+        } else {
+            value = value.startsWith("#") ? "" : value.replace(/\s+#.*$/, "");
+        }
         // Double-quoted: process escape sequences
         if (value.startsWith('"') && value.endsWith('"')) {
             value = processEscapes(value.slice(1, -1));

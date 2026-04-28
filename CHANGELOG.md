@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 - `compress()` gzip threshold now measured in UTF-8 bytes, not JS string length — multi-byte content (CJK, emoji) just over 1KB was previously sent uncompressed
+- `.env` parser now strips inline comments — `KEY="value" # note` correctly stores `value`; `KEY=foo # note` stores `foo`; `#` inside quotes remains literal; `foo#bar` (no preceding whitespace) is preserved unchanged
 
 ---
 
