@@ -213,12 +213,13 @@ export function buildHtmlTail(
 export function compress(body: string, contentType: string, req: Request, status = 200, extraHeaders?: Record<string, string>): Response {
     const headers: Record<string, string> = { "Content-Type": contentType, "Vary": "Accept-Encoding", ...extraHeaders };
     const accept = req.headers.get("accept-encoding") ?? "";
+    const bytes = new TextEncoder().encode(body);
     // Skip compression in dev — the dev proxy's fetch() auto-decompresses gzip
     // responses but keeps the Content-Encoding header, causing ERR_CONTENT_DECODING_FAILED.
-    if (!isDev && body.length > 1024 && accept.includes("gzip")) {
-        return new Response(Bun.gzipSync(body), { status, headers: { ...headers, "Content-Encoding": "gzip" } });
+    if (!isDev && bytes.length > 1024 && accept.includes("gzip")) {
+        return new Response(Bun.gzipSync(bytes), { status, headers: { ...headers, "Content-Encoding": "gzip" } });
     }
-    return new Response(body, { status, headers });
+    return new Response(bytes, { status, headers });
 }
 
 // ─── Static File Detection ────────────────────────────────

@@ -170,7 +170,7 @@
 
 ### Build
 - [ ] 🟡 Fail build on tsconfig.json corruption — don't silently continue with degraded config
-- [ ] 🟡 `compress()` threshold uses character count not byte count — `body.length` on a UTF-8 string under-counts multi-byte content; switch to `Buffer.byteLength` or `TextEncoder().encode(...).length` before threshold check
+- [x] 🟡 `compress()` threshold uses character count not byte count — `body.length` on a UTF-8 string under-counts multi-byte content; switch to `Buffer.byteLength` or `TextEncoder().encode(...).length` before threshold check
 - [ ] 🟡 `.env` parser inline-comment stripping — `KEY="value" # note` currently keeps ` # note` as part of the value; strip trailing comment after the closing quote
 - [ ] ⚪ Tune gzip compression threshold — current 1024-byte threshold is low; consider raising to ~2KB
 
