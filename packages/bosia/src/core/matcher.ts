@@ -1,4 +1,4 @@
-import type { RouteMatch } from "./types.ts";
+import type { RouteMatch, TrailingSlash } from "./types.ts";
 
 // ─── Route Matcher ───────────────────────────────────────
 // Single shared matcher used by both client and server at runtime.
@@ -179,5 +179,19 @@ export function findMatch<T extends { pattern: string }>(
         if (params !== null) return { route, params };
     }
 
+    return null;
+}
+
+// ─── Trailing-Slash Canonicalization ──────────────────────
+// Returns the canonical pathname for a given mode, or null if pathname is
+// already canonical. Root "/" is never modified. Caller decides whether to
+// 308-redirect (server) or replaceState (client).
+
+export function canonicalPathname(pathname: string, mode: TrailingSlash): string | null {
+    if (mode === "ignore") return null;
+    if (pathname === "/") return null;
+    const endsWithSlash = pathname.endsWith("/");
+    if (mode === "never" && endsWithSlash) return pathname.slice(0, -1);
+    if (mode === "always" && !endsWithSlash) return pathname + "/";
     return null;
 }

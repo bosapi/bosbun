@@ -1,5 +1,8 @@
 // ─── Bosia Core Types ────────────────────────────────────
 
+/** Canonicalization mode for trailing slashes. Set per-page or per-layout. */
+export type TrailingSlash = "never" | "always" | "ignore";
+
 /** A page route discovered from the file system */
 export interface PageRoute {
     /** URL pattern, e.g. "/" or "/blog/[slug]" or "/[...rest]" */
@@ -12,6 +15,8 @@ export interface PageRoute {
     pageServer: string | null;
     /** Chain of +layout.server.ts files root → leaf, with their layout depth */
     layoutServers: { path: string; depth: number }[];
+    /** Effective trailing-slash mode (page wins over layout chain). Defaults to "never". */
+    trailingSlash: TrailingSlash;
 }
 
 /** An API route discovered from the file system */

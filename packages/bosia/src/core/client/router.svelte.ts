@@ -2,7 +2,7 @@
 // Svelte 5 rune-based reactive router.
 // Singleton used by App.svelte and hydrate.ts.
 
-import { findMatch } from "../matcher.ts";
+import { findMatch, canonicalPathname } from "../matcher.ts";
 import { clientRoutes } from "bosia:routes";
 
 export const router = new class Router {
@@ -14,15 +14,20 @@ export const router = new class Router {
     navigate(path: string) {
         if (this.currentRoute === path) return;
         // Unknown route — let the server handle it (renders +error.svelte with 404)
+        const queryHash = path.slice(path.split("?")[0].split("#")[0].length);
         const pathname = path.split("?")[0].split("#")[0];
-        if (!findMatch(clientRoutes, pathname)) {
+        const match = findMatch(clientRoutes, pathname);
+        if (!match) {
             window.location.href = path;
             return;
         }
+        // Canonicalize trailing slash before navigating (matches server 308 behavior)
+        const canonical = canonicalPathname(pathname, (match.route as any).trailingSlash ?? "never");
+        const finalPath = canonical !== null ? canonical + queryHash : path;
         this.isPush = true;
-        this.currentRoute = path;
+        this.currentRoute = finalPath;
         if (typeof history !== "undefined") {
-            history.pushState({}, "", path);
+            history.pushState({}, "", finalPath);
         }
     }
 

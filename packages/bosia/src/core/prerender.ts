@@ -1,6 +1,6 @@
 import { writeFileSync, mkdirSync, cpSync, existsSync } from "fs";
 import { join } from "path";
-import type { RouteManifest } from "./types.ts";
+import type { RouteManifest, TrailingSlash } from "./types.ts";
 
 import { BOSIA_NODE_PATH } from "./paths.ts";
 
@@ -10,8 +10,13 @@ const PRERENDER_TIMEOUT = Number(process.env.PRERENDER_TIMEOUT) || 5_000; // 5s 
 
 // ─── Prerendering ─────────────────────────────────────────
 
-async function detectPrerenderRoutes(manifest: RouteManifest): Promise<string[]> {
-    const paths: string[] = [];
+interface PrerenderTarget {
+    path: string;
+    trailingSlash: TrailingSlash;
+}
+
+async function detectPrerenderRoutes(manifest: RouteManifest): Promise<PrerenderTarget[]> {
+    const targets: PrerenderTarget[] = [];
     for (const route of manifest.pages) {
         if (!route.pageServer) continue;
         const filePath = join("src", "routes", route.pageServer);
@@ -21,6 +26,8 @@ async function detectPrerenderRoutes(manifest: RouteManifest): Promise<string[]>
             console.warn(`   ⚠️  ${route.pattern} has prerender=true && ssr=false — contradictory, skipped`);
             continue;
         }
+
+        const ts = route.trailingSlash;
 
         if (route.pattern.includes("[")) {
             // Dynamic route — import module and call entries() to get param values
@@ -39,23 +46,23 @@ async function detectPrerenderRoutes(manifest: RouteManifest): Promise<string[]>
                         // [param] → value
                         resolved = resolved.replace(`[${key}]`, value);
                     }
-                    paths.push(resolved);
+                    targets.push({ path: resolved, trailingSlash: ts });
                 }
             } catch (err) {
                 console.error(`   ❌ Failed to resolve entries() for ${route.pattern}:`, err);
             }
         } else {
-            paths.push(route.pattern);
+            targets.push({ path: route.pattern, trailingSlash: ts });
         }
     }
-    return paths;
+    return targets;
 }
 
 export async function prerenderStaticRoutes(manifest: RouteManifest): Promise<void> {
-    const paths = await detectPrerenderRoutes(manifest);
-    if (paths.length === 0) return;
+    const targets = await detectPrerenderRoutes(manifest);
+    if (targets.length === 0) return;
 
-    console.log(`\n🖨️  Prerendering ${paths.length} route(s)...`);
+    console.log(`\n🖨️  Prerendering ${targets.length} route(s)...`);
 
     const port = 13572;
     const child = Bun.spawn(
@@ -86,17 +93,32 @@ export async function prerenderStaticRoutes(manifest: RouteManifest): Promise<vo
 
     mkdirSync("./dist/prerendered", { recursive: true });
 
-    for (const routePath of paths) {
+    for (const { path: routePath, trailingSlash: ts } of targets) {
         try {
-            const res = await fetch(`${base}${routePath}`, { signal: AbortSignal.timeout(PRERENDER_TIMEOUT) });
+            // Hit the canonical URL so the server doesn't 308 us mid-prerender
+            const canonicalRoute = routePath === "/"
+                ? "/"
+                : ts === "always"
+                    ? routePath.endsWith("/") ? routePath : routePath + "/"
+                    : routePath.replace(/\/$/, "");
+
+            const res = await fetch(`${base}${canonicalRoute}`, { signal: AbortSignal.timeout(PRERENDER_TIMEOUT) });
             const html = await res.text();
+
+            // Filename strategy:
+            //   never  → about.html        (canonical /about, served by static host as /about → about.html)
+            //   always → about/index.html  (canonical /about/, static host serves /about/ → about/index.html)
+            //   ignore → about/index.html  (single emit; both URLs resolve via server canonicalize=off)
+            //   root   → index.html
             const outPath = routePath === "/"
                 ? "./dist/prerendered/index.html"
-                : `./dist/prerendered${routePath}/index.html`;
+                : ts === "never"
+                    ? `./dist/prerendered${routePath.replace(/\/$/, "")}.html`
+                    : `./dist/prerendered${routePath.replace(/\/$/, "")}/index.html`;
             mkdirSync(outPath.substring(0, outPath.lastIndexOf("/")), { recursive: true });
             writeFileSync(outPath, html);
 
-            // Also prerender the data payload
+            // Also prerender the data payload (filename matches dataUrl() — strips trailing slash)
             const dataPath = routePath === "/" ? "/index.json" : `${routePath.replace(/\/$/, "")}.json`;
             const dataRes = await fetch(`${base}/__bosia/data${dataPath}`, { signal: AbortSignal.timeout(PRERENDER_TIMEOUT) });
             if (dataRes.ok) {

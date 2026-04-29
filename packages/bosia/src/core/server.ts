@@ -3,7 +3,7 @@ import { Elysia } from "elysia";
 import { existsSync } from "fs";
 import { join, resolve as resolvePath } from "path";
 
-import { findMatch, compileRoutes } from "./matcher.ts";
+import { findMatch, compileRoutes, canonicalPathname } from "./matcher.ts";
 import { apiRoutes, serverRoutes } from "bosia:routes";
 
 // Pre-compile route patterns into RegExp at startup (shared by renderer.ts via module reference)
@@ -207,11 +207,13 @@ async function resolve(event: RequestEvent): Promise<Response> {
     }
 
     // Prerendered pages — serve static HTML built at build time
-    const prerenderPath = safePath(
-        "./dist/prerendered",
-        path === "/" ? "index.html" : `${path}/index.html`,
-    );
-    if (prerenderPath) {
+    // Try both `<path>/index.html` (always/ignore mode) and `<path>.html` (never mode)
+    const prerenderCandidates = path === "/"
+        ? ["index.html"]
+        : [`${path}/index.html`, `${path.replace(/\/$/, "")}.html`];
+    for (const candidate of prerenderCandidates) {
+        const prerenderPath = safePath("./dist/prerendered", candidate);
+        if (!prerenderPath) continue;
         const prerenderFile = Bun.file(prerenderPath);
         if (await prerenderFile.exists()) {
             return new Response(prerenderFile, {
@@ -244,6 +246,18 @@ async function resolve(event: RequestEvent): Promise<Response> {
             if (isDev) console.error("API route error:", err);
             else console.error("API route error:", (err as Error).message ?? err);
             return Response.json({ error: "Internal Server Error" }, { status: 500 });
+        }
+    }
+
+    // Trailing-slash canonicalization — 308 preserves method (form POSTs included)
+    const canonicalMatch = findMatch(serverRoutes, path);
+    if (canonicalMatch) {
+        const canonical = canonicalPathname(path, (canonicalMatch.route as any).trailingSlash ?? "never");
+        if (canonical !== null) {
+            return new Response(null, {
+                status: 308,
+                headers: { Location: canonical + url.search + url.hash },
+            });
         }
     }
 

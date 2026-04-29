@@ -2,7 +2,7 @@ import { hydrate, mount } from "svelte";
 import App from "./App.svelte";
 import { router } from "./router.svelte.ts";
 import { initPrefetch } from "./prefetch.ts";
-import { findMatch, compileRoutes } from "../matcher.ts";
+import { findMatch, compileRoutes, canonicalPathname } from "../matcher.ts";
 import { clientRoutes } from "bosia:routes";
 import { appState } from "./appState.svelte.ts";
 
@@ -15,12 +15,22 @@ async function main() {
     const path = window.location.pathname;
 
     router.init();
-    router.currentRoute = path;
-    initPrefetch();
 
     // Resolve the current route so we can pre-load the components
     // before handing off to App.svelte (avoids a flash of "Loading...")
     const match = findMatch(clientRoutes, path);
+
+    // Canonicalize trailing slash on initial mount — server already 308'd if
+    // SSR'd, but `ssr=false` shells and prerendered pages can land on the
+    // non-canonical URL. replaceState (no extra history entry).
+    if (match) {
+        const canonical = canonicalPathname(path, (match.route as any).trailingSlash ?? "never");
+        if (canonical !== null && typeof history !== "undefined") {
+            history.replaceState(history.state, "", canonical + window.location.search + window.location.hash);
+        }
+    }
+    router.currentRoute = window.location.pathname + window.location.search + window.location.hash;
+    initPrefetch();
 
     let ssrPageComponent = null;
     let ssrLayoutComponents: any[] = [];

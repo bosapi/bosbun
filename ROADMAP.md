@@ -196,7 +196,7 @@
 - [ ] 🟠 Layout reset (`+layout@.svelte` or `+page@.svelte`)
 - [ ] 🟠 Route-level `+error.svelte` — per-layout error boundaries instead of global-only
 - [x] 🟡 Page option: `ssr` toggle (`export const ssr = false`)
-- [ ] 🟡 Page option: `trailingSlash` configuration
+- [x] 🟡 Page option: `trailingSlash` configuration
 
 ### Forms
 - [x] 🟠 `use:enhance` progressive enhancement — client-side fetch submission with automatic form state management (like SvelteKit)

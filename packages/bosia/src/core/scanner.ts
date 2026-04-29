@@ -1,6 +1,6 @@
-import { readdirSync, existsSync } from "fs";
+import { readdirSync, existsSync, readFileSync } from "fs";
 import { join } from "path";
-import type { PageRoute, ApiRoute, RouteManifest } from "./types.ts";
+import type { PageRoute, ApiRoute, RouteManifest, TrailingSlash } from "./types.ts";
 
 // ─── Route Scanner ───────────────────────────────────────
 // Walks src/routes/ and produces a RouteManifest.
@@ -17,6 +17,21 @@ import type { PageRoute, ApiRoute, RouteManifest } from "./types.ts";
 
 const ROUTES_DIR = "./src/routes";
 
+/**
+ * Extract `export const trailingSlash = '...'` from a server module file via
+ * regex. Static-string read only — runtime expressions return null. Build-time
+ * scan avoids invoking server modules during the client bundle.
+ */
+function readTrailingSlash(filePath: string): TrailingSlash | null {
+    try {
+        const src = readFileSync(filePath, "utf-8");
+        const m = src.match(/export\s+const\s+trailingSlash\s*(?::\s*[^=]+)?=\s*["'](never|always|ignore)["']/);
+        return (m?.[1] ?? null) as TrailingSlash | null;
+    } catch {
+        return null;
+    }
+}
+
 export function scanRoutes(): RouteManifest {
     const pages: PageRoute[] = [];
     const apis: ApiRoute[] = [];
@@ -26,6 +41,7 @@ export function scanRoutes(): RouteManifest {
         urlSegments: string[],
         layoutChain: string[],
         layoutServerChain: { path: string; depth: number }[],
+        inheritedTrailingSlash: TrailingSlash,
     ) {
         const fullDir = join(ROUTES_DIR, dir);
         if (!existsSync(fullDir)) return;
@@ -35,15 +51,19 @@ export function scanRoutes(): RouteManifest {
         // Accumulate layouts for this level
         const currentLayouts = [...layoutChain];
         const currentLayoutServers = [...layoutServerChain];
+        let currentTrailingSlash = inheritedTrailingSlash;
 
         if (items.some(i => i.isFile() && i.name === "+layout.svelte")) {
             currentLayouts.push(join(dir, "+layout.svelte"));
         }
         if (items.some(i => i.isFile() && i.name === "+layout.server.ts")) {
+            const layoutServerPath = join(dir, "+layout.server.ts");
             currentLayoutServers.push({
-                path: join(dir, "+layout.server.ts"),
+                path: layoutServerPath,
                 depth: currentLayouts.length - 1,
             });
+            const ts = readTrailingSlash(layoutServerPath);
+            if (ts) currentTrailingSlash = ts;
         }
 
         // API route (+server.ts)
@@ -60,12 +80,16 @@ export function scanRoutes(): RouteManifest {
                 ? join(dir, "+page.server.ts")
                 : null;
 
+            const pageTs = pageServerFile ? readTrailingSlash(pageServerFile) : null;
+            const effectiveTs: TrailingSlash = pageTs ?? currentTrailingSlash;
+
             pages.push({
                 pattern: toUrlPath(urlSegments),
                 page: join(dir, "+page.svelte"),
                 layouts: [...currentLayouts],
                 pageServer: pageServerFile,
                 layoutServers: [...currentLayoutServers],
+                trailingSlash: effectiveTs,
             });
         }
 
@@ -82,11 +106,12 @@ export function scanRoutes(): RouteManifest {
                 isGroup ? [...urlSegments] : [...urlSegments, dirName],
                 currentLayouts,
                 currentLayoutServers,
+                currentTrailingSlash,
             );
         }
     }
 
-    walk("", [], [], []);
+    walk("", [], [], [], "never");
 
     // Warn when a catch-all exists but no exact route covers its prefix.
     // e.g. "/[...slug]" matches everything EXCEPT "/" (which needs its own +page.svelte).

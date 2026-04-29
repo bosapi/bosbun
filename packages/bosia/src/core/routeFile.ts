@@ -40,6 +40,7 @@ export function generateRoutesFile(manifest: RouteManifest): void {
     lines.push("  page: () => Promise<any>;");
     lines.push("  layouts: (() => Promise<any>)[];");
     lines.push("  hasServerData: boolean;");
+    lines.push('  trailingSlash: "never" | "always" | "ignore";');
     lines.push("}> = [");
     for (const r of pages) {
         const layoutImports = r.layouts
@@ -51,6 +52,7 @@ export function generateRoutesFile(manifest: RouteManifest): void {
         lines.push(`    page: () => import(${JSON.stringify(toImportPath(r.page))}),`);
         lines.push(`    layouts: [${layoutImports}],`);
         lines.push(`    hasServerData: ${hasServerData},`);
+        lines.push(`    trailingSlash: ${JSON.stringify(r.trailingSlash)},`);
         lines.push("  },");
     }
     lines.push("];\n");
@@ -62,6 +64,7 @@ export function generateRoutesFile(manifest: RouteManifest): void {
     lines.push("  layoutModules: (() => Promise<any>)[];");
     lines.push("  pageServer: (() => Promise<any>) | null;");
     lines.push("  layoutServers: { loader: () => Promise<any>; depth: number }[];");
+    lines.push('  trailingSlash: "never" | "always" | "ignore";');
     lines.push("}> = [");
     for (const r of pages) {
         const layoutImports = r.layouts
@@ -76,6 +79,7 @@ export function generateRoutesFile(manifest: RouteManifest): void {
         lines.push(`    layoutModules: [${layoutImports}],`);
         lines.push(`    pageServer: ${r.pageServer ? `() => import(${JSON.stringify(toImportPath(r.pageServer))})` : "null"},`);
         lines.push(`    layoutServers: [${layoutServerImports}],`);
+        lines.push(`    trailingSlash: ${JSON.stringify(r.trailingSlash)},`);
         lines.push("  },");
     }
     lines.push("];\n");
@@ -128,6 +132,7 @@ function generateClientRoutesFile(
     lines.push("  page: () => Promise<any>;");
     lines.push("  layouts: (() => Promise<any>)[];");
     lines.push("  hasServerData: boolean;");
+    lines.push('  trailingSlash: "never" | "always" | "ignore";');
     lines.push("}> = [");
     for (const r of pages) {
         const layoutImports = r.layouts
@@ -139,6 +144,7 @@ function generateClientRoutesFile(
         lines.push(`    page: () => import(${JSON.stringify(toImportPath(r.page))}),`);
         lines.push(`    layouts: [${layoutImports}],`);
         lines.push(`    hasServerData: ${hasServerData},`);
+        lines.push(`    trailingSlash: ${JSON.stringify(r.trailingSlash)},`);
         lines.push("  },");
     }
     lines.push("];\n");
