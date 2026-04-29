@@ -126,3 +126,20 @@ Create `+error.svelte` to handle errors thrown by loaders:
 ```
 
 The error page receives the `HttpError` thrown by `error()` in a loader. Place it at the route level where you want to catch errors — it catches errors from all child routes.
+
+## Page Options
+
+Toggle rendering behavior per page by exporting flags from `+page.server.ts`:
+
+```ts
+// src/routes/dashboard/+page.server.ts
+export const ssr = false;        // skip server render, ship shell + hydrate on client
+export const csr = false;        // skip client hydration, server-rendered HTML only
+export const prerender = true;   // build to static HTML at `bosia build`
+```
+
+- `ssr = false` — server `load()` still runs and its result is injected as page data; the client hydrates and renders. Use for pages with browser-only deps (`window`, charts, third-party widgets) or auth-gated views where SSR adds latency without SEO value.
+- `csr = false` — no JS shipped for the page. Static HTML only.
+- `prerender = true` — captured at build time. For dynamic routes, also export `entries()` returning the param values to prerender.
+
+`ssr = false` together with `csr = false` would render nothing and is overridden to `csr = true` (with a dev warning). `ssr = false` together with `prerender = true` is contradictory; the route is skipped during prerender.

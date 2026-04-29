@@ -17,6 +17,10 @@ async function detectPrerenderRoutes(manifest: RouteManifest): Promise<string[]>
         const filePath = join("src", "routes", route.pageServer);
         const content = await Bun.file(filePath).text();
         if (!/export\s+const\s+prerender\s*=\s*true/.test(content)) continue;
+        if (/export\s+const\s+ssr\s*=\s*false/.test(content)) {
+            console.warn(`   ⚠️  ${route.pattern} has prerender=true && ssr=false — contradictory, skipped`);
+            continue;
+        }
 
         if (route.pattern.includes("[")) {
             // Dynamic route — import module and call entries() to get param values

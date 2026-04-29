@@ -72,6 +72,7 @@ export function buildHtml(
     csr = true,
     formData: any = null,
     lang?: string,
+    ssr = true,
 ): string {
     const cssLinks = (distManifest.css ?? [])
         .map((f: string) => `<link rel="stylesheet" href="/dist/client/${f}">`)
@@ -87,9 +88,10 @@ export function buildHtml(
     const formScript = formData != null
         ? `window.__BOSIA_FORM_DATA__=${safeJsonStringify(formData)};`
         : "";
+    const ssrFlag = ssr ? "" : "window.__BOSIA_SSR__=false;";
 
     const scripts = csr
-        ? `${envScript}\n  <script>window.__BOSIA_PAGE_DATA__=${safeJsonStringify(pageData)};window.__BOSIA_LAYOUT_DATA__=${safeJsonStringify(layoutData)};${formScript}</script>\n  <script type="module" src="/dist/client/${distManifest.entry}${cacheBust}"></script>`
+        ? `${envScript}\n  <script>${ssrFlag}window.__BOSIA_PAGE_DATA__=${safeJsonStringify(pageData)};window.__BOSIA_LAYOUT_DATA__=${safeJsonStringify(layoutData)};${formScript}</script>\n  <script type="module" src="/dist/client/${distManifest.entry}${cacheBust}"></script>`
         : isDev
             ? `\n  <script>!function r(){var e=new EventSource("/__bosia/sse");e.addEventListener("reload",()=>location.reload());e.onopen=()=>r._ok||(r._ok=1);e.onerror=()=>{e.close();setTimeout(r,2000)}}()</script>`
             : "";
@@ -188,6 +190,7 @@ export function buildHtmlTail(
     layoutData: any[],
     csr: boolean,
     formData: any = null,
+    ssr = true,
 ): string {
     let out = `<script>document.getElementById('__bs__').remove()</script>`;
     out += `\n<div id="app">${body}</div>`;
@@ -198,7 +201,8 @@ export function buildHtmlTail(
             out += `\n<script>window.__BOSIA_ENV__=${safeJsonStringify(publicEnv)};</script>`;
         }
         const formInject = formData != null ? `window.__BOSIA_FORM_DATA__=${safeJsonStringify(formData)};` : "";
-        out += `\n<script>window.__BOSIA_PAGE_DATA__=${safeJsonStringify(pageData)};` +
+        const ssrFlag = ssr ? "" : "window.__BOSIA_SSR__=false;";
+        out += `\n<script>${ssrFlag}window.__BOSIA_PAGE_DATA__=${safeJsonStringify(pageData)};` +
                `window.__BOSIA_LAYOUT_DATA__=${safeJsonStringify(layoutData)};${formInject}</script>`;
         out += `\n<script type="module" src="/dist/client/${distManifest.entry}${cacheBust}"></script>`;
     } else if (isDev) {

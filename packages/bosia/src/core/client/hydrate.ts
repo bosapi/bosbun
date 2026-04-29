@@ -1,4 +1,4 @@
-import { hydrate } from "svelte";
+import { hydrate, mount } from "svelte";
 import App from "./App.svelte";
 import { router } from "./router.svelte.ts";
 import { initPrefetch } from "./prefetch.ts";
@@ -46,17 +46,23 @@ async function main() {
     appState.routeParams = ssrPageData?.params ?? (match?.params ?? {});
     appState.form = ssrFormData;
 
-    hydrate(App, {
-        target: document.getElementById("app")!,
-        props: {
-            ssrMode: false,
-            ssrPageComponent,
-            ssrLayoutComponents,
-            ssrPageData,
-            ssrLayoutData,
-            ssrFormData,
-        },
-    });
+    const target = document.getElementById("app")!;
+    const props = {
+        ssrMode: false,
+        ssrPageComponent,
+        ssrLayoutComponents,
+        ssrPageData,
+        ssrLayoutData,
+        ssrFormData,
+    };
+
+    // ssr=false → server shipped empty shell, no hydration markers exist.
+    // Use mount() instead of hydrate() to render fresh on the client.
+    if ((window as any).__BOSIA_SSR__ === false) {
+        mount(App, { target, props });
+    } else {
+        hydrate(App, { target, props });
+    }
 }
 
 main();

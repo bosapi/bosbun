@@ -136,10 +136,12 @@ export async function loadRouteData(
     // Run page server loader
     let pageData: Record<string, any> = {};
     let csr = true;
+    let ssr = true;
     if (route.pageServer) {
         try {
             const mod = await route.pageServer();
             if (mod.csr === false) csr = false;
+            if (mod.ssr === false) ssr = false;
             if (typeof mod.load === "function") {
                 const parent = async () => {
                     const merged: Record<string, any> = {};
@@ -156,7 +158,7 @@ export async function loadRouteData(
         }
     }
 
-    return { pageData: { ...pageData, params }, layoutData, csr };
+    return { pageData: { ...pageData, params }, layoutData, csr, ssr };
 }
 
 // ─── Metadata Loader ─────────────────────────────────────
@@ -247,6 +249,17 @@ export async function renderSSRStream(
             controller.enqueue(enc.encode(buildMetadataChunk(metadata)));
 
             try {
+                if (!data!.ssr) {
+                    // ssr=false → skip render(); ship empty shell + hydration scripts.
+                    // ssr=false && csr=false is meaningless (nothing renders) — force csr=true.
+                    if (!data!.csr && isDev) {
+                        console.warn(`⚠️  ${url.pathname}: ssr=false && csr=false renders nothing — forcing csr=true`);
+                    }
+                    controller.enqueue(enc.encode(buildHtmlTail("", "", data!.pageData, data!.layoutData, true, null, false)));
+                    controller.close();
+                    return;
+                }
+
                 const { body, head } = render(App, {
                     props: {
                         ssrMode: true,
@@ -300,6 +313,14 @@ export async function renderPageWithFormData(
     ]);
 
     if (!data) return renderErrorPage(404, "Not Found", url, req);
+
+    if (!data.ssr) {
+        if (!data.csr && isDev) {
+            console.warn(`⚠️  ${url.pathname}: ssr=false && csr=false renders nothing — forcing csr=true`);
+        }
+        const html = buildHtml("", "", data.pageData, data.layoutData, true, formData, undefined, false);
+        return compress(html, "text/html; charset=utf-8", req, status);
+    }
 
     const { body, head } = render(App, {
         props: {

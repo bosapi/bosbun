@@ -126,3 +126,20 @@ Buat `+error.svelte` untuk menangani error yang dilempar oleh loader:
 ```
 
 Halaman error menerima `HttpError` yang dilempar oleh `error()` di dalam loader. Tempatkan halaman error pada level route di mana Anda ingin menangkap error — halaman ini menangkap error dari semua route anak.
+
+## Opsi Halaman
+
+Atur perilaku rendering per halaman dengan mengekspor flag dari `+page.server.ts`:
+
+```ts
+// src/routes/dashboard/+page.server.ts
+export const ssr = false;        // lewati server render, kirim shell + hydrate di client
+export const csr = false;        // lewati hydration client, hanya HTML server-rendered
+export const prerender = true;   // build ke HTML statis saat `bosia build`
+```
+
+- `ssr = false` — server `load()` tetap berjalan dan hasilnya diinjeksi sebagai page data; client melakukan hydrate dan render. Cocok untuk halaman dengan dependensi khusus browser (`window`, chart, widget pihak ketiga) atau halaman auth-gated di mana SSR menambah latensi tanpa nilai SEO.
+- `csr = false` — tidak ada JS untuk halaman ini. HTML statis saja.
+- `prerender = true` — di-capture saat build. Untuk route dinamis, ekspor juga `entries()` yang mengembalikan nilai param yang akan di-prerender.
+
+`ssr = false` bersama `csr = false` tidak akan merender apapun dan otomatis di-override ke `csr = true` (dengan peringatan di mode dev). `ssr = false` bersama `prerender = true` bertentangan; route akan dilewati saat prerender.
