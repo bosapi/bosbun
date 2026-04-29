@@ -4,30 +4,51 @@
   "features": ["drizzle"],
   "components": ["todo"],
   "files": [
-    "todo.table.ts",
-    "types.ts",
-    "todo.repository.ts",
-    "todo.service.ts",
-    "todo-index.ts",
-    "schemas.ts",
-    "seed-todos.ts",
-    "page.server.ts",
-    "page.svelte",
-    "api-todos-server.ts",
-    "api-todos-id-server.ts"
-  ],
-  "targets": [
-    "src/features/todo/schemas/todo.table.ts",
-    "src/features/todo/types.ts",
-    "src/features/todo/todo.repository.ts",
-    "src/features/todo/todo.service.ts",
-    "src/features/todo/index.ts",
-    "src/features/drizzle/schemas.ts",
-    "src/features/drizzle/seeds/001_initial_todos.ts",
-    "src/routes/todos/+page.server.ts",
-    "src/routes/todos/+page.svelte",
-    "src/routes/api/todos/+server.ts",
-    "src/routes/api/todos/[id]/+server.ts"
+    {
+      "src": "todo.table.ts",
+      "target": "src/features/todo/schemas/todo.table.ts"
+    },
+    {
+      "src": "types.ts",
+      "target": "src/features/todo/types.ts"
+    },
+    {
+      "src": "todo.repository.ts",
+      "target": "src/features/todo/todo.repository.ts"
+    },
+    {
+      "src": "todo.service.ts",
+      "target": "src/features/todo/todo.service.ts"
+    },
+    {
+      "src": "todo-index.ts",
+      "target": "src/features/todo/index.ts"
+    },
+    {
+      "src": "schemas.ts",
+      "target": "src/features/drizzle/schemas.ts",
+      "strategy": "append-line"
+    },
+    {
+      "src": "seed-todos.ts",
+      "target": "src/features/drizzle/seeds/001_initial_todos.ts"
+    },
+    {
+      "src": "page.server.ts",
+      "target": "src/routes/todos/+page.server.ts"
+    },
+    {
+      "src": "page.svelte",
+      "target": "src/routes/todos/+page.svelte"
+    },
+    {
+      "src": "api-todos-server.ts",
+      "target": "src/routes/api/todos/+server.ts"
+    },
+    {
+      "src": "api-todos-id-server.ts",
+      "target": "src/routes/api/todos/[id]/+server.ts"
+    }
   ],
   "npmDeps": {}
 }

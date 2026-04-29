@@ -1,4 +1,4 @@
-import { join, dirname } from "path";
+import { join, dirname, extname } from "path";
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from "fs";
 import * as p from "@clack/prompts";
 import { addComponent, initAddRegistry } from "./add.ts";
@@ -16,13 +16,26 @@ import {
 // registry with --local) and copies route/lib files, installs npm deps.
 // Supports nested feature dependencies (e.g. todo → drizzle).
 
+type FileStrategy =
+    | "write"            // overwrite (prompt if interactive)
+    | "skip-if-exists"   // bootstrap-once: never replace user copy
+    | "append-line"      // idempotent line append (barrel re-exports)
+    | "append-block"     // marker-delimited block, replaced by id on re-install
+    | "merge-json";      // deep-merge JSON, preserve existing keys
+
+interface FileEntry {
+    src: string;
+    target: string;
+    strategy?: FileStrategy;
+    marker?: string;     // unique id within target (default = feature name)
+}
+
 interface FeatureMeta {
     name: string;
     description: string;
     features?: string[];               // other bosia features required
     components: string[];              // bosia components to install via `bosia add`
-    files: string[];                   // source filenames in the registry feature dir
-    targets: string[];                 // destination paths relative to project root
+    files: FileEntry[];                // file entries with per-file strategy
     npmDeps: Record<string, string>;
     npmDevDeps?: Record<string, string>;
     scripts?: Record<string, string>;  // package.json scripts to add
@@ -82,32 +95,26 @@ export async function installFeature(name: string, isRoot: boolean, options?: In
         console.log("");
     }
 
-    // Copy feature files to their target paths
+    // Apply each file entry per its strategy
     const createdDirs = new Set<string>();
-    for (let i = 0; i < meta.files.length; i++) {
-        const file = meta.files[i]!;
-        const target = meta.targets[i] ?? file;
-        const dest = join(cwd, target);
-
-        // Prompt before overwriting existing files (skip check entirely in non-interactive mode)
-        if (!options?.skipPrompts && existsSync(dest)) {
-            const replace = await p.confirm({
-                message: `File "${target}" already exists. Replace it?`,
-            });
-            if (p.isCancel(replace) || !replace) {
-                console.log(`   ⏭️  Skipped ${target}`);
-                continue;
-            }
-        }
-
-        const content = await readRegistryFile(registryRoot, "features", name, file);
+    for (const entry of meta.files) {
+        const dest = join(cwd, entry.target);
+        const strategy: FileStrategy = entry.strategy ?? "write";
         const dir = dirname(dest);
         if (!createdDirs.has(dir)) {
             mkdirSync(dir, { recursive: true });
             createdDirs.add(dir);
         }
-        writeFileSync(dest, content, "utf-8");
-        console.log(`   ✍️  ${target}`);
+        const content = await readRegistryFile(registryRoot, "features", name, entry.src);
+        await applyStrategy({
+            dest,
+            target: entry.target,
+            content,
+            strategy,
+            feat: name,
+            marker: entry.marker ?? name,
+            skipPrompts: options?.skipPrompts ?? false,
+        });
     }
 
     // Install npm dependencies
@@ -160,6 +167,150 @@ export async function installFeature(name: string, isRoot: boolean, options?: In
     } else {
         console.log(`   ✅ Dependency feature "${name}" installed.`);
     }
+}
+
+// ─── File strategies ──────────────────────────────────────
+
+interface StrategyArgs {
+    dest: string;
+    target: string;
+    content: string;
+    strategy: FileStrategy;
+    feat: string;
+    marker: string;
+    skipPrompts: boolean;
+}
+
+async function applyStrategy(args: StrategyArgs): Promise<void> {
+    const { dest, target, content, strategy, feat, marker, skipPrompts } = args;
+
+    switch (strategy) {
+        case "write": {
+            if (existsSync(dest) && !skipPrompts) {
+                const replace = await p.confirm({
+                    message: `File "${target}" already exists. Replace it?`,
+                });
+                if (p.isCancel(replace) || !replace) {
+                    console.log(`   ⏭️  Skipped ${target}`);
+                    return;
+                }
+            }
+            writeFileSync(dest, content, "utf-8");
+            console.log(`   ✍️  ${target}`);
+            return;
+        }
+
+        case "skip-if-exists": {
+            if (existsSync(dest)) {
+                console.log(`   ⏭️  Kept existing ${target}`);
+                return;
+            }
+            writeFileSync(dest, content, "utf-8");
+            console.log(`   ✍️  ${target}`);
+            return;
+        }
+
+        case "append-line": {
+            const existing = existsSync(dest) ? readFileSync(dest, "utf-8") : "";
+            const existingLines = new Set(
+                existing.split("\n").map((l) => l.trim()).filter(Boolean),
+            );
+            const newLines = content
+                .split("\n")
+                .map((l) => l.trim())
+                .filter(Boolean)
+                .filter((l) => !existingLines.has(l));
+
+            if (newLines.length === 0) {
+                console.log(`   ⏭️  ${target} (no new lines)`);
+                return;
+            }
+
+            const nl = existing.length > 0 && !existing.endsWith("\n") ? "\n" : "";
+            writeFileSync(dest, existing + nl + newLines.join("\n") + "\n", "utf-8");
+            console.log(`   ➕ ${target} (+${newLines.length} line${newLines.length === 1 ? "" : "s"})`);
+            return;
+        }
+
+        case "append-block": {
+            const id = `bosia:${feat}:${marker}`;
+            const delim = blockDelim(extname(dest));
+            const startLine = delim.end
+                ? `${delim.start} >>> ${id} ${delim.end}`
+                : `${delim.start} >>> ${id}`;
+            const endLine = delim.end
+                ? `${delim.start} <<< ${id} ${delim.end}`
+                : `${delim.start} <<< ${id}`;
+            const block = `${startLine}\n${content.trimEnd()}\n${endLine}`;
+
+            const existing = existsSync(dest) ? readFileSync(dest, "utf-8") : "";
+
+            if (existing.includes(startLine) && existing.includes(endLine)) {
+                const re = new RegExp(
+                    `${escapeRegex(startLine)}[\\s\\S]*?${escapeRegex(endLine)}`,
+                );
+                writeFileSync(dest, existing.replace(re, block), "utf-8");
+                console.log(`   ♻️  ${target} (replaced ${id})`);
+            } else {
+                const nl = existing.length > 0 && !existing.endsWith("\n") ? "\n" : "";
+                writeFileSync(dest, existing + nl + block + "\n", "utf-8");
+                console.log(`   ➕ ${target} (appended ${id})`);
+            }
+            return;
+        }
+
+        case "merge-json": {
+            const existing = existsSync(dest)
+                ? JSON.parse(readFileSync(dest, "utf-8"))
+                : {};
+            const incoming = JSON.parse(content);
+            const merged = mergeJsonPreserve(existing, incoming);
+            writeFileSync(dest, JSON.stringify(merged, null, 2) + "\n", "utf-8");
+            console.log(`   🔀 ${target} (merged json)`);
+            return;
+        }
+
+        default: {
+            const _exhaustive: never = strategy;
+            throw new Error(`Unknown file strategy: ${_exhaustive}`);
+        }
+    }
+}
+
+function blockDelim(ext: string): { start: string; end: string } {
+    if (ext === ".html" || ext === ".svelte") return { start: "<!--", end: "-->" };
+    if (ext === ".css") return { start: "/*", end: "*/" };
+    return { start: "//", end: "" };
+}
+
+function escapeRegex(s: string): string {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// Deep-merge `source` into `target`, preserving existing target values.
+// Objects: recurse. Arrays: concat-dedupe by JSON identity. Primitives: keep target.
+function mergeJsonPreserve(target: unknown, source: unknown): unknown {
+    if (Array.isArray(target) && Array.isArray(source)) {
+        const out = [...target];
+        for (const item of source) {
+            if (!out.some((x) => JSON.stringify(x) === JSON.stringify(item))) {
+                out.push(item);
+            }
+        }
+        return out;
+    }
+    if (isPlainObject(target) && isPlainObject(source)) {
+        const out: Record<string, unknown> = { ...target };
+        for (const [k, v] of Object.entries(source)) {
+            out[k] = k in target ? mergeJsonPreserve(target[k], v) : v;
+        }
+        return out;
+    }
+    return target !== undefined ? target : source;
+}
+
+function isPlainObject(v: unknown): v is Record<string, unknown> {
+    return typeof v === "object" && v !== null && !Array.isArray(v);
 }
 
 // Re-exports for create.ts

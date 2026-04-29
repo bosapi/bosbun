@@ -1,7 +1,7 @@
 # Bosia — Roadmap
 
 > Track what's done, what's next, and where we're headed.
-> Current version: **0.2.2**
+> Current version: **0.2.3**
 
 ---
 
@@ -226,6 +226,21 @@
 - [ ] 🔴 Dedup key cross-user data leak — `dedupKey()` only fingerprints the `Authorization` header and a literal `authorization` cookie. Apps using session cookies under any other name (`sid`, `session`, `connect.sid`, `__Secure-next-auth.session-token`, etc.) collide across users — User B receives the loader result computed for User A's cookies. Also: cookies written by the deduped loader land only on the first request's `CookieJar`; concurrent waiters lose their `Set-Cookie` headers. Fix: hash the entire `Cookie` header (or disable dedup when any cookie is present), and replay outgoing cookies onto every waiting jar
 - [ ] 🟡 Trie-based route matcher — replace linear O(n) route scan with radix trie for O(k) matching (k = URL segments). Matters when route count exceeds ~100
 - [x] 🟡 Compiled route regex — pre-compile route patterns to `RegExp` at startup instead of parsing on every match
+
+---
+
+## v0.2.3 — CLI & Feature Installer
+
+> Per-file install strategies so features can safely contribute to shared files.
+
+### CLI / Feat
+- [x] 🟠 `bosia feat` per-file strategies — `meta.json` `files: FileEntry[]` with `strategy` field: `write` (default), `skip-if-exists`, `append-line`, `append-block`, `merge-json`. Replaces all-or-nothing replace prompt for shared files like `src/features/drizzle/schemas.ts`
+- [ ] 🟡 Document `meta.json` schema and strategies in `docs/` (CLI / `bosia feat` page)
+- [ ] 🟡 `bosia feat <name> --dry-run` — preview file actions (write/skip/append/merge) without touching disk
+- [ ] 🟡 Validation: error early when two installed features write to the same target with `write` strategy (force one to declare append-line/append-block)
+- [ ] 🟠 `auth` feature scaffold — uses `append-block` to register hooks in `src/hooks.server.ts` and routes barrel
+- [ ] 🟡 `s3` / `storage` feature — bucket client + upload route using new strategies
+- [ ] 🟡 Track installed features per project (`.bosia/installed.json`) — enable `bosia feat list` and uninstall
 
 ---
 
