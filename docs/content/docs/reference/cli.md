@@ -1,6 +1,6 @@
 ---
 title: CLI Reference
-description: All bosia CLI commands — create, dev, build, start, add, feat.
+description: All bosia CLI commands — create, dev, build, start, test, add, feat.
 ---
 
 ## bosia create
@@ -65,6 +65,31 @@ bosia start
 ```
 
 Runs the built server from `dist/`. Requires `bosia build` to have been run first.
+
+## bosia test
+
+Run tests with `bun test`, framework-aware.
+
+```bash
+bosia test [args]
+```
+
+- Auto-loads `.env`, `.env.local`, `.env.test`, `.env.test.local` (later files override earlier; system env wins)
+- Sets `BOSIA_ENV=test` and `NODE_ENV=test` (only if not already set)
+- Forwards `NODE_PATH` so framework dependencies resolve in tests
+- Passes all flags through to `bun test` (`--watch`, `--coverage`, `--bail`, `--timeout`, file/dir filters)
+- Forwards Bun's exit code
+
+Examples:
+
+```bash
+bosia test
+bosia test --watch
+bosia test --coverage
+bosia test src/lib/foo.test.ts
+```
+
+Place test files anywhere Bun discovers them (default: `*.test.ts` / `*.test.tsx` / `*.spec.ts` / files inside `__tests__/`).
 
 ## bosia add
 

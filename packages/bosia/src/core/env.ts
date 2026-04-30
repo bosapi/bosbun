@@ -46,7 +46,7 @@ function processEscapes(raw: string): string {
 }
 
 /** Parse a .env file content into key/value pairs. Skips comments and empty lines. */
-function parseEnvFile(content: string, filename?: string): Record<string, string> {
+export function parseEnvFile(content: string, filename?: string): Record<string, string> {
 	const result: Record<string, string> = {};
 	const lines = content.split("\n");
 	for (let i = 0; i < lines.length; i++) {

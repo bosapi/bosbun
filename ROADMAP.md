@@ -281,10 +281,11 @@
 
 ### CLI
 
-- [ ] 🟠 `bosia test` command — wraps `bun test` with framework-aware defaults
-- [ ] 🟡 Auto-load `.env.test` (fallback `.env`) before running tests
-- [ ] 🟡 Set `BOSIA_ENV=test` automatically
-- [ ] 🟡 Pass through flags (`--watch`, `--coverage`, `--bail`, `--timeout`, etc.)
+- [x] 🟠 `bosia test` command — wraps `bun test` with framework-aware defaults
+- [x] 🟡 Auto-load `.env.test` (fallback `.env`) before running tests
+- [x] 🟡 Set `BOSIA_ENV=test` automatically
+- [x] 🟡 Pass through flags (`--watch`, `--coverage`, `--bail`, `--timeout`, etc.)
+- [x] 🟡 Unit tests for core pure utilities (`matcher`, `cookies`, `csrf`, `cors`, `errors`, `html`, `dedup`, `env`)
 
 ### Test Utilities (`bosia/testing`)
 

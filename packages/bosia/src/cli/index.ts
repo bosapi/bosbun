@@ -31,6 +31,11 @@ async function main() {
 			await runStart();
 			break;
 		}
+		case "test": {
+			const { runTest } = await import("./test.ts");
+			await runTest(args);
+			break;
+		}
 		case "add": {
 			const { runAdd } = await import("./add.ts");
 			const addName = args.find((a) => !a.startsWith("--"));
@@ -57,6 +62,7 @@ Commands:
   dev                 Start the development server
   build               Build for production
   start               Run the production server
+  test [args]         Run tests with bun test (auto-loads .env.test, sets BOSIA_ENV=test)
   add <component>     Add a UI component from the registry
   feat <feature>      Add a feature scaffold from the registry [--local]
 
@@ -66,6 +72,9 @@ Examples:
   bosia dev
   bosia build
   bosia start
+  bosia test
+  bosia test --watch
+  bosia test --coverage
   bosia add button              → src/lib/components/ui/button/
   bosia add shop/cart           → src/lib/components/shop/cart/
   bosia feat login

@@ -58,7 +58,7 @@ function getPublicDynamicEnv(): Record<string, string> {
 // ─── Lang Validation ──────────────────────────────────────
 
 const LANG_RE = /^[a-zA-Z0-9-]{1,35}$/;
-function safeLang(lang?: string): string {
+export function safeLang(lang?: string): string {
 	return lang && LANG_RE.test(lang) ? lang : "en";
 }
 
@@ -179,11 +179,11 @@ export function buildMetadataChunk(metadata: Metadata | null): string {
 	return out;
 }
 
-function escapeHtml(s: string): string {
+export function escapeHtml(s: string): string {
 	return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-function escapeAttr(s: string): string {
+export function escapeAttr(s: string): string {
 	return s
 		.replace(/&/g, "&amp;")
 		.replace(/"/g, "&quot;")

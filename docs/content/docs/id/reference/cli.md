@@ -1,6 +1,6 @@
 ---
 title: Referensi CLI
-description: Semua perintah CLI bosia — create, dev, build, start, add, feat.
+description: Semua perintah CLI bosia — create, dev, build, start, test, add, feat.
 ---
 
 ## bosia create
@@ -64,6 +64,31 @@ bosia start
 ```
 
 Menjalankan server yang sudah di-build dari `dist/`. Membutuhkan `bosia build` yang sudah dijalankan terlebih dahulu.
+
+## bosia test
+
+Jalankan tes dengan `bun test`, terintegrasi framework.
+
+```bash
+bosia test [args]
+```
+
+- Memuat otomatis `.env`, `.env.local`, `.env.test`, `.env.test.local` (file berikutnya menimpa sebelumnya; env sistem menang)
+- Menetapkan `BOSIA_ENV=test` dan `NODE_ENV=test` (hanya jika belum diset)
+- Meneruskan `NODE_PATH` agar dependensi framework bisa diresolusi saat tes
+- Meneruskan semua flag ke `bun test` (`--watch`, `--coverage`, `--bail`, `--timeout`, filter file/direktori)
+- Meneruskan exit code dari Bun
+
+Contoh:
+
+```bash
+bosia test
+bosia test --watch
+bosia test --coverage
+bosia test src/lib/foo.test.ts
+```
+
+Letakkan file tes di mana saja yang ditemukan Bun (default: `*.test.ts` / `*.test.tsx` / `*.spec.ts` / file di `__tests__/`).
 
 ## bosia add
 

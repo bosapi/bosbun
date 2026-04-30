@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [0.3.0] - 2026-04-30
 
+### Added
+
+- `bosia test` CLI command — wraps `bun test` with framework defaults: auto-loads `.env`/`.env.local`/`.env.test`/`.env.test.local` (system env wins), sets `BOSIA_ENV=test` and `NODE_ENV=test` if unset, forwards `NODE_PATH` so framework deps resolve, and passes all flags through to `bun test` (`--watch`, `--coverage`, `--bail`, `--timeout`, file/dir filters). Forwards Bun's exit code so CI fails on test failures.
+- Root `test` / `test:watch` / `test:coverage` scripts and `packages/bosia` `test` / `test:watch` scripts so `bun test` runs from anywhere in the monorepo.
+- Unit tests for pure core utilities: `matcher` (compileRoutes / findMatch — exact, dynamic, catch-all, regex escape, priority), `cookies` (CookieJar — get/set/delete/getAll, Set-Cookie serialization, RFC 6265 name validation, dev-mode Secure omission, accessed flag), `csrf` (safe-method bypass, Origin / Referer / X-Forwarded headers, allowedOrigins, malformed Referer), `cors` (getCorsHeaders, handlePreflight defaults + overrides), `errors` (HttpError, Redirect dangerous-scheme rejection, fail), `html` (safeJsonStringify XSS escapes, escapeHtml/escapeAttr, isStaticPath, safeLang), `dedup` (dedupKey path normalization, sorted query, identity from Authorization header / cookie), `env` (parseEnvFile quoted/unquoted/escapes/inline-comments/invalid-name rejection, classifyEnvVars buckets). 90 tests across 9 files.
+
 ### Changed
 
 - Per-route `Params` type generated from URL pattern in `$types.d.ts` — `[slug]` → `{ slug: string }`, static routes → `{}`. New typed helpers exported from `./$types`: `PageServerLoad`, `LayoutServerLoad`, `PageMetadataLoad`, `Action` — pre-bind the per-route `Params` so `event.params.slug` is `string` and `event.params.foo` is a type error. `PageData` / `LayoutData` `params` field switched from `Record<string, string>` to `Params`. Recommended adoption pattern: `export const load = (async ({ params }) => { ... }) satisfies PageServerLoad;` — `satisfies` preserves the body's inferred return type so `PageData` stays narrow.
