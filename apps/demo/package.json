@@ -5,7 +5,8 @@
 	"scripts": {
 		"dev": "bun run ../../packages/bosia/src/core/dev.ts",
 		"build": "NODE_ENV=production bun run ../../packages/bosia/src/core/build.ts",
-		"start": "bun run ../../packages/bosia/src/cli/index.ts start"
+		"start": "bun run ../../packages/bosia/src/cli/index.ts start",
+		"check": "tsc --noEmit && prettier --check ."
 	},
 	"dependencies": {
 		"bosia": "workspace:*",

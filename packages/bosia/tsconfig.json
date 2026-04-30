@@ -6,7 +6,9 @@
 		"allowImportingTsExtensions": true,
 		"noEmit": true,
 		"strict": true,
+		"skipLibCheck": true,
+		"lib": ["dom", "dom.iterable", "esnext"],
 		"types": ["bun"]
 	},
-	"include": ["src/**/*"]
+	"include": ["src/**/*", "src/**/*.d.ts"]
 }
