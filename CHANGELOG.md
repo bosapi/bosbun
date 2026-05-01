@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.3.2] - 2026-05-02
+
+### Fixed
+
+- `buildAndRestart` recursive tail call in dev server. Previously, when `buildPending` was set during a build, the function self-invoked at the end of the `try/finally` (without `await`), creating a new async invocation per queued rebuild and growing the call chain under rapid file saves. Replaced with a `do…while (buildPending)` drain loop inside the `try`: a single invocation handles all queued rebuilds, clearing `buildPending` at the top of each pass so saves landing during `runBuild`/`startAppServer` re-arm it for the next iteration. Failure semantics preserved (early `return` on build failure still resets `building` via `finally`; user's next save reschedules). `scheduleBuild()` and the initial dev-startup invocation untouched.
+
+---
+
 ## [0.3.1] - 2026-05-01
 
 ### Added

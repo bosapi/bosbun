@@ -137,21 +137,20 @@ async function buildAndRestart() {
 	}
 	building = true;
 	try {
-		const ok = await runBuild();
-		if (!ok) {
-			console.error("❌ Build failed — fix errors and save again");
-			return;
-		}
-		await startAppServer();
-		// Give the app server a moment to bind its port
-		await Bun.sleep(200);
-		broadcastReload();
+		do {
+			buildPending = false;
+			const ok = await runBuild();
+			if (!ok) {
+				console.error("❌ Build failed — fix errors and save again");
+				return;
+			}
+			await startAppServer();
+			// Give the app server a moment to bind its port
+			await Bun.sleep(200);
+			broadcastReload();
+		} while (buildPending);
 	} finally {
 		building = false;
-	}
-	if (buildPending) {
-		buildPending = false;
-		buildAndRestart();
 	}
 }
 
